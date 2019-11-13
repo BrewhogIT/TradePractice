@@ -5,12 +5,13 @@
     android:layout_height="match_parent">
     <ImageView
         android:id="@+id/logo_view"
+        android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"/>
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/home_screen_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id ="@+id/lesson_type_recycler_view"
+        android:layout_height ="0dp"
+        android:layout_width ="match_parent"
+        android:layout_weight ="1" />
 </LinearLayout>
