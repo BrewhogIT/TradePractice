@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,28 +36,35 @@ public class HomeScreenActivity extends AppCompatActivity {
         lessonsKindList.add(R.string.practice);
         lessonsKindList.add(R.string.how_to_use);
 
-        CenterZoomLayoutManager layoutManager = new CenterZoomLayoutManager(
-                this, LinearLayoutManager.HORIZONTAL,false);
-        lessonSectionRecyclerView = findViewById(R.id.lesson_type_recycler_view);
-        lessonSectionRecyclerView.setLayoutManager(layoutManager);
-        lessonSectionRecyclerView.setAdapter(new LessonTypeAdapter());
-        LinearSnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(lessonSectionRecyclerView);
-        lessonSectionRecyclerView.setOnFlingListener(snapHelper);
-
-        int recyclerCenterPosition = layoutManager.getItemCount() / 2;
-        layoutManager.scrollToPosition(Integer.MAX_VALUE / 2 - 1);
-        lessonSectionRecyclerView.smoothScrollToPosition(recyclerCenterPosition);
+        setupAdapter(lessonSectionRecyclerView);
 
     }
 
-    private class LessonTypeViewHolder extends RecyclerView.ViewHolder{
+    private void setupAdapter(RecyclerView recyclerView) {
+        CenterZoomLayoutManager layoutManager = new CenterZoomLayoutManager(
+                this, LinearLayoutManager.HORIZONTAL,false);
+        recyclerView = findViewById(R.id.lesson_type_recycler_view);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new LessonTypeAdapter());
+
+        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setOnFlingListener(snapHelper);
+
+        int recyclerCenterPosition = layoutManager.getItemCount() / 2;
+        layoutManager.scrollToPosition(Integer.MAX_VALUE / 2 - 1);
+        recyclerView.smoothScrollToPosition(recyclerCenterPosition);
+    }
+
+    private class LessonTypeViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         private ImageView mLessonTypeLogoView;
         private int mLessonKind;
 
         public LessonTypeViewHolder(@NonNull View itemView) {
             super(itemView);
             mLessonTypeLogoView = itemView.findViewById(R.id.lesson_kind_logo);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(int lessonKind){
@@ -76,6 +84,22 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
 
             mLessonTypeLogoView.setImageDrawable(LessonTypeIcon);
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (mLessonKind){
+                case R.string.practice:
+                    //Open practice page
+                    break;
+                case  R.string.theory:
+                    Intent intent = TheoryListActivity.newIntent(getBaseContext());
+                    startActivity(intent);
+                    break;
+                case R.string.how_to_use:
+                    //Open tutorial
+                    break;
+            }
         }
     }
 

@@ -3,4 +3,5 @@
     <string name="theory">Теория</string>
     <string name="practice">Практика</string>
     <string name="how_to_use">Как заниматься</string>
+    <string name="users_level_text">Уровень</string>
 </resources>

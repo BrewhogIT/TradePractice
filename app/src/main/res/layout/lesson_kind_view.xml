@@ -2,7 +2,9 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="250dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginBottom="16dp"
+    android:layout_marginTop="16dp">
     <ImageView
         android:id="@+id/lesson_kind_logo"
         android:layout_width="match_parent"

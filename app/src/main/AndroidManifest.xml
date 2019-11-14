@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SingleFragmentActivity"/>
+        <activity android:name=".TheoryListActivity"/>
     </application>
 
 </manifest>
