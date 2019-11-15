@@ -36,16 +36,16 @@ public class HomeScreenActivity extends AppCompatActivity {
         lessonsKindList.add(R.string.practice);
         lessonsKindList.add(R.string.how_to_use);
 
-        setupAdapter(lessonSectionRecyclerView);
+        lessonSectionRecyclerView = findViewById(R.id.lesson_type_recycler_view);
+        setupRecyclerView(lessonSectionRecyclerView);
 
     }
 
-    private void setupAdapter(RecyclerView recyclerView) {
+    private void setupRecyclerView(RecyclerView recyclerView) {
         CenterZoomLayoutManager layoutManager = new CenterZoomLayoutManager(
                 this, LinearLayoutManager.HORIZONTAL,false);
-        recyclerView = findViewById(R.id.lesson_type_recycler_view);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new LessonTypeAdapter());
+        recyclerView.setAdapter(new LessonTypeAdapter(lessonsKindList));
 
         LinearSnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
@@ -104,6 +104,11 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     private class LessonTypeAdapter extends RecyclerView.Adapter<LessonTypeViewHolder>{
+        List<Integer> lessonKinds;
+
+        public LessonTypeAdapter(List<Integer> lessonKinds) {
+            this.lessonKinds = lessonKinds;
+        }
 
         @NonNull
         @Override
@@ -116,8 +121,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull LessonTypeViewHolder holder, int position) {
-            int realPosition = position % lessonsKindList.size();
-            holder.bind(lessonsKindList.get(realPosition));
+            int realPosition = position % lessonKinds.size();
+            holder.bind(lessonKinds.get(realPosition));
         }
 
         @Override
