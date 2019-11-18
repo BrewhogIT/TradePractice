@@ -2,10 +2,12 @@ package com.brewhog.android.tradepractice;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -68,22 +70,25 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
 
         public void bind(int lessonKind){
-            Drawable LessonTypeIcon = null;
+            int resourseID = 0;
+            Drawable lessonTypeIcon = null;
             mLessonKind = lessonKind;
 
             switch (mLessonKind){
                 case R.string.practice:
-                    LessonTypeIcon = getResources().getDrawable(R.drawable.practice);
+                    resourseID = R.drawable.practice;
                     break;
                 case  R.string.theory:
-                    LessonTypeIcon = getResources().getDrawable(R.drawable.theory);
+                    resourseID =R.drawable.theory;
                     break;
                 case R.string.how_to_use:
-                    LessonTypeIcon = getResources().getDrawable(R.drawable.howtouse);
+                    resourseID = R.drawable.howtouse;
                     break;
             }
 
-            mLessonTypeLogoView.setImageDrawable(LessonTypeIcon);
+            lessonTypeIcon = getResources().getDrawable(resourseID);
+            mLessonTypeLogoView.setImageDrawable(lessonTypeIcon);
+            mLessonTypeLogoView.setTag(resourseID);
         }
 
         @Override
@@ -93,8 +98,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                     //Open practice page
                     break;
                 case  R.string.theory:
-                    Intent intent = TheoryListActivity.newIntent(getBaseContext());
-                    startActivity(intent);
+                    int imageResId = getDrawableResId(mLessonTypeLogoView);
+                    Intent intent = TheoryListActivity.newIntent(getBaseContext(),imageResId);
+                    TheoryListActivity.startActivityWithTransition(
+                            HomeScreenActivity.this,mLessonTypeLogoView,intent);
                     break;
                 case R.string.how_to_use:
                     //Open tutorial
@@ -129,5 +136,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         public int getItemCount() {
             return Integer.MAX_VALUE;
         }
+    }
+
+    private int getDrawableResId (ImageView view){
+        return (Integer) view.getTag();
     }
 }

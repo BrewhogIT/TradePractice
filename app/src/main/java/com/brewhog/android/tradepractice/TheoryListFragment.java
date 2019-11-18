@@ -1,5 +1,6 @@
 package com.brewhog.android.tradepractice;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TheoryListFragment extends Fragment {
-    RecyclerView theoryListRecyclerView;
-    LessonPack mLessonPack;
+    private RecyclerView theoryListRecyclerView;
+    private LessonPack mLessonPack;
+    private ImageView lessonKindIllustration;
 
-    public static TheoryListFragment newInstance() {
+    public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
+
+    public static TheoryListFragment newInstance(int imageResId) {
+        Bundle args = new Bundle();
+        args.putInt(IMAGE_RES_ID_ARGS,imageResId);
+
         TheoryListFragment fragment = new TheoryListFragment();
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -29,6 +37,11 @@ public class TheoryListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_theory_list,container,false);
+        lessonKindIllustration = view.findViewById(R.id.lesson_kind_large_illustration);
+        Drawable lessonKindImage = getResources()
+                .getDrawable(getArguments().getInt(IMAGE_RES_ID_ARGS));
+        lessonKindIllustration.setImageDrawable(lessonKindImage);
+
         mLessonPack = LessonPack.getLessonPack(getActivity());
 
         theoryListRecyclerView = view.findViewById(R.id.theory_recycler_view);

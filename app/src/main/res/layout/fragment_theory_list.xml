@@ -5,10 +5,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/lesson_kind_large_illustration"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:transitionName="@string/lesson_kind_logo"/>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/users_level_view"
@@ -28,17 +36,19 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="24dp"
             android:text="@string/users_level_text"
-            android:textSize="24sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/users_level_view"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/user_level_progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="0dp"
             android:layout_height="32dp"
             android:layout_margin="8dp"
+            android:progress="30"
+            android:progressTint="#8D97D8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/users_level_view"
