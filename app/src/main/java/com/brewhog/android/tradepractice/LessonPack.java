@@ -1,18 +1,27 @@
 package com.brewhog.android.tradepractice;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LessonPack {
+    public static final String TAG = "LessonPack";
+    public static final String MAIN_LESSONS_FOLDER = "lessons";
+
     private static LessonPack mLessonPack;
     private List<Lesson> mLessonsList;
     private Context mContext;
+    private AssetManager mAssetManager;
 
     private LessonPack(Context context) {
         mContext = context;
+        mAssetManager = mContext.getAssets();
         loadLessonList();
     }
 
@@ -28,16 +37,31 @@ public class LessonPack {
     }
 
     private void loadLessonList() {
-        mLessonsList = new ArrayList<>();
+        /*В строковом файле присутствует строковый массив с темами уроков, при загрузке новой папки
+        урока, необходимо добавить строку */
+        try {
+            mLessonsList = new ArrayList<>();
+            String[] assetsFolders = mAssetManager.list(MAIN_LESSONS_FOLDER);
+            String[] lessonTopics = mContext.getResources().getStringArray(R.array.lessons);
 
-        Drawable lesson1Preview = mContext.getResources().getDrawable(R.drawable.lesson1);
-        Lesson theoryLesson1 = new Lesson(R.string.lesson1);
-        theoryLesson1.setPreview(lesson1Preview);
-        mLessonsList.add(theoryLesson1);
+            if (assetsFolders != null){
+                for (int i = 0; i < assetsFolders.length; i++){
+                    String lessonPreviewPath = MAIN_LESSONS_FOLDER + "/" + assetsFolders[i] + "/preview.png";
+                    InputStream inputStream = mAssetManager.open(lessonPreviewPath);
+                    Drawable lessonPreview = Drawable.createFromStream(inputStream,null);
 
-        Drawable lesson2Preview = mContext.getResources().getDrawable(R.drawable.lesson2);
-        Lesson theoryLesson2 = new Lesson(R.string.lesson2);
-        theoryLesson2.setPreview(lesson2Preview);
-        mLessonsList.add(theoryLesson2);
+                    Lesson theoryLesson = new Lesson(lessonTopics[i]);
+                    theoryLesson.setPreview(lessonPreview);
+                    mLessonsList.add(theoryLesson);
+
+                    inputStream.close();
+                }
+            }
+
+        } catch (IOException e) {
+            Log.e(TAG,"IO Exception while lessons loading");
+            e.printStackTrace();
+        }
+
     }
 }

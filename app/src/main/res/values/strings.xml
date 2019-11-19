@@ -1,11 +1,17 @@
 <resources>
+    /* строки главного экрана */
     <string name="app_name">TradePractice</string>
     <string name="theory">Теория</string>
     <string name="practice">Практика</string>
     <string name="how_to_use">Как заниматься</string>
+
     <string name="users_level_text">Прогресс обучения</string>
-    <string name="lesson_kind_logo">Лого типа занятий</string>
-    
-    <string name="lesson1">Что такое акция?</string>
-    <string name="lesson2">Какие виды ценных бумаг бывают?</string>
+    <string name="lesson_kind_logo_transitional_name">Лого типа занятий</string>
+
+    /* строки тем уроков */
+    <string-array name="lessons">
+        <item>Что такое акция?</item>
+        <item>Какие виды ценных бумаг бывают?</item>
+    </string-array>
+
 </resources>

@@ -19,7 +19,7 @@ public class TheoryListActivity extends SingleFragmentActivity {
     }
 
     public static void startActivityWithTransition(Activity activity, View view, Intent intent){
-        String transitionalName = activity.getString(R.string.lesson_kind_logo);
+        String transitionalName = activity.getString(R.string.lesson_kind_logo_transitional_name);
         view.setTransitionName(transitionalName);
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(activity,view,transitionalName);

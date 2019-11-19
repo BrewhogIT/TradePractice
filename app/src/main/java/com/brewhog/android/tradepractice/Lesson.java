@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 public class Lesson {
-    private int topic;
+    private String topic;
     private Drawable preview;
     private List<String> pages;
     private List<Drawable> illustration;
     private boolean done;
 
-    public Lesson(int topic) {
+    public Lesson(String topic) {
         this.topic = topic;
     }
 
-    public int getTopic() {
+    public String getTopic() {
         return topic;
     }
 
