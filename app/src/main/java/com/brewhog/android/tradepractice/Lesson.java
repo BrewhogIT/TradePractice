@@ -2,18 +2,25 @@ package com.brewhog.android.tradepractice;
 
 import android.graphics.drawable.Drawable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class Lesson {
+    private UUID mUUID;
     private String topic;
-    private Drawable preview;
     private List<String> pages;
     private List<Drawable> illustration;
     private boolean done;
 
     public Lesson(String topic) {
         this.topic = topic;
+        mUUID = UUID.randomUUID();
+    }
+
+    public UUID getUUID() {
+        return mUUID;
     }
 
     public String getTopic() {
@@ -21,11 +28,7 @@ public class Lesson {
     }
 
     public Drawable getPreview() {
-        return preview;
-    }
-
-    public void setPreview(Drawable preview) {
-        this.preview = preview;
+        return illustration.get(0);
     }
 
     public List<String> getPages() {
@@ -33,7 +36,7 @@ public class Lesson {
     }
 
     public void setPages(List<String> pages) {
-        this.pages = pages;
+        this.pages = new ArrayList<>(pages);
     }
 
     public List<Drawable> getIllustration() {
@@ -41,7 +44,7 @@ public class Lesson {
     }
 
     public void setIllustration(List<Drawable> illustration) {
-        this.illustration = illustration;
+        this.illustration = new ArrayList<>(illustration);
     }
 
     public boolean isDone() {

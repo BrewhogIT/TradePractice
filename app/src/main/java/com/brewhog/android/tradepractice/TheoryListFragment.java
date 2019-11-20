@@ -1,5 +1,6 @@
 package com.brewhog.android.tradepractice;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,6 +59,7 @@ public class TheoryListFragment extends Fragment {
     private class TheoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView lessonPreview;
         private TextView lessonTopic;
+        private Lesson mLesson;
 
         public TheoryHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,13 +69,16 @@ public class TheoryListFragment extends Fragment {
         }
 
         public void bind(Lesson lesson){
-            lessonPreview.setImageDrawable(lesson.getPreview());
-            lessonTopic.setText(lesson.getTopic());
+            mLesson = lesson;
+            lessonPreview.setImageDrawable(mLesson.getPreview());
+            lessonTopic.setText(mLesson.getTopic());
         }
 
         @Override
         public void onClick(View view) {
-            //Open Lesson
+            UUID lessonID = mLesson.getUUID();
+            Intent intent = TheoryLessonPagerActivity.newIntent(getActivity(),lessonID);
+            startActivity(intent);
         }
     }
 

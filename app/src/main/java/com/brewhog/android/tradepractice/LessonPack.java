@@ -36,25 +36,42 @@ public class LessonPack {
         return mLessonsList;
     }
 
+    public Lesson getLesson(int lessonNumber){
+        return mLessonsList.get(lessonNumber);
+    }
+
     private void loadLessonList() {
         /*В строковом файле присутствует строковый массив с темами уроков, при загрузке новой папки
         урока, необходимо добавить строку */
         try {
             mLessonsList = new ArrayList<>();
-            String[] assetsFolders = mAssetManager.list(MAIN_LESSONS_FOLDER);
-            String[] lessonTopics = mContext.getResources().getStringArray(R.array.lessons);
+            String[] allLessons = mAssetManager.list(MAIN_LESSONS_FOLDER);
+            String[] lessonsTopics = mContext.getResources().getStringArray(R.array.lessons);
 
-            if (assetsFolders != null){
-                for (int i = 0; i < assetsFolders.length; i++){
-                    String lessonPreviewPath = MAIN_LESSONS_FOLDER + "/" + assetsFolders[i] + "/preview.png";
-                    InputStream inputStream = mAssetManager.open(lessonPreviewPath);
-                    Drawable lessonPreview = Drawable.createFromStream(inputStream,null);
+            if (allLessons != null){
+                for (int i = 0; i < allLessons.length; i++){
+                    String lessonFolder = MAIN_LESSONS_FOLDER + "/" + allLessons[i];
+                    String lessonIllustrationFolder = lessonFolder + "/" + "illustrations";
+                    String lessonPagesFolder = lessonFolder + "/" + "pages";
 
-                    Lesson theoryLesson = new Lesson(lessonTopics[i]);
-                    theoryLesson.setPreview(lessonPreview);
+                    Lesson theoryLesson = new Lesson(lessonsTopics[i]);
+                    String[] pagesFileName = mAssetManager.list(lessonPagesFolder);
+                    String[] illustrationFileName = mAssetManager.list(lessonIllustrationFolder);
+                    List<String> pagesPath = new ArrayList<>();
+                    List<Drawable> illustrations = new ArrayList<>();
+
+                    for (int j = 0; j < pagesFileName.length; j++){
+                        pagesPath.add("file:///android_asset/" + lessonPagesFolder + "/" + pagesFileName[j]);
+                        InputStream inputStream = mAssetManager
+                                .open(lessonIllustrationFolder + "/" + illustrationFileName[j]);
+                        illustrations.add(Drawable.createFromStream(inputStream,null));
+                        inputStream.close();
+                    }
+
+                    theoryLesson.setPages(pagesPath);
+                    theoryLesson.setIllustration(illustrations);
+
                     mLessonsList.add(theoryLesson);
-
-                    inputStream.close();
                 }
             }
 

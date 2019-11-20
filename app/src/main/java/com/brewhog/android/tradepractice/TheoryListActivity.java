@@ -9,7 +9,8 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 
 public class TheoryListActivity extends SingleFragmentActivity {
-    public static final String ILLUSTRATION_LESSON_KIND_EXTRA = "IllustrationLindExtra";
+    public static final String ILLUSTRATION_LESSON_KIND_EXTRA =
+            "com.brewhog.android.tradepractice.IllustrationLessonKindExtra";
 
 
     public static Intent newIntent(Context context, int imageResId){
