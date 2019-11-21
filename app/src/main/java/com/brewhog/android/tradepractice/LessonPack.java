@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class LessonPack {
     public static final String TAG = "LessonPack";
@@ -36,8 +37,14 @@ public class LessonPack {
         return mLessonsList;
     }
 
-    public Lesson getLesson(int lessonNumber){
-        return mLessonsList.get(lessonNumber);
+    public Lesson getLesson(UUID lessonID){
+        Lesson mLesson = null;
+        for (Lesson lesson: getLessons()){
+            if (lesson.getLessonID().equals(lessonID)){
+                mLesson = lesson;
+            }
+        }
+        return mLesson;
     }
 
     private void loadLessonList() {

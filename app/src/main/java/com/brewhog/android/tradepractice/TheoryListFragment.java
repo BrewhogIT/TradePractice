@@ -76,7 +76,7 @@ public class TheoryListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            UUID lessonID = mLesson.getUUID();
+            UUID lessonID = mLesson.getLessonID();
             Intent intent = TheoryLessonPagerActivity.newIntent(getActivity(),lessonID);
             startActivity(intent);
         }

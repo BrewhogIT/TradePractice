@@ -33,17 +33,8 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-        Для вызова фрагмента можно использовать более простой способ - передать в аргументах
-        id урока и position для страницы и изображения, код ниже для теста передачи drawable
-        между активностями/фрагментами
-         */
         UUID lessonID = (UUID) getIntent().getSerializableExtra(LESSONS_ID_EXTRA);
-        for (Lesson lesson:LessonPack.getLessonPack(this).getLessons()){
-            if (lesson.getUUID().equals(lessonID)){
-                mLesson = lesson;
-            }
-        }
+        mLesson = LessonPack.getLessonPack(this).getLesson(lessonID);
 
         setContentView(R.layout.activity_theory_lesson);
         FragmentManager manager = getSupportFragmentManager();
@@ -51,11 +42,7 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
         theoryLessonPager.setAdapter(new FragmentStatePagerAdapter(manager) {
             @Override
             public Fragment getItem(int position) {
-                String pageContentPath = mLesson.getPages().get(position);
-                Drawable pageIllustration = mLesson.getIllustrations().get(position);
-                byte[] byteIllustration = convertToByte(pageIllustration);
-
-                Fragment fragment = PageOfTheoryFragment.newInstance(pageContentPath,byteIllustration);
+                Fragment fragment = PageOfTheoryFragment.newInstance(mLesson.getLessonID(),position);
                 return fragment;
             }
 
@@ -64,19 +51,5 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
                 return mLesson.getPages().size();
             }
         });
-    }
-
-    public byte[] convertToByte(Drawable drawable){
-        byte[]bitMapData = new byte[0];
-        try {
-            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100,stream);
-            bitMapData = stream.toByteArray();
-            stream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitMapData;
     }
 }

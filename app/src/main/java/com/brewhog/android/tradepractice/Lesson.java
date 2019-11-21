@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Lesson {
-    private UUID mUUID;
+    private UUID lessonID;
     private String topic;
     private List<String> pages;
     private List<Drawable> illustrations;
@@ -15,11 +15,11 @@ public class Lesson {
 
     public Lesson(String topic) {
         this.topic = topic;
-        mUUID = UUID.randomUUID();
+        lessonID = UUID.randomUUID();
     }
 
-    public UUID getUUID() {
-        return mUUID;
+    public UUID getLessonID() {
+        return lessonID;
     }
 
     public String getTopic() {
