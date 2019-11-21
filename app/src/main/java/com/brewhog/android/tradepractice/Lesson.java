@@ -4,14 +4,13 @@ import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class Lesson {
     private UUID mUUID;
     private String topic;
     private List<String> pages;
-    private List<Drawable> illustration;
+    private List<Drawable> illustrations;
     private boolean done;
 
     public Lesson(String topic) {
@@ -28,7 +27,7 @@ public class Lesson {
     }
 
     public Drawable getPreview() {
-        return illustration.get(0);
+        return illustrations.get(0);
     }
 
     public List<String> getPages() {
@@ -39,12 +38,12 @@ public class Lesson {
         this.pages = new ArrayList<>(pages);
     }
 
-    public List<Drawable> getIllustration() {
-        return illustration;
+    public List<Drawable> getIllustrations() {
+        return illustrations;
     }
 
-    public void setIllustration(List<Drawable> illustration) {
-        this.illustration = new ArrayList<>(illustration);
+    public void setIllustrations(List<Drawable> illustrations) {
+        this.illustrations = new ArrayList<>(illustrations);
     }
 
     public boolean isDone() {

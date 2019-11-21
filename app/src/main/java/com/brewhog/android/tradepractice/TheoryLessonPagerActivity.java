@@ -2,8 +2,13 @@ package com.brewhog.android.tradepractice;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 import androidx.annotation.Nullable;
@@ -28,6 +33,11 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
+        Для вызова фрагмента можно использовать более простой способ - передать в аргументах
+        id урока и position для страницы и изображения, код ниже для теста передачи drawable
+        между активностями/фрагментами
+         */
         UUID lessonID = (UUID) getIntent().getSerializableExtra(LESSONS_ID_EXTRA);
         for (Lesson lesson:LessonPack.getLessonPack(this).getLessons()){
             if (lesson.getUUID().equals(lessonID)){
@@ -41,7 +51,11 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
         theoryLessonPager.setAdapter(new FragmentStatePagerAdapter(manager) {
             @Override
             public Fragment getItem(int position) {
-                Fragment fragment = PageOfTheoryFragment.newInstance();
+                String pageContentPath = mLesson.getPages().get(position);
+                Drawable pageIllustration = mLesson.getIllustrations().get(position);
+                byte[] byteIllustration = convertToByte(pageIllustration);
+
+                Fragment fragment = PageOfTheoryFragment.newInstance(pageContentPath,byteIllustration);
                 return fragment;
             }
 
@@ -50,7 +64,19 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
                 return mLesson.getPages().size();
             }
         });
+    }
 
-
+    public byte[] convertToByte(Drawable drawable){
+        byte[]bitMapData = new byte[0];
+        try {
+            Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100,stream);
+            bitMapData = stream.toByteArray();
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitMapData;
     }
 }

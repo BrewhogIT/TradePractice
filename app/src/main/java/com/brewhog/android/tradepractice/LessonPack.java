@@ -69,7 +69,7 @@ public class LessonPack {
                     }
 
                     theoryLesson.setPages(pagesPath);
-                    theoryLesson.setIllustration(illustrations);
+                    theoryLesson.setIllustrations(illustrations);
 
                     mLessonsList.add(theoryLesson);
                 }
