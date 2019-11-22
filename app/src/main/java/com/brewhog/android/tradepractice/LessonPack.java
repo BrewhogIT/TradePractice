@@ -60,22 +60,30 @@ public class LessonPack {
                     String lessonFolder = MAIN_LESSONS_FOLDER + "/" + allLessons[i];
                     String lessonIllustrationFolder = lessonFolder + "/" + "illustrations";
                     String lessonPagesFolder = lessonFolder + "/" + "pages";
+                    String lessonTestsFolder = lessonFolder + "/" + "test";
 
                     Lesson theoryLesson = new Lesson(lessonsTopics[i]);
-                    String[] pagesFileName = mAssetManager.list(lessonPagesFolder);
-                    String[] illustrationFileName = mAssetManager.list(lessonIllustrationFolder);
-                    List<String> pagesPath = new ArrayList<>();
+                    String[] pageFileNames = mAssetManager.list(lessonPagesFolder);
+                    String[] illustrationFileNames = mAssetManager.list(lessonIllustrationFolder);
+                    List<String> pagePaths = new ArrayList<>();
                     List<Drawable> illustrations = new ArrayList<>();
 
-                    for (int j = 0; j < pagesFileName.length; j++){
-                        pagesPath.add("file:///android_asset/" + lessonPagesFolder + "/" + pagesFileName[j]);
+                    for (int j = 0; j < pageFileNames.length; j++){
+                        pagePaths.add("file:///android_asset/" + lessonPagesFolder + "/" + pageFileNames[j]);
                         InputStream inputStream = mAssetManager
-                                .open(lessonIllustrationFolder + "/" + illustrationFileName[j]);
+                                .open(lessonIllustrationFolder + "/" + illustrationFileNames[j]);
                         illustrations.add(Drawable.createFromStream(inputStream,null));
                         inputStream.close();
                     }
 
-                    theoryLesson.setPages(pagesPath);
+                    //add parse test
+                    String[]testsFileName = mAssetManager.list(lessonTestsFolder);
+                    List<Test> tests = new ArrayList<>();
+                    for (int j = 0; j < testsFileName.length; j++){
+                        
+                    }
+
+                    theoryLesson.setPages(pagePaths);
                     theoryLesson.setIllustrations(illustrations);
 
                     mLessonsList.add(theoryLesson);

@@ -11,11 +11,14 @@ public class Lesson {
     private String topic;
     private List<String> pages;
     private List<Drawable> illustrations;
+    private List<Test> lessonTest;
+    private int correctAnswersCount;
     private boolean done;
 
     public Lesson(String topic) {
         this.topic = topic;
         lessonID = UUID.randomUUID();
+        correctAnswersCount = 0;
     }
 
     public UUID getLessonID() {
@@ -44,6 +47,22 @@ public class Lesson {
 
     public void setIllustrations(List<Drawable> illustrations) {
         this.illustrations = new ArrayList<>(illustrations);
+    }
+
+    public List<Test> getLessonTest() {
+        return lessonTest;
+    }
+
+    public void setLessonTest(List<Test> lessonTest) {
+        this.lessonTest = lessonTest;
+    }
+
+    public int getCorrectAnswersCount() {
+        return correctAnswersCount;
+    }
+
+    public void setCorrectAnswersCount(int correctAnswersCount) {
+        this.correctAnswersCount = correctAnswersCount;
     }
 
     public boolean isDone() {
