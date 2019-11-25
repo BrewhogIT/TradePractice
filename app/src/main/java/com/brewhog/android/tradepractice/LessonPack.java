@@ -5,8 +5,10 @@ import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -49,7 +51,7 @@ public class LessonPack {
 
     private void loadLessonList() {
         /*В строковом файле присутствует строковый массив с темами уроков, при загрузке новой папки
-        урока, необходимо добавить строку */
+        урока, необходимо добавить строку с темой */
         try {
             mLessonsList = new ArrayList<>();
             String[] allLessons = mAssetManager.list(MAIN_LESSONS_FOLDER);
@@ -57,33 +59,30 @@ public class LessonPack {
 
             if (allLessons != null){
                 for (int i = 0; i < allLessons.length; i++){
-                    String lessonFolder = MAIN_LESSONS_FOLDER + "/" + allLessons[i];
-                    String lessonIllustrationFolder = lessonFolder + "/" + "illustrations";
-                    String lessonPagesFolder = lessonFolder + "/" + "pages";
-                    String lessonTestsFolder = lessonFolder + "/" + "test";
-
                     Lesson theoryLesson = new Lesson(lessonsTopics[i]);
-                    String[] pageFileNames = mAssetManager.list(lessonPagesFolder);
-                    String[] illustrationFileNames = mAssetManager.list(lessonIllustrationFolder);
-                    List<String> pagePaths = new ArrayList<>();
-                    List<Drawable> illustrations = new ArrayList<>();
 
+                    String lessonFolder = MAIN_LESSONS_FOLDER + "/" + allLessons[i];
+                    String illustrationsFolder = lessonFolder + "/" + "illustrations";
+                    String pagesFolder = lessonFolder + "/" + "pages";
+                    String testsFolder = lessonFolder + "/" + "test";
+
+                    String[] pageFileNames = mAssetManager.list(pagesFolder);
+                    String[] illustrationFileNames = mAssetManager.list(illustrationsFolder);
+                    String[] testFileNames = mAssetManager.list(testsFolder);
+
+                    List<Test> tests = loadTests(testsFolder, testFileNames);
+                    List<String> pages = new ArrayList<>();
+                    List<Drawable> illustrations = new ArrayList<>();
                     for (int j = 0; j < pageFileNames.length; j++){
-                        pagePaths.add("file:///android_asset/" + lessonPagesFolder + "/" + pageFileNames[j]);
+                        pages.add("file:///android_asset/" + pagesFolder + "/" + pageFileNames[j]);
                         InputStream inputStream = mAssetManager
-                                .open(lessonIllustrationFolder + "/" + illustrationFileNames[j]);
+                                .open(illustrationsFolder + "/" + illustrationFileNames[j]);
                         illustrations.add(Drawable.createFromStream(inputStream,null));
                         inputStream.close();
                     }
 
-                    //add parse test
-                    String[]testsFileName = mAssetManager.list(lessonTestsFolder);
-                    List<Test> tests = new ArrayList<>();
-                    for (int j = 0; j < testsFileName.length; j++){
-                        
-                    }
-
-                    theoryLesson.setPages(pagePaths);
+                    theoryLesson.setLessonTest(tests);
+                    theoryLesson.setPages(pages);
                     theoryLesson.setIllustrations(illustrations);
 
                     mLessonsList.add(theoryLesson);
@@ -95,5 +94,43 @@ public class LessonPack {
             e.printStackTrace();
         }
 
+    }
+
+    private List<Test> loadTests(String lessonTestsFolder, String[] testsFileName) {
+        List<Test> allTests = new ArrayList<>();
+        for (int j = 0; j < testsFileName.length; j++){
+            Test test = new Test();
+            String testFilePath = lessonTestsFolder + "/" + testsFileName[j];
+
+            //В текстовом файле теста в первой строке находится вопрос к тесту,
+            //во второй правильный ответ, в последующих не корректные ответы
+            BufferedReader reader = null;
+            try{
+                reader = new BufferedReader(
+                        new InputStreamReader(mAssetManager.open(testFilePath)));
+                String line;
+                for (int k = 0; (line = reader.readLine()) != null; k++){
+                    if(k == 0){
+                        test.setQuestion(line);
+                    }else{
+                        boolean isTrue = false;
+                        if (k == 1) isTrue = true;
+                        test.addAnswer(line,isTrue);
+                    }
+                }
+            }catch (IOException e){
+                Log.e(TAG,"error while test file reading");
+            }finally {
+                if (reader != null){
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            allTests.add(test);
+        }
+        return allTests;
     }
 }
