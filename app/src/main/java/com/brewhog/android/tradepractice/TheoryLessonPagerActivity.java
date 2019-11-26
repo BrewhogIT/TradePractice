@@ -51,5 +51,6 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
                 return mLesson.getPages().size();
             }
         });
+
     }
 }
