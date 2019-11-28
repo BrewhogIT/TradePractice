@@ -5,8 +5,10 @@
     <string name="practice">Практика</string>
     <string name="how_to_use">Как заниматься</string>
 
-    <string name="users_level_text">Прогресс обучения</string>
     <string name="lesson_kind_logo_transitional_name">Лого типа занятий</string>
+
+    /* строки теоретического раздела */
+    <string name="users_level_text">Прогресс обучения</string>
 
     /* строки тем уроков */
     <string-array name="lessons">
@@ -15,4 +17,9 @@
         <item>Где обращаются ценные бумаги?</item>
     </string-array>
 
+    /* строки для окна запуска или пересдачи теста */
+    <string name="start_test">Начать тест</string>
+    <string name="return_to_lesson">Вернуться к уроку</string>
+    <string name="try_again">Попробовать еще раз</string>
+    
 </resources>

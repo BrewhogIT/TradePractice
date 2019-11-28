@@ -1,7 +1,5 @@
 package com.brewhog.android.tradepractice;
 
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,19 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class PageOfTheoryFragment extends Fragment {
+public class TheoryPageFragment extends Fragment {
     private static final String ARG_LESSON_ID = "lesson_id";
     private static final String ARG_PAGE_NUMBER = "page_number";
     private WebView lessonContentView;
     private ImageView pageIllustrationView;
     private Lesson mLesson;
 
-    public static PageOfTheoryFragment newInstance(UUID lessonID, int pageNumber) {
+    public static TheoryPageFragment newInstance(UUID lessonID, int pageNumber) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_LESSON_ID,lessonID);
         args.putInt(ARG_PAGE_NUMBER,pageNumber);
 
-        PageOfTheoryFragment fragment = new PageOfTheoryFragment();
+        TheoryPageFragment fragment = new TheoryPageFragment();
         fragment.setArguments(args);
         return fragment;
     }
