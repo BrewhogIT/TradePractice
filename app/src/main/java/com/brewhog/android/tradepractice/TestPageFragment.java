@@ -1,6 +1,7 @@
 package com.brewhog.android.tradepractice;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -18,9 +21,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class TestPageFragment extends Fragment {
+    private static final String TAG = "TestPageFragment";
     private static final String ARG_LESSON_ID = "lesson_id";
     private static final String ARG_TEST_NUMBER = "test_number";
     private Test mTest;
+    private Lesson mLesson;
     private ImageView questionIllustration;
     private TextView questionText;
     private LinearLayout answersField;
@@ -41,8 +46,9 @@ public class TestPageFragment extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         UUID lessonID =(UUID) getArguments().getSerializable(ARG_LESSON_ID);
         int testNumber = getArguments().getInt(ARG_TEST_NUMBER);
-        Lesson lesson = LessonPack.getLessonPack(getActivity()).getLesson(lessonID);
-        mTest = lesson.getLessonTest().get(testNumber);
+        mLesson = LessonPack.getLessonPack(getActivity()).getLesson(lessonID);
+        Log.i(TAG,"correct answer count is: " + mLesson.getCorrectAnswersCount());
+        mTest = mLesson.getLessonTest().get(testNumber);
 
         View view = inflater.inflate(R.layout.fragment_test_page,container,false);
         questionIllustration = view.findViewById(R.id.question_image);
@@ -65,16 +71,19 @@ public class TestPageFragment extends Fragment {
         params.gravity = gravity;
         Map<String,Boolean> answers = mTest.getAnswers();
 
-        for (Map.Entry<String,Boolean> pair : answers.entrySet()){
+        for (final Map.Entry<String,Boolean> pair : answers.entrySet()){
             Button button = new Button(getActivity());
             button.setText(pair.getKey());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Проверить значение из мапы, если true увеличить
-                    //количество правильных ответов урока
+                    String isCorrect = getResources().getString(R.string.incorrect);
+                    if (pair.getValue()){
+                        mLesson.setCorrectAnswersCount(mLesson.getCorrectAnswersCount() + 1);
+                        isCorrect = getResources().getString(R.string.correct);
+                    }
+                    Snackbar.make(view,isCorrect,Snackbar.LENGTH_SHORT).show();
                     //разблокировать переход на вопрос
-                    //всплывающее окно "Правильно" иначе "Непраильно"
                 }
             });
 

@@ -22,4 +22,8 @@
     <string name="return_to_lesson">Вернуться к уроку</string>
     <string name="try_again">Попробовать еще раз</string>
     
+    /* строки теста */
+    <string name="correct">Правильно! Это верный ответ!</string>
+    <string name="incorrect">Ответ не верный!</string>
+    
 </resources>

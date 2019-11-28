@@ -9,12 +9,16 @@ import android.util.Log;
 
 import java.util.UUID;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class TheoryLessonPagerActivity extends AppCompatActivity {
     public static final String TAG = "TheoryLessonPagerActivity";
@@ -41,17 +45,11 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_theory_lesson);
         theoryLessonPager = findViewById(R.id.theory_lesson_pager);
         updateAdapter(theoryLessonPager,LESSON_PAGE_TYPE);
-
         theoryLessonPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            boolean isScrolled = false;
+            int actualPosition;
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position > theoryLessonPager.getChildCount() && !isScrolled){
-                    isScrolled = true;
-                    Intent intent = ChooseWayActivity.newIntent(
-                            TheoryLessonPagerActivity.this,ChooseWayActivity.START_NEW_TEST);
-                    startActivityForResult(intent,REQUEST_CHOOSE_WAY);
-                }
+                actualPosition = position;
             }
 
             @Override
@@ -60,8 +58,11 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state == ViewPager.SCROLL_STATE_IDLE){
-                    isScrolled = false;
+                if ((state == ViewPager.SCROLL_STATE_DRAGGING) &&
+                        (actualPosition == theoryLessonPager.getChildCount() - 1)){
+                    Intent intent = ChooseWayActivity.newIntent(
+                            TheoryLessonPagerActivity.this,ChooseWayActivity.START_NEW_TEST);
+                    startActivityForResult(intent,REQUEST_CHOOSE_WAY);
                 }
             }
         });
@@ -69,14 +70,24 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CHOOSE_WAY && resultCode == Activity.RESULT_OK){
-            updateAdapter(theoryLessonPager,TEST_PAGE_TYPE);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHOOSE_WAY && resultCode == Activity.RESULT_OK) {
+            updateAdapter(theoryLessonPager, TEST_PAGE_TYPE);
         }
     }
 
-    private void updateAdapter(ViewPager pager, final int pageType){
+    private void updateAdapter(final ViewPager pager, final int pageType){
+        int limit = 0;
+        if (pageType == LESSON_PAGE_TYPE){
+            limit = mLesson.getPages().size();
+        } else if (pageType == TEST_PAGE_TYPE){
+            limit = mLesson.getLessonTest().size();
+        }
+
+        final int finalLimit = limit;
         FragmentManager manager = getSupportFragmentManager();
-        pager.setAdapter(new FragmentStatePagerAdapter(manager) {
+        PagerAdapter adapter = new FragmentStatePagerAdapter(manager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            @NonNull
             @Override
             public Fragment getItem(int position) {
                 Fragment fragment = null;
@@ -93,17 +104,11 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                int pageSize = 0;
-                switch (pageType){
-                    case LESSON_PAGE_TYPE:
-                        pageSize = mLesson.getPages().size();
-                        break;
-                    case TEST_PAGE_TYPE:
-                        pageSize = mLesson.getLessonTest().size();
-                        break;
-                }
-                return pageSize;
+                return finalLimit;
             }
-        });
+        };
+        pager.setAdapter(adapter);
+        pager.setOffscreenPageLimit(limit);
+
     }
 }
