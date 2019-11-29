@@ -29,15 +29,25 @@ public class TestPageFragment extends Fragment {
     private ImageView questionIllustration;
     private TextView questionText;
     private LinearLayout answersField;
+    private PagingSetting mPagingSetting;
 
-    public static TestPageFragment newInstance(UUID lessonID, int testNumber) {
+    public static TestPageFragment newInstance(UUID lessonID, int testNumber, PagingSetting setting) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_LESSON_ID,lessonID);
         args.putSerializable(ARG_TEST_NUMBER,testNumber);
 
-        TestPageFragment fragment = new TestPageFragment();
+        TestPageFragment fragment = new TestPageFragment(setting);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public TestPageFragment(PagingSetting pagingSetting) {
+        mPagingSetting = pagingSetting;
+    }
+
+    public interface PagingSetting{
+        void setPagingEnabled(boolean pagingEnabled);
+        void nextPage();
     }
 
     @Nullable
@@ -59,10 +69,11 @@ public class TestPageFragment extends Fragment {
         questionText.setText(mTest.getQuestion());
 
         createQuestionButtons(answersField);
+        mPagingSetting.setPagingEnabled(false);
         return view;
     }
 
-    private void createQuestionButtons(LinearLayout forInput){
+    private void createQuestionButtons(LinearLayout answersField){
         int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
         int matchParent = LinearLayout.LayoutParams.MATCH_PARENT;
         int gravity = Gravity.CENTER_HORIZONTAL;
@@ -83,11 +94,12 @@ public class TestPageFragment extends Fragment {
                         isCorrect = getResources().getString(R.string.correct);
                     }
                     Snackbar.make(view,isCorrect,Snackbar.LENGTH_SHORT).show();
-                    //разблокировать переход на вопрос
+                    mPagingSetting.setPagingEnabled(true);
+                    mPagingSetting.nextPage();
                 }
             });
 
-            forInput.addView(button,params);
+            answersField.addView(button,params);
         }
     }
 }

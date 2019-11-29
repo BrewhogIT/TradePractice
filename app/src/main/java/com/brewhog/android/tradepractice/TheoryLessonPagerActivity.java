@@ -1,11 +1,9 @@
 package com.brewhog.android.tradepractice;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.UUID;
 
@@ -26,7 +24,7 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
     private static final int REQUEST_CHOOSE_WAY = 1;
     private static final int LESSON_PAGE_TYPE = 2;
     private static final int TEST_PAGE_TYPE = 3;
-    private ViewPager theoryLessonPager;
+    private CustomViewPager theoryLessonPager;
     private Lesson mLesson;
 
     public static Intent newIntent(Context context, UUID lessonID){
@@ -44,39 +42,18 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_theory_lesson);
         theoryLessonPager = findViewById(R.id.theory_lesson_pager);
-        updateAdapter(theoryLessonPager,LESSON_PAGE_TYPE);
-        theoryLessonPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            int actualPosition;
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                actualPosition = position;
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if ((state == ViewPager.SCROLL_STATE_DRAGGING) &&
-                        (actualPosition == theoryLessonPager.getChildCount() - 1)){
-                    Intent intent = ChooseWayActivity.newIntent(
-                            TheoryLessonPagerActivity.this,ChooseWayActivity.START_NEW_TEST);
-                    startActivityForResult(intent,REQUEST_CHOOSE_WAY);
-                }
-            }
-        });
+        updateUI(theoryLessonPager,LESSON_PAGE_TYPE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CHOOSE_WAY && resultCode == Activity.RESULT_OK) {
-            updateAdapter(theoryLessonPager, TEST_PAGE_TYPE);
+            updateUI(theoryLessonPager, TEST_PAGE_TYPE);
         }
     }
 
-    private void updateAdapter(final ViewPager pager, final int pageType){
+    private void updateUI(final CustomViewPager pager, final int pageType){
         int limit = 0;
         if (pageType == LESSON_PAGE_TYPE){
             limit = mLesson.getPages().size();
@@ -96,7 +73,7 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
                         fragment = TheoryPageFragment.newInstance(mLesson.getLessonID(),position);
                         break;
                     case TEST_PAGE_TYPE:
-                        fragment = TestPageFragment.newInstance(mLesson.getLessonID(),position);
+                        fragment = TestPageFragment.newInstance(mLesson.getLessonID(),position,pager);
                         break;
                 }
                 return fragment;
@@ -110,5 +87,32 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(limit);
 
+        pager.clearOnPageChangeListeners();
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            int actualPosition;
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                actualPosition = position;
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                boolean isEnable = (pageType != TEST_PAGE_TYPE);
+                pager.setPagingEnabled(isEnable);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if ((state == ViewPager.SCROLL_STATE_DRAGGING) &&
+                        (actualPosition == pager.getChildCount() - 1)){
+                    Intent intent = ChooseWayActivity.newIntent(
+                            TheoryLessonPagerActivity.this,ChooseWayActivity.START_NEW_TEST);
+                    startActivityForResult(intent,REQUEST_CHOOSE_WAY);
+                }
+            }
+        });
+
     }
+
+
 }
