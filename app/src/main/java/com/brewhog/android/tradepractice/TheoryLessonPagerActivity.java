@@ -1,5 +1,6 @@
 package com.brewhog.android.tradepractice;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -89,25 +90,36 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
 
         pager.clearOnPageChangeListeners();
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            int actualPosition;
+            int lastPosition;
+            boolean hasBeenScrolled;
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                actualPosition = position;
             }
 
             @Override
             public void onPageSelected(int position) {
+                lastPosition = position;
                 boolean isEnable = (pageType != TEST_PAGE_TYPE);
                 pager.setPagingEnabled(isEnable);
             }
 
+            @SuppressLint("LongLogTag")
             @Override
             public void onPageScrollStateChanged(int state) {
-                if ((state == ViewPager.SCROLL_STATE_DRAGGING) &&
-                        (actualPosition == pager.getChildCount() - 1)){
-                    Intent intent = ChooseWayActivity.newIntent(
-                            TheoryLessonPagerActivity.this,ChooseWayActivity.START_NEW_TEST);
-                    startActivityForResult(intent,REQUEST_CHOOSE_WAY);
+                switch (state){
+                    case ViewPager.SCROLL_STATE_SETTLING:
+                        hasBeenScrolled = true;
+                        break;
+                    case ViewPager.SCROLL_STATE_IDLE:
+                        if ((lastPosition == pager.getChildCount() - 1)&& !hasBeenScrolled){
+                            Intent intent = ChooseWayActivity.newIntent(
+                                    TheoryLessonPagerActivity.this,ChooseWayActivity.START_NEW_TEST);
+                            startActivityForResult(intent,REQUEST_CHOOSE_WAY);
+                        }else {
+                            hasBeenScrolled = false;
+                        }
+                        break;
                 }
             }
         });
