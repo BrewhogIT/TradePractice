@@ -49,9 +49,51 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CHOOSE_WAY && resultCode == Activity.RESULT_OK) {
-            updateUI(theoryLessonPager, TEST_PAGE_TYPE);
+        if (requestCode == REQUEST_CHOOSE_WAY) {
+            int windowKind = data.getIntExtra(ChooseWayActivity.EXTRA_WINDOW_KIND,0);
+            switch (windowKind){
+                case ChooseWayActivity.START_NEW_TEST:
+                    if (resultCode == Activity.RESULT_OK){
+                        updateUI(theoryLessonPager, TEST_PAGE_TYPE);
+                    }
+                    break;
+                case ChooseWayActivity.RESTART_TEST:
+                    if (resultCode == Activity.RESULT_OK){
+                        updateUI(theoryLessonPager,TEST_PAGE_TYPE);
+                    }else {
+                        updateUI(theoryLessonPager,LESSON_PAGE_TYPE);
+                    }
+                    break;
+                case ChooseWayActivity.TEST_DONE:
+                    finish();
+                    break;
+            }
         }
+    }
+
+    private int getWindowKind(int pageType){
+        int windowKind = 0;
+        boolean isTestDone = checkTest();
+
+        switch (pageType){
+            case LESSON_PAGE_TYPE:
+                windowKind = ChooseWayActivity.START_NEW_TEST;
+                break;
+            case TEST_PAGE_TYPE:
+                windowKind = isTestDone? ChooseWayActivity.TEST_DONE:ChooseWayActivity.RESTART_TEST;
+                break;
+        }
+
+        return windowKind;
+    }
+
+    private boolean checkTest(){
+        int correctAnswers = mLesson.getCorrectAnswersCount();
+        int questionsCount = mLesson.getLessonTest().size() - 1;
+
+        mLesson.setDone((float)(correctAnswers / questionsCount) > 0.8);
+        mLesson.setCorrectAnswersCount(0);
+        return  mLesson.isDone();
     }
 
     private void updateUI(final CustomViewPager pager, final int pageType){
@@ -114,7 +156,7 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
                     case ViewPager.SCROLL_STATE_IDLE:
                         if ((lastPosition == pager.getChildCount() - 1)&& !hasBeenScrolled){
                             Intent intent = ChooseWayActivity.newIntent(
-                                    TheoryLessonPagerActivity.this,ChooseWayActivity.START_NEW_TEST);
+                                    TheoryLessonPagerActivity.this,getWindowKind(pageType));
                             startActivityForResult(intent,REQUEST_CHOOSE_WAY);
                         }else {
                             hasBeenScrolled = false;

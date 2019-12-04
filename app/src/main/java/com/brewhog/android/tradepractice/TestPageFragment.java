@@ -94,6 +94,7 @@ public class TestPageFragment extends Fragment {
                         mLesson.setCorrectAnswersCount(mLesson.getCorrectAnswersCount() + 1);
                         isCorrect = getResources().getString(R.string.correct);
                     }
+
                     Snackbar.make(view,isCorrect,Snackbar.LENGTH_SHORT).show();
                     mPagingSetting.setPagingEnabled(true);
                     mPagingSetting.nextPage();

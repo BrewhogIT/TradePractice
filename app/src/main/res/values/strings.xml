@@ -21,6 +21,7 @@
     <string name="start_test">Начать тест</string>
     <string name="return_to_lesson">Вернуться к уроку</string>
     <string name="try_again">Попробовать еще раз</string>
+    <string name="test_passed">Тест сдан!</string>
     
     /* строки теста */
     <string name="correct">Правильно! Это верный ответ!</string>
