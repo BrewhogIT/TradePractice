@@ -1,6 +1,7 @@
 package com.brewhog.android.tradepractice;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +29,8 @@ public class TheoryListFragment extends Fragment {
     private ImageView lessonKindIllustration;
     private ProgressBar userLevelProgress;
     private TheoryAdapter mAdapter;
+    private ImageView iconImage;
+    private List<Drawable> levelIcons;
 
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
 
@@ -52,7 +58,9 @@ public class TheoryListFragment extends Fragment {
         theoryListRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
 
+        iconImage = view.findViewById(R.id.level_icon);
         userLevelProgress = view.findViewById(R.id.user_level_progressBar);
+        levelIcons = loadLevelIcons();
 
         updateUI();
         return view;
@@ -64,7 +72,7 @@ public class TheoryListFragment extends Fragment {
         updateUI();
     }
 
-    public void updateUI(){
+    private void updateUI(){
         mLessonPack = LessonPack.getLessonPack(getActivity());
         if (mAdapter == null){
             mAdapter = new TheoryAdapter(mLessonPack.getLessons());
@@ -72,9 +80,29 @@ public class TheoryListFragment extends Fragment {
         }else{
             mAdapter.notifyDataSetChanged();
         }
-
+        int userLevel = UserPreferences.getUserLevel(getActivity());
         userLevelProgress.setMax(mAdapter.getItemCount());
-        userLevelProgress.setProgress(UserPreferences.getUserLevel(getActivity()));
+        userLevelProgress.setProgress(userLevel);
+        iconImage.setImageDrawable(levelIcons.get(userLevel));
+
+    }
+
+    private List<Drawable> loadLevelIcons(){
+        AssetManager manager = getActivity().getAssets();
+        List<Drawable> iconsList = new ArrayList<>();
+        try {
+            String[] icons = manager.list("level_icons");
+
+            for (int i = 0; i < icons.length; i++){
+                InputStream inputStream = manager
+                        .open("level_icons/" + icons[i]);
+                iconsList.add(Drawable.createFromStream(inputStream,null));
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return iconsList;
     }
 
     private class TheoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

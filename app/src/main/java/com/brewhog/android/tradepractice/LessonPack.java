@@ -73,8 +73,15 @@ public class LessonPack {
                     List<Test> tests = loadTests(testsFolder, testFileNames);
                     List<String> pages = new ArrayList<>();
                     List<Drawable> illustrations = new ArrayList<>();
-                    for (int j = 0; j < pageFileNames.length; j++){
-                        pages.add("file:///android_asset/" + pagesFolder + "/" + pageFileNames[j]);
+                    //Обход по папкам и добавление в список картинок и
+                    //страниц, которые представляют из себя путь к html файлу.
+                    //Количество страниц отличается от количество изображений на 1, т.к. для
+                    // preview используется 2 изображения - для нового и пройденого урока
+                    for (int j = 0; j < illustrationFileNames.length; j++){
+                        if ( j < pageFileNames.length){
+                            pages.add("file:///android_asset/" + pagesFolder + "/" + pageFileNames[j]);
+                        }
+
                         InputStream inputStream = mAssetManager
                                 .open(illustrationsFolder + "/" + illustrationFileNames[j]);
                         illustrations.add(Drawable.createFromStream(inputStream,null));

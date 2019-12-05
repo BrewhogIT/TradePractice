@@ -30,7 +30,11 @@ public class Lesson {
     }
 
     public Drawable getPreview() {
-        return illustrations.get(0);
+        if (!isDone()){
+            return illustrations.get(0);
+        }else{
+            return illustrations.get(illustrations.size() - 1);
+        }
     }
 
     public List<String> getPages() {

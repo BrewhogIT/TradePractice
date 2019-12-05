@@ -26,7 +26,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:cardCornerRadius="16dp"/>
+            app:cardCornerRadius="16dp">
+            <ImageView
+                android:id="@+id/level_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/level_textView"
