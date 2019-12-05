@@ -72,4 +72,13 @@ public class Lesson {
     public void setDone(boolean done) {
         this.done = done;
     }
+
+    public boolean checkTest(){
+        int correctAnswers = getCorrectAnswersCount();
+        int questionsCount = getLessonTest().size() - 1;
+        boolean isTestPassed = (float)(correctAnswers / questionsCount) > 0.8;
+        setCorrectAnswersCount(0);
+
+        return  isTestPassed;
+    }
 }

@@ -65,6 +65,11 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
                     }
                     break;
                 case ChooseWayActivity.TEST_DONE:
+                    if (!mLesson.isDone()){
+                        mLesson.setDone(true);
+                        UserPreferences.levelUp(this);
+                    }
+
                     finish();
                     break;
             }
@@ -73,27 +78,18 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
 
     private int getWindowKind(int pageType){
         int windowKind = 0;
-        boolean isTestDone = checkTest();
+        boolean isTestDone = mLesson.checkTest();
 
         switch (pageType){
             case LESSON_PAGE_TYPE:
                 windowKind = ChooseWayActivity.START_NEW_TEST;
                 break;
             case TEST_PAGE_TYPE:
-                windowKind = isTestDone? ChooseWayActivity.TEST_DONE:ChooseWayActivity.RESTART_TEST;
+                windowKind = isTestDone? ChooseWayActivity.TEST_DONE : ChooseWayActivity.RESTART_TEST;
                 break;
         }
 
         return windowKind;
-    }
-
-    private boolean checkTest(){
-        int correctAnswers = mLesson.getCorrectAnswersCount();
-        int questionsCount = mLesson.getLessonTest().size() - 1;
-
-        mLesson.setDone((float)(correctAnswers / questionsCount) > 0.8);
-        mLesson.setCorrectAnswersCount(0);
-        return  mLesson.isDone();
     }
 
     private void updateUI(final CustomViewPager pager, final int pageType){

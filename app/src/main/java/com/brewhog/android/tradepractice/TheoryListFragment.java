@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public class TheoryListFragment extends Fragment {
     private RecyclerView theoryListRecyclerView;
     private LessonPack mLessonPack;
     private ImageView lessonKindIllustration;
+    private ProgressBar userLevelProgress;
+    private TheoryAdapter mAdapter;
 
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
 
@@ -39,21 +42,39 @@ public class TheoryListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_theory_list,container,false);
-        lessonKindIllustration = view.findViewById(R.id.lesson_kind_large_illustration);
+
         Drawable lessonKindImage = getResources()
                 .getDrawable(getArguments().getInt(IMAGE_RES_ID_ARGS));
+        lessonKindIllustration = view.findViewById(R.id.lesson_kind_large_illustration);
         lessonKindIllustration.setImageDrawable(lessonKindImage);
-
-        mLessonPack = LessonPack.getLessonPack(getActivity());
 
         theoryListRecyclerView = view.findViewById(R.id.theory_recycler_view);
         theoryListRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
 
-        TheoryAdapter adapter = new TheoryAdapter(mLessonPack.getLessons());
-        theoryListRecyclerView.setAdapter(adapter);
+        userLevelProgress = view.findViewById(R.id.user_level_progressBar);
 
+        updateUI();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    public void updateUI(){
+        mLessonPack = LessonPack.getLessonPack(getActivity());
+        if (mAdapter == null){
+            mAdapter = new TheoryAdapter(mLessonPack.getLessons());
+            theoryListRecyclerView.setAdapter(mAdapter);
+        }else{
+            mAdapter.notifyDataSetChanged();
+        }
+
+        userLevelProgress.setMax(mAdapter.getItemCount());
+        userLevelProgress.setProgress(UserPreferences.getUserLevel(getActivity()));
     }
 
     private class TheoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
