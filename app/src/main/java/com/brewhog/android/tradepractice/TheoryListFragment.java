@@ -29,7 +29,7 @@ public class TheoryListFragment extends Fragment {
     private ImageView lessonKindIllustration;
     private ProgressBar userLevelProgress;
     private TheoryAdapter mAdapter;
-    private ImageView iconImage;
+    private ImageView levelIconView;
     private List<Drawable> levelIcons;
 
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
@@ -58,7 +58,7 @@ public class TheoryListFragment extends Fragment {
         theoryListRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
 
-        iconImage = view.findViewById(R.id.level_icon);
+        levelIconView = view.findViewById(R.id.level_icon);
         userLevelProgress = view.findViewById(R.id.user_level_progressBar);
         levelIcons = loadLevelIcons();
 
@@ -80,10 +80,11 @@ public class TheoryListFragment extends Fragment {
         }else{
             mAdapter.notifyDataSetChanged();
         }
+
         int userLevel = UserPreferences.getUserLevel(getActivity());
         userLevelProgress.setMax(mAdapter.getItemCount());
         userLevelProgress.setProgress(userLevel);
-        iconImage.setImageDrawable(levelIcons.get(userLevel));
+        levelIconView.setImageDrawable(levelIcons.get(userLevel));
 
     }
 

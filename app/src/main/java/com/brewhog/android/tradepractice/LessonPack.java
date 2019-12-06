@@ -73,8 +73,9 @@ public class LessonPack {
                     List<Test> tests = loadTests(testsFolder, testFileNames);
                     List<String> pages = new ArrayList<>();
                     List<Drawable> illustrations = new ArrayList<>();
-                    //Обход по папкам и добавление в список картинок и
-                    //страниц, которые представляют из себя путь к html файлу.
+
+                    //Обход по папкам и добавление в список страниц, которые представляют из себя
+                    //путь к html файлу и картинок.
                     //Количество страниц отличается от количество изображений на 1, т.к. для
                     // preview используется 2 изображения - для нового и пройденого урока
                     for (int j = 0; j < illustrationFileNames.length; j++){

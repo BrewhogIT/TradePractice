@@ -79,8 +79,9 @@ public class Lesson {
 
     public boolean checkTest(){
         int correctAnswers = getCorrectAnswersCount();
-        int questionsCount = getLessonTest().size() - 1;
-        boolean isTestPassed = (float)(correctAnswers / questionsCount) > 0.8;
+        int questionsCount = getLessonTest().size();
+        float passIndex = (float)(1.0 * correctAnswers  / questionsCount);
+        boolean isTestPassed = passIndex >= 0.8;
         setCorrectAnswersCount(0);
 
         return  isTestPassed;
