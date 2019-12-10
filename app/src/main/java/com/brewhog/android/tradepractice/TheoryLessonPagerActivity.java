@@ -68,6 +68,7 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
                     if (!mLesson.isDone()){
                         mLesson.setDone(true);
                         UserPreferences.levelUp(this);
+                        LessonPack.getLessonPack(this).updateDataBase(mLesson);
                     }
 
                     finish();

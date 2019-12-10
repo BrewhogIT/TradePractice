@@ -1,9 +1,18 @@
 package com.brewhog.android.tradepractice;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.database.Cursor;
+import android.database.CursorWrapper;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+
+import com.brewhog.android.tradepractice.database.LessonCursorWrapper;
+import com.brewhog.android.tradepractice.database.TheoryLessonHelper;
+import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme;
+import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.LessonTable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,9 +30,11 @@ public class LessonPack {
     private List<Lesson> mLessonsList;
     private Context mContext;
     private AssetManager mAssetManager;
+    private SQLiteDatabase mDataBase;
 
     private LessonPack(Context context) {
         mContext = context;
+        mDataBase = new TheoryLessonHelper(context).getWritableDatabase();
         mAssetManager = mContext.getAssets();
         loadLessonList();
     }
@@ -55,11 +66,13 @@ public class LessonPack {
         try {
             mLessonsList = new ArrayList<>();
             String[] allLessons = mAssetManager.list(MAIN_LESSONS_FOLDER);
-            String[] lessonsTopics = mContext.getResources().getStringArray(R.array.lessons);
 
             if (allLessons != null){
-                for (int i = 0; i < allLessons.length; i++){
-                    Lesson theoryLesson = new Lesson(lessonsTopics[i]);
+                LessonCursorWrapper cursorWrapper = getCursor(null,null);
+                cursorWrapper.moveToFirst();
+                int i = 0;
+                while (!cursorWrapper.isAfterLast()){
+                    Lesson theoryLesson  = cursorWrapper.getLesson();
 
                     String lessonFolder = MAIN_LESSONS_FOLDER + "/" + allLessons[i];
                     String illustrationsFolder = lessonFolder + "/" + "illustrations";
@@ -94,6 +107,8 @@ public class LessonPack {
                     theoryLesson.setIllustrations(illustrations);
 
                     mLessonsList.add(theoryLesson);
+                    cursorWrapper.moveToNext();
+                    i++;
                 }
             }
 
@@ -140,5 +155,28 @@ public class LessonPack {
             allTests.add(test);
         }
         return allTests;
+    }
+
+    private LessonCursorWrapper getCursor(String selection, String[] args){
+        Cursor cursor = mDataBase.query(LessonTable.TABLE_NAME,
+                null,
+                selection,
+                args,
+                null,
+                null,
+                null);
+        return new LessonCursorWrapper(cursor);
+    }
+
+    public void updateDataBase(Lesson lesson){
+        ContentValues values = new ContentValues();
+        values.put(LessonTable.Cols.TOPIC,lesson.getTopic());
+        values.put(LessonTable.Cols.IS_DONE,lesson.isDone()? 1:0);
+        values.put(LessonTable.Cols.ID,lesson.getLessonID().toString());
+
+        mDataBase.update(LessonTable.TABLE_NAME,
+                values,
+                LessonTable.Cols.ID + " =?",
+                new String[]{lesson.getLessonID().toString()});
     }
 }

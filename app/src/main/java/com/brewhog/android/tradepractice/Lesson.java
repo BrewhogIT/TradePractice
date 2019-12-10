@@ -15,10 +15,10 @@ public class Lesson {
     private int correctAnswersCount;
     private boolean done;
 
-    public Lesson(String topic) {
-        this.topic = topic;
-        lessonID = UUID.randomUUID();
+    public Lesson(UUID id,String topic){
+        lessonID = id;
         correctAnswersCount = 0;
+        this.topic = topic;
     }
 
     public UUID getLessonID() {
