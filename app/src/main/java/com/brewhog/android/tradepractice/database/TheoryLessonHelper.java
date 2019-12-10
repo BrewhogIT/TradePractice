@@ -33,7 +33,7 @@ public class TheoryLessonHelper extends SQLiteOpenHelper {
                 LessonTable.Cols.TOPIC + ", " +
                 LessonTable.Cols.IS_DONE + ")"
                 );
-        
+
         addAllLesson(sqLiteDatabase);
     }
 
