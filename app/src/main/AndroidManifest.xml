@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SingleFragmentActivity" />
-        <activity android:name=".TheoryListActivity" />
+        <activity android:name=".LessonsListActivity" />
         <activity android:name=".TheoryLessonPagerActivity" />
     </application>
 

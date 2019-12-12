@@ -1,6 +1,7 @@
 package com.brewhog.android.tradepractice;
 
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,4 +56,5 @@ public class TheoryPageFragment extends Fragment {
 
         return view;
     }
+
 }

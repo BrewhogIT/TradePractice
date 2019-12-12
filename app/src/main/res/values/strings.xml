@@ -5,7 +5,7 @@
     <string name="practice">Практика</string>
     <string name="how_to_use">Как заниматься</string>
 
-    <string name="lesson_kind_logo_transitional_name">Лого типа занятий</string>
+    <string name="theory_logo_transitional_name">Лого уроков теории</string>
 
     /* строки теоретического раздела */
     <string name="users_level_text">Прогресс обучения</string>

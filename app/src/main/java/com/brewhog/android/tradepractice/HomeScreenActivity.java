@@ -2,12 +2,10 @@ package com.brewhog.android.tradepractice;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -62,6 +60,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             implements View.OnClickListener {
         private ImageView mLessonTypeLogoView;
         private int mLessonKind;
+        private int resourseID;
 
         public LessonTypeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,8 +69,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
 
         public void bind(int lessonKind){
-            int resourseID = 0;
-            Drawable lessonTypeIcon = null;
             mLessonKind = lessonKind;
 
             switch (mLessonKind){
@@ -79,34 +76,21 @@ public class HomeScreenActivity extends AppCompatActivity {
                     resourseID = R.drawable.practice;
                     break;
                 case  R.string.theory:
-                    resourseID =R.drawable.theory;
+                    resourseID = R.drawable.theory;
                     break;
                 case R.string.how_to_use:
                     resourseID = R.drawable.howtouse;
                     break;
             }
 
-            lessonTypeIcon = getResources().getDrawable(resourseID);
-            mLessonTypeLogoView.setImageDrawable(lessonTypeIcon);
-            mLessonTypeLogoView.setTag(resourseID);
+            mLessonTypeLogoView.setImageResource(resourseID);
         }
 
         @Override
         public void onClick(View view) {
-            switch (mLessonKind){
-                case R.string.practice:
-                    //Open practice page
-                    break;
-                case  R.string.theory:
-                    int imageResId = getDrawableResId(mLessonTypeLogoView);
-                    Intent intent = TheoryListActivity.newIntent(getBaseContext(),imageResId);
-                    TheoryListActivity.startActivityWithTransition(
-                            HomeScreenActivity.this,mLessonTypeLogoView,intent);
-                    break;
-                case R.string.how_to_use:
-                    //Open tutorial
-                    break;
-            }
+            Intent intent = LessonsListActivity.newIntent(getBaseContext(),resourseID);
+            LessonsListActivity.startActivityWithTransition(
+                    HomeScreenActivity.this,mLessonTypeLogoView,intent);
         }
     }
 
@@ -136,9 +120,5 @@ public class HomeScreenActivity extends AppCompatActivity {
         public int getItemCount() {
             return Integer.MAX_VALUE;
         }
-    }
-
-    private int getDrawableResId (ImageView view){
-        return (Integer) view.getTag();
     }
 }

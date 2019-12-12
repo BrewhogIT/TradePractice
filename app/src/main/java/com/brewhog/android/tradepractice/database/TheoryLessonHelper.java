@@ -6,10 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.brewhog.android.tradepractice.R;
-import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.IllustrationTable;
 import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.LessonTable;
-import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.PageTable;
-import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.TestTable;
 
 import java.util.UUID;
 

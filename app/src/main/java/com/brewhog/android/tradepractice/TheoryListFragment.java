@@ -49,10 +49,9 @@ public class TheoryListFragment extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_theory_list,container,false);
 
-        Drawable lessonKindImage = getResources()
-                .getDrawable(getArguments().getInt(IMAGE_RES_ID_ARGS));
-        lessonKindIllustration = view.findViewById(R.id.lesson_kind_large_illustration);
-        lessonKindIllustration.setImageDrawable(lessonKindImage);
+        int imageResId = getArguments().getInt(IMAGE_RES_ID_ARGS);
+        lessonKindIllustration = view.findViewById(R.id.theory_lesson_large_illustration);
+        lessonKindIllustration.setImageResource(imageResId);
 
         theoryListRecyclerView = view.findViewById(R.id.theory_recycler_view);
         theoryListRecyclerView.setLayoutManager(
