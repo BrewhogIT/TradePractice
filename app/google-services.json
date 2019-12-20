@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1026782624940",
+    "firebase_url": "https://trade-practice.firebaseio.com",
+    "project_id": "trade-practice",
+    "storage_bucket": "trade-practice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1026782624940:android:71d4e8fd47389a9725b309",
+        "android_client_info": {
+          "package_name": "com.brewhog.android.tradepractice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1026782624940-ca9vscjakscvtfu6ouf85fhcgb4fp1s9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brewhog.android.tradepractice",
+            "certificate_hash": "7ac5e36efe176cf0e21d2a54f070ecad02a60f25"
+          }
+        },
+        {
+          "client_id": "1026782624940-pjrtvs17rp0mql8j75p97pc9cdc4ui26.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDcK9kko00oOLLdVaJmSHb4SEY4QcqooU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1026782624940-pjrtvs17rp0mql8j75p97pc9cdc4ui26.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,4 +18,8 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
+    <style name="forpager">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>
