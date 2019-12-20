@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,11 +8,11 @@
         android:id="@+id/logo_view"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"/>
+        android:layout_height="match_parent"/>
     <androidx.recyclerview.widget.RecyclerView
+        style="@style/forpager"
         android:id ="@+id/lesson_type_recycler_view"
-        android:layout_height ="0dp"
+        android:layout_height ="200dp"
         android:layout_width ="match_parent"
-        android:layout_weight ="1" />
-</LinearLayout>
+        android:layout_gravity="bottom"/>
+</FrameLayout>
