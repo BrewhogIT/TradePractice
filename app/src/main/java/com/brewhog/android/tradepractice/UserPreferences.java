@@ -1,7 +1,8 @@
 package com.brewhog.android.tradepractice;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
+
+import androidx.preference.PreferenceManager;
 
 public class UserPreferences {
     private static final String PREF_USER_LVL = "UserLevel";
