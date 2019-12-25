@@ -66,7 +66,7 @@ public class TestPageFragment extends Fragment {
         questionText = view.findViewById(R.id.question_text);
         answersField = view.findViewById(R.id.answers_field);
 
-        questionIllustration.setImageDrawable(getResources().getDrawable(R.drawable.test_background));
+        questionIllustration.setImageDrawable(getResources().getDrawable(R.drawable.test_backgroung));
         questionText.setText(mTest.getQuestion());
 
         createQuestionButtons(answersField);

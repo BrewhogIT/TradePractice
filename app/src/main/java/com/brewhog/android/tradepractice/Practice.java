@@ -4,12 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 public class Practice {
-    int id;
-    Date mDate;
-    String ticker;
-    String chartUrl;
-    String chartDoneUrl;
-    List<String> signals;
+    private int id;
+    private String mDate;
+    private String ticker;
+    private String chartUrl;
+    private String chartDoneUrl;
+    private List<String> signals;
 
     public int getId() {
         return id;
@@ -19,11 +19,11 @@ public class Practice {
         this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return mDate;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         mDate = date;
     }
 
