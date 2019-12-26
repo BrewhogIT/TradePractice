@@ -19,6 +19,7 @@
         android:minHeight="60dp"
         android:layout_gravity="start|bottom"
         android:layout_margin="8dp"
+        android:textColor="@color/colorPrimary"
         tools:text="вернуться к уроку"/>
     <Button
         android:id="@+id/ok_button"
@@ -27,6 +28,7 @@
         android:minHeight="60dp"
         android:layout_gravity="end|bottom"
         android:layout_margin="8dp"
+        android:textColor="@color/colorPrimary"
         tools:text="начать тест"/>
 
 </androidx.cardview.widget.CardView>
