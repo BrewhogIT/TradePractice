@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:buttonStyle">@style/myButtonStyle</item>
     </style>
 
     <style name="testQuestionStyle">
@@ -17,9 +18,15 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:buttonStyle">@style/myButtonStyle</item>
+
     </style>
 
     <style name="forpager">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+     <style name="myButtonStyle" parent="Widget.AppCompat.Button">
+         <item name="android:background">@drawable/button_background</item>
+     </style>
 </resources>

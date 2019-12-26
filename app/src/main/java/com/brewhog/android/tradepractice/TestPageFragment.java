@@ -2,6 +2,7 @@ package com.brewhog.android.tradepractice;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,8 +80,13 @@ public class TestPageFragment extends Fragment {
         int matchParent = LinearLayout.LayoutParams.MATCH_PARENT;
         int gravity = Gravity.CENTER_HORIZONTAL;
 
+        //конвертируем dp в пиксели
+        int value = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                (float) 10, getResources().getDisplayMetrics());
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(matchParent,wrapContent);
         params.gravity = gravity;
+        params.setMargins(0,0,0,value);
         Map<String,Boolean> answers = mTest.getAnswers();
 
         for (final Map.Entry<String,Boolean> pair : answers.entrySet()){
