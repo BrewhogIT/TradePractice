@@ -41,7 +41,6 @@ public class PracticeListFragment extends Fragment {
     private FirebaseAuth mAuth;
     private List<Practice> mPracticeList;
     private PracticeAdapter mAdapter;
-
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
 
     public static PracticeListFragment newInstance(int imageResID) {
@@ -51,20 +50,6 @@ public class PracticeListFragment extends Fragment {
         PracticeListFragment fragment = new PracticeListFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null){
-            //Загружаем данные с FireBase
-            loadPracticeList();
-        }else{
-            signInAnonymously();
-        }
     }
 
     @Nullable
@@ -80,7 +65,8 @@ public class PracticeListFragment extends Fragment {
         practiceListRecyclerView = view.findViewById(R.id.practice_recycler_view);
         practiceListRecyclerView.setLayoutManager(
                 new GridLayoutManager(getActivity(),3, RecyclerView.VERTICAL,false));
-        updateUI();
+
+        connectToFirebase();
         return view;
     }
 
@@ -143,162 +129,36 @@ public class PracticeListFragment extends Fragment {
             mPracticeList = new ArrayList<>();
             mAdapter = new PracticeAdapter(mPracticeList);
             practiceListRecyclerView.setAdapter(mAdapter);
+
+            //Загружаем данные, вставляем в созданный лист, обнавляем адаптер
+            PracticePack mPracticePack = new PracticePack(mAdapter, mPracticeList);
+            mPracticePack.loadPracticeList();
         } else{
             mAdapter.notifyDataSetChanged();
         }
 
     }
 
-    private void loadPracticeList(){
-        Log.i(TAG,"start getAllFolders method");
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference chartsRef = storage.getReference().child("charts");
-
-        // Получаем список подпапок из каталога
-        chartsRef.listAll()
-                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
-                    @Override
-                    public void onSuccess(ListResult listResult) {
-                        //Для каждой папки создается объект и заполняется данными
-                        setChartReferences(listResult.getPrefixes(),mPracticeList);
-                        setChartInfo(listResult.getPrefixes(),mPracticeList);
-
-                        updateUI();
-                        Log.i(TAG, "OnSuccess in getAllFolders, list mPracticeList size is " + mPracticeList.size());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG,"FAILED GET LIST ",e);
-                    }
-                });
-    }
-
-    private void setChartReferences(List<StorageReference> listResult, final List<Practice> practiceList) {
-        // Для каждой подпапки создаем объект с ссылками на изображения графиков
-        for(StorageReference folderReference : listResult){
-            Practice practiceItem = new Practice();
-            practiceList.add(practiceItem);
-            final int index = listResult.indexOf(folderReference);
-
-            folderReference.child("chart.PNG").getDownloadUrl()
-                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Log.i(TAG,"Chart link was gotten: " + uri.toString());
-                    practiceList.get(index).setChartUrl(uri.toString());
-                    mAdapter.notifyItemChanged(index);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.e(TAG, "Chart link doesnt get",e);
-                }
-            });
-
-            folderReference.child("chartDone.PNG").getDownloadUrl()
-                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Log.i(TAG,"chartDone link was gotten: " + uri.toString());
-                    practiceList.get(index).setChartDoneUrl(uri.toString());
-                    mAdapter.notifyItemChanged(index);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.e(TAG, "chartDone link doesnt get",e);
-                }
-            });
-        }
-    }
-
-    private void setChartInfo(List<StorageReference> listResult, final List<Practice> practiceList){
-        Log.i(TAG,"start setChartInfo method");
-
-        //Загружаем инфо файл из каждой папки
-        for (StorageReference folderReference : listResult){
-            try {
-                final int index = listResult.indexOf(folderReference);
-                final File infoFile = File.createTempFile("info","txt");
-                folderReference.child("info.txt").getFile(infoFile)
-                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                //Когза загрузка завершена читаем строки из файла,
-                                // добавляем в Practice из ранее созданного листа объектов
-                                readInfoData(infoFile,practiceList.get(index));
-                                mAdapter.notifyItemChanged(index);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-            } catch (IOException e) {
-                Log.e(TAG,"Failed info file loading",e);
-            }
-        }
-    }
-
-    private void readInfoData(File infoFile, Practice practice){
-        Log.i(TAG,"start readInfoData method");
-
-        //Читает info файл по строкам и добавляет данные в нужные поля Practice
-
-        BufferedReader reader = null;
-        try{
-            reader = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(infoFile)));
-            String line;
-            List<String> signals = new ArrayList<>();
-            for (int i = 0; (line = reader.readLine()) != null; i++){
-                Log.i(TAG,"info file line: " + line);
-                switch (i){
-                    case 0:
-                        int id = Integer.parseInt(line);
-                        practice.setId(id);
-                        break;
-                    case 1:
-                        practice.setTicker(line);
-                        break;
-                    case 2:
-                        practice.setDate(line);
-                        break;
-                    default:
-                        signals.add(line);
-                        break;
-                }
-
-            }
-            practice.setSignals(signals);
-        }catch (IOException e){
-            Log.e(TAG,"info file parsing");
-        }finally {
-            if (reader != null){
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    private void connectToFirebase() {
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null){
+            updateUI();
+        }else{
+            signInAnonymously();
         }
     }
 
     private void signInAnonymously() {
         mAuth.signInAnonymously()
                 .addOnSuccessListener(getActivity(), new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                Log.e(TAG,"signInAnonymously:SUCCESS");
-                //Загружаем данные с FireBase
-                loadPracticeList();
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Log.e(TAG,"signInAnonymously:SUCCESS");
+                        updateUI();
 
-            }
-        })
+                    }
+                })
                 .addOnFailureListener(getActivity(), new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -306,6 +166,4 @@ public class PracticeListFragment extends Fragment {
                     }
                 });
     }
-
-
 }
