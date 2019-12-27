@@ -133,7 +133,7 @@ public class TheoryListFragment extends Fragment {
 
     private class TheoryAdapter extends RecyclerView.Adapter<TheoryHolder>{
 
-        List<Lesson> mLessons;
+        private List<Lesson> mLessons;
 
         public TheoryAdapter(List<Lesson> lessons) {
             mLessons = lessons;
