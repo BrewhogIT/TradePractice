@@ -1,7 +1,12 @@
 package com.brewhog.android.tradepractice;
 
+import com.google.firebase.storage.StorageReference;
+
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
+import androidx.annotation.Nullable;
 
 public class Practice {
     private int id;
@@ -57,5 +62,18 @@ public class Practice {
 
     public void setSignals(List<String> signals) {
         this.signals = signals;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Practice practice = (Practice) o;
+        return id == practice.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
