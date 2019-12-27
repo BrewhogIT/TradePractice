@@ -19,186 +19,166 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-/*
+import androidx.recyclerview.widget.RecyclerView;
 
 public class PracticePack {
     public static final String TAG = "PracticePack";
-    private List<StorageReference> foldersList;
-    private boolean loadingDone = false;
+    private List<Practice> mPracticeList;
+    private RecyclerView.Adapter mAdapter;
 
-    public PracticePack() {
-        foldersList = getAllFolders();
+    public PracticePack(RecyclerView.Adapter adapter, List<Practice> practiceList) {
+        mPracticeList = practiceList;
+        mAdapter = adapter;
     }
 
-    private List<StorageReference> getAllFolders(){
+    public void loadPracticeList(){
         Log.i(TAG,"start getAllFolders method");
-        final List<StorageReference> foldersList = new ArrayList<>();
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference chartsRef = storage.getReference().child("charts");
 
+        // Получаем список подпапок из каталога
         chartsRef.listAll()
                 .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                     @Override
                     public void onSuccess(ListResult listResult) {
-                        foldersList.addAll(listResult.getPrefixes());
-                        loadingDone = true;
-                        Log.i(TAG, "OnSuccess in getAllFolders, list foldersList size is " + foldersList.size());
+                        //Для каждой папки создается объект и заполняется данными
+                        setChartReferences(listResult.getPrefixes(),mPracticeList);
+                        setChartInfo(listResult.getPrefixes(),mPracticeList);
+
+                        mAdapter.notifyDataSetChanged();
+                        Log.i(TAG, "OnSuccess in getAllFolders, list mPracticeList size is " + mPracticeList.size());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG,"FAILED GET LIST ",e);
-                        loadingDone = true;
                     }
                 });
-        while(!loadingDone){
-            //wait while loading done
+    }
+
+    private void setChartReferences(List<StorageReference> listResult, final List<Practice> practiceList) {
+        // Для каждой подпапки создаем объект с ссылками на изображения графиков
+        for(StorageReference folderReference : listResult){
+            Practice practiceItem = new Practice();
+            practiceList.add(practiceItem);
+            final int index = listResult.indexOf(folderReference);
+
+            loadChart(folderReference, index);
+            loadChartDone(folderReference, index);
         }
-
-        return foldersList;
-    }
-    private List<Practice> сreatePracticeList(){
-        List <Practice> practiceList = new ArrayList<>();
-        for(int i = 0; i < foldersList.size();i++){
-            practiceList.add(new Practice());
-        }
-        Log.i(TAG,"createPracticeList called, practiceList size is " + practiceList.size());
-        return practiceList;
     }
 
-    public List<Practice> getPracticeList(){
-        List<Practice> practiceList = сreatePracticeList();
+    private void loadChartDone(StorageReference folderReference, final int index) {
+        //загружаем график с разметкой
 
-        setChartLinks(practiceList);
-        setChartDoneLinks(practiceList);
-        setInfoData(practiceList);
-
-        Log.i(TAG,"getPracticeList called, practiceList size is " + practiceList.size());
-        return practiceList;
-    }
-
-    private File getInfoFile(StorageReference folderReference){
-        File infoFile = null;
-        try {
-            infoFile = File.createTempFile("info","txt");
-            folderReference.child("info.txt").getFile(infoFile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                }
-            });
-
-        } catch (IOException e) {
-            Log.e(TAG,"Failed info file loading",e);
-        }
-        return infoFile;
-    }
-    private String getChartLink(StorageReference folderReference){
-        StorageReference imageReference = folderReference.child("chart.PNG");
-        final String[] chartLink = new String[1];
-
-        imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.i(TAG,"getChartLink method is called, link is " +uri.toString());
-                chartLink[0] = uri.toString();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        folderReference.child("chartDone.PNG").getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.i(TAG,"chartDone link was gotten: " + uri.toString());
+                        mPracticeList.get(index).setChartDoneUrl(uri.toString());
+                        mAdapter.notifyItemChanged(index);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(TAG,"fail to get image url",e);
+                Log.e(TAG, "chartDone link doesnt get",e);
             }
         });
-        return chartLink[0];
     }
-    private String getChartDoneLink(StorageReference folderReference){
-        StorageReference imageReference = folderReference.child("chartDone.PNG");
-        final String[] chartLink = new String[1];
 
-        imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.i(TAG,"getChartDoneLink method is called, link is "+ uri.toString());
-                chartLink[0] = uri.toString();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+    private void loadChart(StorageReference folderReference, final int index) {
+        //загружаем график без разметки
+
+        folderReference.child("chart.PNG").getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.i(TAG,"Chart link was gotten: " + uri.toString());
+                        mPracticeList.get(index).setChartUrl(uri.toString());
+                        mAdapter.notifyItemChanged(index);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e(TAG,"fail to get image url",e);
+                Log.e(TAG, "Chart link doesnt get",e);
             }
         });
-        return chartLink[0];
     }
-    private void setChartLinks(List<Practice> practiceList){
-        for (Practice practice : practiceList){
-            int index = practiceList.indexOf(practice);
-            String link = getChartLink(foldersList.get(index));
-            practice.setChartUrl(link);
 
-            Log.i(TAG,"setChartLink Method call, link is: " + link);
-        }
-    }
-    private void setChartDoneLinks(List<Practice> practiceList){
-        for (Practice practice : practiceList){
-            int index = practiceList.indexOf(practice);
-            String link = getChartDoneLink(foldersList.get(index));
-            practice.setChartUrl(link);
-            Log.i(TAG,"setChartDoneLink Method call, link is: " + link);
+    private void setChartInfo(List<StorageReference> listResult, final List<Practice> practiceList){
+        Log.i(TAG,"start setChartInfo method");
 
-        }
-    }
-    private void setInfoData(List<Practice> practiceList){
-        for (Practice practice : practiceList){
-            int index = practiceList.indexOf(practice);
-            File infoFile = getInfoFile(foldersList.get(index));
+        //Загружаем инфо файл из каждой папки
+        for (StorageReference folderReference : listResult){
+            try {
+                final int index = listResult.indexOf(folderReference);
+                final File infoFile = File.createTempFile("info","txt");
+                folderReference.child("info.txt").getFile(infoFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                //Когза загрузка завершена читаем строки из файла,
+                                // добавляем в Practice из ранее созданного листа объектов
+                                readInfoData(infoFile,practiceList.get(index));
+                                mAdapter.notifyItemChanged(index);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 
-            BufferedReader reader = null;
-            try{
-                reader = new BufferedReader(
-                        new InputStreamReader(new FileInputStream(infoFile)));
-                String line;
-                List<String> signals = new ArrayList<>();
-                for (int i = 0; (line = reader.readLine()) != null; i++){
-                    Log.i(TAG,"info file line: " + line);
-                    switch (i){
-                        case 0:
-                            int id = Integer.parseInt(line);
-                            practice.setId(id);
-                            break;
-                        case 1:
-                            practice.setTicker(line);
-                            break;
-                        case 2:
-                            practice.setDate(line);
-                            break;
-                        default:
-                            signals.add(line);
-                            break;
                     }
+                });
+            } catch (IOException e) {
+                Log.e(TAG,"Failed info file loading",e);
+            }
+        }
+    }
 
+    private void readInfoData(File infoFile, Practice practice){
+        Log.i(TAG,"start readInfoData method");
+
+        //Читает info файл по строкам и добавляет данные в нужные поля Practice
+
+        BufferedReader reader = null;
+        try{
+            reader = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(infoFile)));
+            String line;
+            List<String> signals = new ArrayList<>();
+            for (int i = 0; (line = reader.readLine()) != null; i++){
+                Log.i(TAG,"info file line: " + line);
+                switch (i){
+                    case 0:
+                        int id = Integer.parseInt(line);
+                        practice.setId(id);
+                        break;
+                    case 1:
+                        practice.setTicker(line);
+                        break;
+                    case 2:
+                        practice.setDate(line);
+                        break;
+                    default:
+                        signals.add(line);
+                        break;
                 }
-                practice.setSignals(signals);
-            }catch (IOException e){
-                Log.e(TAG,"info file parsing");
-            }finally {
-                if (reader != null){
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
+            }
+            practice.setSignals(signals);
+        }catch (IOException e){
+            Log.e(TAG,"info file parsing");
+        }finally {
+            if (reader != null){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
     }
 }
 
-*/
