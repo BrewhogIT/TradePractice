@@ -1,5 +1,6 @@
 package com.brewhog.android.tradepractice;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,10 +71,11 @@ public class PracticeListFragment extends Fragment {
         return view;
     }
 
-    private class PracticeHolder extends RecyclerView.ViewHolder{
+    private class PracticeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tickerView;
         private ImageView chartView;
         private TextView dateView;
+        private Practice mPracticeItem;
 
         public PracticeHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,16 +83,29 @@ public class PracticeListFragment extends Fragment {
             tickerView = itemView.findViewById(R.id.ticker);
             chartView = itemView.findViewById(R.id.chart);
             dateView = itemView.findViewById(R.id.date_of_chart);
+
+            itemView.setOnClickListener(this);
         }
 
         public void Bind(Practice practiceItem){
+            mPracticeItem = practiceItem;
 
             Glide.with(getActivity())
-                    .load(practiceItem.getChartUrl())
+                    .load(mPracticeItem.getChartUrl())
                     .placeholder(R.drawable.chart_placeholder)
                     .into(chartView);
-            tickerView.setText(practiceItem.getTicker());
-            dateView.setText(practiceItem.getDate());
+            tickerView.setText(mPracticeItem.getTicker());
+            dateView.setText(mPracticeItem.getDate());
+        }
+
+        @Override
+        public void onClick(View view) {
+            String chartUrl = mPracticeItem.getChartUrl();
+            String chartUrlDone = mPracticeItem.getChartDoneUrl();
+            ArrayList<String> signals = (ArrayList<String>) mPracticeItem.getSignals();
+
+            Intent intent = ChartActivity.newIntent(getActivity(),chartUrl,chartUrlDone,signals);
+            getActivity().startActivity(intent);
         }
     }
 

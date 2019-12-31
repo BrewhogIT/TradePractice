@@ -22,6 +22,10 @@
 
     </style>
 
+    <style parent="Theme.AppCompat.NoActionBar" name="AppThemeChart">
+
+    </style>
+
     <style name="forpager">
         <item name="android:background">@android:color/transparent</item>
     </style>
