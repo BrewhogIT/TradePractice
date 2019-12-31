@@ -21,9 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SingleFragmentActivity" />
-        <activity android:name=".LessonsListActivity" />
+        <activity android:name=".SingleFragmentActivity"/>
+        <activity
+            android:name=".LessonsListActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".TheoryLessonPagerActivity" />
+        <activity
+            android:name=".ChartActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppThemeChart"/>
     </application>
 
 </manifest>
