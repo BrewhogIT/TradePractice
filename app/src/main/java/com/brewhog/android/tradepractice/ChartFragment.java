@@ -1,12 +1,20 @@
 package com.brewhog.android.tradepractice;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -29,6 +37,9 @@ public class ChartFragment extends Fragment {
     private ImageView chartView;
     private FloatingActionButton decisionButton;
     private RecyclerView signalsRecyclerView;
+    private ProgressBar mProgressBar;
+    private SignalAdapter mAdapter;
+    private TextView titleText;
 
     public static ChartFragment newInstance(String chartUrl, String chartDoneUrl, ArrayList signals) {
         Bundle args = new Bundle();
@@ -47,31 +58,113 @@ public class ChartFragment extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         chartUrl = getArguments().getString(ARG_CHART);
         chartDoneUrl = getArguments().getString(ARG_CHART_DONE);
-        signals = getArguments().getStringArrayList(ARG_SIGNALS);
 
         View view = inflater.inflate(R.layout.fragment_chart,container,false);
         chartView = view.findViewById(R.id.chart_view);
         decisionButton = view.findViewById(R.id.decision_button);
         signalsRecyclerView = view.findViewById(R.id.signals_recycler_view);
+        mProgressBar = view.findViewById(R.id.progressBar);
+        titleText = view.findViewById(R.id.signal_title);
+
+        signalsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        updateUI(chartUrl);
 
         decisionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateChart(chartDoneUrl);
+                updateUI(chartDoneUrl);
+                decisionButton.setVisibility(View.GONE);
+                titleText.setText(R.string.signal_title);
             }
         });
-
-        //выделить в отдельный метод, для обновления UI
-        signalsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        updateChart(chartUrl);
-
         return view;
     }
 
+    private void updateUI(String chartUrl) {
+        updateAdapter();
+        updateChart(chartUrl);
+    }
+
+    private void updateAdapter() {
+        //Изначально список адаптера содержит 1 эллемент и инструкцией,
+        //после обновления подгружаются список сигналов, инструкция заменяется дисклеймером
+
+        if (mAdapter == null){
+            signals = new ArrayList<>();
+            signals.add(getString(R.string.signal_info));
+
+            mAdapter = new SignalAdapter();
+            signalsRecyclerView.setAdapter(mAdapter);
+        }else {
+            signals = getArguments().getStringArrayList(ARG_SIGNALS);
+            signals.add(getString(R.string.signal_attention));
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
     private void updateChart(String pictureUrl) {
+        mProgressBar.setVisibility(View.VISIBLE);
+
         Glide.with(getActivity())
                 .load(pictureUrl)
-                .placeholder(R.drawable.chart_placeholder)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e,
+                                                Object model, Target<Drawable> target, boolean isFirstResource) {
+                        mProgressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource,
+                                                   Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        mProgressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .into(chartView);
+    }
+
+    private class SignalHolder extends RecyclerView.ViewHolder{
+        private TextView signalText;
+
+        public SignalHolder(@NonNull View itemView) {
+            super(itemView);
+            signalText = itemView.findViewById(R.id.signal_name);
+        }
+
+        public void bind(String signal){
+            signalText.setText(signal);
+        }
+    }
+
+    private class SignalAdapter extends RecyclerView.Adapter<SignalHolder>{
+
+        @NonNull
+        @Override
+        public SignalHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            View view = inflater.inflate(viewType,parent,false);
+            SignalHolder holder = new SignalHolder(view);
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull SignalHolder holder, int position) {
+            holder.bind(signals.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return signals.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            int viewType = (position == signals.size() - 1)?
+                    R.layout.list_item_attention : R.layout.list_item_signal;
+
+            return viewType;
+        }
     }
 }
