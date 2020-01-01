@@ -23,7 +23,7 @@
     </style>
 
     <style parent="Theme.AppCompat.NoActionBar" name="AppThemeChart">
-
+        <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
     <style name="forpager">
