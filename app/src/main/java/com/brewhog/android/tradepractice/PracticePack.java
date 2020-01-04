@@ -1,5 +1,6 @@
 package com.brewhog.android.tradepractice;
 
+import android.app.job.JobService;
 import android.net.Uri;
 import android.util.Log;
 
@@ -25,10 +26,16 @@ public class PracticePack {
     public static final String TAG = "PracticePack";
     private List<Practice> mPracticeList;
     private RecyclerView.Adapter mAdapter;
+    private int filesLoaded;
+    private boolean loadDone;
 
     public PracticePack(RecyclerView.Adapter adapter, List<Practice> practiceList) {
         mPracticeList = practiceList;
         mAdapter = adapter;
+    }
+
+    public PracticePack(List<Practice> practiceList) {
+        mPracticeList = practiceList;
     }
 
     public void loadPracticeList(){
@@ -46,7 +53,9 @@ public class PracticePack {
                         setChartReferences(listResult.getPrefixes(),mPracticeList);
                         setChartInfo(listResult.getPrefixes(),mPracticeList);
 
-                        mAdapter.notifyDataSetChanged();
+                        if (mAdapter != null){
+                            mAdapter.notifyDataSetChanged();
+                        }
                         Log.i(TAG, "OnSuccess in getAllFolders, list mPracticeList size is " + mPracticeList.size());
                     }
                 })
@@ -79,7 +88,10 @@ public class PracticePack {
                     public void onSuccess(Uri uri) {
                         Log.i(TAG,"chartDone link was gotten: " + uri.toString());
                         mPracticeList.get(index).setChartDoneUrl(uri.toString());
-                        mAdapter.notifyItemChanged(index);
+
+                        if (mAdapter != null){
+                            mAdapter.notifyItemChanged(index);
+                        }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -98,7 +110,10 @@ public class PracticePack {
                     public void onSuccess(Uri uri) {
                         Log.i(TAG,"Chart link was gotten: " + uri.toString());
                         mPracticeList.get(index).setChartUrl(uri.toString());
-                        mAdapter.notifyItemChanged(index);
+
+                        if (mAdapter != null){
+                            mAdapter.notifyItemChanged(index);
+                        }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -108,7 +123,7 @@ public class PracticePack {
         });
     }
 
-    private void setChartInfo(List<StorageReference> listResult, final List<Practice> practiceList){
+    private void setChartInfo(final List<StorageReference> listResult, final List<Practice> practiceList){
         Log.i(TAG,"start setChartInfo method");
 
         //Загружаем инфо файл из каждой папки
@@ -123,18 +138,36 @@ public class PracticePack {
                                 //Когза загрузка завершена читаем строки из файла,
                                 // добавляем в Practice из ранее созданного листа объектов
                                 readInfoData(infoFile,practiceList.get(index));
-                                mAdapter.notifyItemChanged(index);
+
+                                if (mAdapter != null){
+                                    mAdapter.notifyItemChanged(index);
+                                }
+
+                                //Считаем все ли инфо-файлы загрузились,
+                                //индикатор будет использоваться для проверки в других классах
+                                //(например при выводе уведомлений)
+                                filesLoaded++;
+                                if (filesLoaded == listResult.size()){
+                                    loadDone = true;
+                                    Log.i(TAG,"load info files is done");
+                                }
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        loadDone = true;
+                        Log.e(TAG,"load info files is fail",e);
                     }
                 });
             } catch (IOException e) {
                 Log.e(TAG,"Failed info file loading",e);
             }
         }
+    }
+
+    public boolean isLoadDone() {
+        return loadDone;
     }
 
     private void readInfoData(File infoFile, Practice practice){
