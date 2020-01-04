@@ -1,10 +1,16 @@
 package com.brewhog.android.tradepractice;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,16 +22,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +40,7 @@ public class PracticeListFragment extends Fragment {
     private List<Practice> mPracticeList;
     private PracticeAdapter mAdapter;
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
+    private BroadcastReceiver notifycationReceiver;
 
     public static PracticeListFragment newInstance(int imageResID) {
         Bundle args = new Bundle();
@@ -53,11 +51,27 @@ public class PracticeListFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        notifycationReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //Срабатывание метода означает, что пользователь видет активность
+                //для отмены оповещения меняем результат, NotificationReceiver не будет уведомлять
+                //о новых графиках
+                Log.i(TAG,"cancel notification");
+                setResultCode(Activity.RESULT_CANCELED);
+            }
+        };
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_practice_list,container,false);
+        setHasOptionsMenu(true);
 
         int imageResId = getArguments().getInt(IMAGE_RES_ID_ARGS);
         lessonKindIllustration = view.findViewById(R.id.practice_lesson_large_illustration);
@@ -69,6 +83,20 @@ public class PracticeListFragment extends Fragment {
 
         connectToFirebase();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ChartUpdateService.ACTION_SHOW_NOTIFICATION);
+        getActivity().registerReceiver(notifycationReceiver,intentFilter,
+                ChartUpdateService.PERM_PRIVATE,null);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(notifycationReceiver);
     }
 
     private class PracticeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -180,5 +208,34 @@ public class PracticeListFragment extends Fragment {
                         Log.e(TAG,"signInAnonymously:FAILURE",e);
                     }
                 });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+         inflater.inflate(R.menu.fragment_practice_list,menu);
+         MenuItem notificationSelector = menu.findItem(R.id.notification_selector);
+
+         boolean isAlarmOn = ChartUpdateService.isChartServiceAlarmOn(getActivity());
+         if (isAlarmOn){
+             notificationSelector.setTitle(getString(R.string.notify_on));
+         }else{
+             notificationSelector.setTitle(getString(R.string.notify_off));
+         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.notification_selector:
+
+                boolean shouldStartService = !ChartUpdateService.isChartServiceAlarmOn(getActivity());
+                ChartUpdateService.setChartServiceAlarm(getActivity(),shouldStartService);
+                getActivity().invalidateOptionsMenu();
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,6 +22,10 @@ public class HomeScreenActivity extends AppCompatActivity {
     private ImageView logoView;
     private List<Integer> lessonsKindList;
     private RecyclerView lessonSectionRecyclerView;
+
+    public static Intent newIntent(Context context){
+        return new Intent(context, HomeScreenActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

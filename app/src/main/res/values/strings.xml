@@ -33,4 +33,11 @@
     Для просмотра разметки нажмите кнопку расположенную в правом нижнем углу графика.</string>
     <string name="signal_attention">* Материалы, представленные в данном разделе, не являются индивидуальными инвестиционными рекомендациями.
         Информация предоставляется в обучающих целях.</string>
+
+    /* строки для сервиса сообщений */
+    <string name="first_chanel">First notification chanel</string>
+    <string name="notification_title">Новый график</string>
+    <string name="notification_text">Опубликован новый график от TradePractice!</string>
+    <string name="notify_off">Начать уведомлять</string>
+    <string name="notify_on">Остановить уведомления</string>
 </resources>
