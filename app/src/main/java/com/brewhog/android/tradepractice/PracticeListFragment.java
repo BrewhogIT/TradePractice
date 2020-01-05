@@ -41,6 +41,7 @@ public class PracticeListFragment extends Fragment {
     private PracticeAdapter mAdapter;
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
     private BroadcastReceiver notifycationReceiver;
+    private PracticePack mPracticePack;
 
     public static PracticeListFragment newInstance(int imageResID) {
         Bundle args = new Bundle();
@@ -57,11 +58,12 @@ public class PracticeListFragment extends Fragment {
         notifycationReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                //Срабатывание метода означает, что пользователь видет активность
-                //для отмены оповещения меняем результат, NotificationReceiver не будет уведомлять
-                //о новых графиках
+                //Срабатывание метода означает, что пользователь видет активность.
+                //Для отмены оповещения меняем результат, NotificationReceiver не будет уведомлять
+                //о новых графиках, при этом текущий список обновится автоматически.
                 Log.i(TAG,"cancel notification");
                 setResultCode(Activity.RESULT_CANCELED);
+                updateUI();
             }
         };
     }
@@ -174,9 +176,10 @@ public class PracticeListFragment extends Fragment {
             practiceListRecyclerView.setAdapter(mAdapter);
 
             //Загружаем данные, вставляем в созданный лист, обнавляем адаптер
-            PracticePack mPracticePack = new PracticePack(mAdapter, mPracticeList);
+            mPracticePack = new PracticePack(mAdapter,mPracticeList);
             mPracticePack.loadPracticeList();
         } else{
+            mPracticePack.loadPracticeList();
             mAdapter.notifyDataSetChanged();
         }
 
