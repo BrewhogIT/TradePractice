@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -29,17 +30,18 @@ public class PracticePack {
     private int filesLoaded;
     private boolean loadDone;
 
-    public PracticePack(RecyclerView.Adapter adapter, List<Practice> practiceList) {
-        mPracticeList = practiceList;
+    public PracticePack(RecyclerView.Adapter adapter, List<Practice> list) {
         mAdapter = adapter;
+        mPracticeList = list;
     }
 
-    public PracticePack(List<Practice> practiceList) {
-        mPracticeList = practiceList;
+    public PracticePack(List<Practice> list) {
+        mPracticeList = list;
     }
 
     public void loadPracticeList(){
         Log.i(TAG,"start getAllFolders method");
+        mPracticeList.clear();
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference chartsRef = storage.getReference().child("charts");
@@ -50,8 +52,12 @@ public class PracticePack {
                     @Override
                     public void onSuccess(ListResult listResult) {
                         //Для каждой папки создается объект и заполняется данными
-                        setChartReferences(listResult.getPrefixes(),mPracticeList);
-                        setChartInfo(listResult.getPrefixes(),mPracticeList);
+                        //предварительно переворачивается список, чтобы новые данные отображались первыми
+                        List<StorageReference> folderList = listResult.getPrefixes();
+                        Collections.reverse(folderList);
+
+                        setChartReferences(folderList,mPracticeList);
+                        setChartInfo(folderList,mPracticeList);
 
                         if (mAdapter != null){
                             mAdapter.notifyDataSetChanged();

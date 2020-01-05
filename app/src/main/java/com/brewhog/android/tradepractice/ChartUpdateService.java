@@ -70,7 +70,7 @@ public class ChartUpdateService extends IntentService {
             return;
         }
 
-        int resultID = mPracticeList.get(mPracticeList.size() - 1).getId();
+        int resultID = mPracticeList.get(0).getId();
         int lastID = UserPreferences.getLastChartID(this);
 
         //если код последнего элемента отличается от кода полученого,
