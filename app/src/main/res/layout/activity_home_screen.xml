@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <androidx.recyclerview.widget.RecyclerView
-        style="@style/forpager"
+        style="@style/transparentBack"
         android:id ="@+id/lesson_type_recycler_view"
         android:layout_height ="200dp"
         android:layout_width ="match_parent"

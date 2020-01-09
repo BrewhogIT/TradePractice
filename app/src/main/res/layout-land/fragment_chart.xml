@@ -16,6 +16,10 @@
             android:layout_margin="8dp"
             android:layout_height="match_parent"
             android:scaleType="fitXY"/>
+        <com.brewhog.android.tradepractice.ChartPainterView
+            style="@style/transparentBack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/decision_button"
             android:layout_width="wrap_content"

@@ -26,7 +26,7 @@
         <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="forpager">
+    <style name="transparentBack">
         <item name="android:background">@android:color/transparent</item>
     </style>
 
