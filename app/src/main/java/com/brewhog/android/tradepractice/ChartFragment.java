@@ -1,8 +1,11 @@
 package com.brewhog.android.tradepractice;
 
+import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -30,12 +33,15 @@ public class ChartFragment extends Fragment {
     public static final String ARG_CHART = "chart_image_url";
     public static final String ARG_CHART_DONE = "chart_done_image_url";
     public static final String ARG_SIGNALS = "signals_array";
+    private static final String TAG = "ChartFragment";
     private String chartUrl;
     private String chartDoneUrl;
     private List<String> signals;
 
-    private ImageView chartView;
+    private ChartPainterImageView chartView;
     private FloatingActionButton decisionButton;
+    private FloatingActionButton clearButton;
+    private FloatingActionButton undoButton;
     private RecyclerView signalsRecyclerView;
     private ProgressBar mProgressBar;
     private SignalAdapter mAdapter;
@@ -62,6 +68,8 @@ public class ChartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chart,container,false);
         chartView = view.findViewById(R.id.chart_view);
         decisionButton = view.findViewById(R.id.decision_button);
+        undoButton = view.findViewById(R.id.undo_button);
+        clearButton = view.findViewById(R.id.clear_button);
         signalsRecyclerView = view.findViewById(R.id.signals_recycler_view);
         mProgressBar = view.findViewById(R.id.progressBar);
         titleText = view.findViewById(R.id.signal_title);
@@ -73,10 +81,31 @@ public class ChartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 updateUI(chartDoneUrl);
-                decisionButton.setVisibility(View.GONE);
                 titleText.setText(R.string.signal_title);
+
+                decisionButton.setVisibility(View.GONE);
+                undoButton.setVisibility(View.GONE);
+                clearButton.setVisibility(View.GONE);
+
+                chartView.clearChart();
+                chartView.setDrawEnable(false);
             }
         });
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chartView.clearChart();
+            }
+        });
+
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chartView.undoLastDraw();
+            }
+        });
+
         return view;
     }
 
@@ -161,6 +190,7 @@ public class ChartFragment extends Fragment {
 
         @Override
         public int getItemViewType(int position) {
+            //В качестве последнего элемента выводит дисклеймер
             int viewType = (position == signals.size() - 1)?
                     R.layout.list_item_attention : R.layout.list_item_signal;
 
