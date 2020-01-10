@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 public class ChartUpdateService extends IntentService {
     private static final String TAG = "ChartUpdateService";
@@ -95,7 +94,7 @@ public class ChartUpdateService extends IntentService {
 
             Notification notification = new NotificationCompat.Builder(this, CHANEL_1_ID)
                     .setTicker(resources.getString(R.string.notification_title))
-                    .setSmallIcon(android.R.drawable.ic_menu_report_image)
+                    .setSmallIcon(R.drawable.notification)
                     .setContentTitle(resources.getString(R.string.notification_title))
                     .setContentText(resources.getString(R.string.notification_text))
                     .setContentIntent(pendingIntent)
