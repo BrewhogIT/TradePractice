@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_margin="8dp"
+    android:layout_height="40dp"
+    android:layout_margin="4dp"
     app:cardCornerRadius="16dp">
     <TextView
         android:id="@+id/signal_name"
