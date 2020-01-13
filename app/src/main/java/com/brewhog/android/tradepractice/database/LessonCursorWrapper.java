@@ -13,7 +13,7 @@ public class LessonCursorWrapper extends android.database.CursorWrapper {
     }
 
     public Lesson getLesson(){
-        UUID id = UUID.fromString(this.getString(this.getColumnIndex(LessonTable.Cols.ID)));
+        int id = this.getInt(this.getColumnIndex(LessonTable.Cols.ID));
         String topic = this.getString(this.getColumnIndex(LessonTable.Cols.TOPIC));
         boolean isDone = this.getInt(this.getColumnIndex(LessonTable.Cols.IS_DONE)) == 1;
 

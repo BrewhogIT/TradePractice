@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Lesson {
-    private UUID lessonID;
+    private int lessonID;
     private String topic;
     private List<String> pages;
     private List<Drawable> illustrations;
@@ -15,13 +15,13 @@ public class Lesson {
     private int correctAnswersCount;
     private boolean done;
 
-    public Lesson(UUID id,String topic){
+    public Lesson(int id,String topic){
         lessonID = id;
         correctAnswersCount = 0;
         this.topic = topic;
     }
 
-    public UUID getLessonID() {
+    public int getLessonID() {
         return lessonID;
     }
 

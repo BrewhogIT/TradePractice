@@ -33,10 +33,10 @@ public class TestPageFragment extends Fragment {
     private LinearLayout answersField;
     private PagingSetting mPagingSetting;
 
-    public static TestPageFragment newInstance(UUID lessonID, int testNumber, PagingSetting setting) {
+    public static TestPageFragment newInstance(int lessonID, int testNumber, PagingSetting setting) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_LESSON_ID,lessonID);
-        args.putSerializable(ARG_TEST_NUMBER,testNumber);
+        args.putInt(ARG_LESSON_ID,lessonID);
+        args.putInt(ARG_TEST_NUMBER,testNumber);
 
         TestPageFragment fragment = new TestPageFragment(setting);
         fragment.setArguments(args);
@@ -56,7 +56,7 @@ public class TestPageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        UUID lessonID =(UUID) getArguments().getSerializable(ARG_LESSON_ID);
+        int lessonID =getArguments().getInt(ARG_LESSON_ID);
         int testNumber = getArguments().getInt(ARG_TEST_NUMBER);
         mLesson = LessonPack.getLessonPack(getActivity()).getLesson(lessonID);
         Log.i(TAG,"correct answer count is: " + mLesson.getCorrectAnswersCount());

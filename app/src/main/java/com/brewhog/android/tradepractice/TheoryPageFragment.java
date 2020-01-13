@@ -23,9 +23,9 @@ public class TheoryPageFragment extends Fragment {
     private ImageView pageIllustrationView;
     private Lesson mLesson;
 
-    public static TheoryPageFragment newInstance(UUID lessonID, int pageNumber) {
+    public static TheoryPageFragment newInstance(int lessonID, int pageNumber) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_LESSON_ID,lessonID);
+        args.putInt(ARG_LESSON_ID,lessonID);
         args.putInt(ARG_PAGE_NUMBER,pageNumber);
 
         TheoryPageFragment fragment = new TheoryPageFragment();
@@ -39,7 +39,7 @@ public class TheoryPageFragment extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page_of_theory,container,false);
 
-        UUID lessonID = (UUID)getArguments().getSerializable(ARG_LESSON_ID);
+        int lessonID = getArguments().getInt(ARG_LESSON_ID);
         int pageNumber = getArguments().getInt(ARG_PAGE_NUMBER);
 
         mLesson = LessonPack.getLessonPack(getActivity()).getLesson(lessonID);

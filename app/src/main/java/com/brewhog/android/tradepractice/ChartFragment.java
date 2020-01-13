@@ -1,5 +1,6 @@
 package com.brewhog.android.tradepractice;
 
+import android.content.Intent;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -154,16 +155,30 @@ public class ChartFragment extends Fragment {
                 .into(chartView);
     }
 
-    private class SignalHolder extends RecyclerView.ViewHolder{
+    private class SignalHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView signalText;
 
         public SignalHolder(@NonNull View itemView) {
             super(itemView);
             signalText = itemView.findViewById(R.id.signal_name);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(String signal){
             signalText.setText(signal);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Integer lessonID = LessonPack
+                    .getLessonPack(getActivity())
+                    .getLessonIdFromSignal((String)signalText.getText());
+
+            if (lessonID != null){
+                Intent intent = TheoryLessonPagerActivity.newIntent(getActivity(),lessonID);
+                startActivity(intent);
+            }
+
         }
     }
 

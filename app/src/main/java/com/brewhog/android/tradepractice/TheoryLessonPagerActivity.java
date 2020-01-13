@@ -29,7 +29,7 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
     private CustomViewPager theoryLessonPager;
     private Lesson mLesson;
 
-    public static Intent newIntent(Context context, UUID lessonID){
+    public static Intent newIntent(Context context, int lessonID){
         Intent intent = new Intent(context, TheoryLessonPagerActivity.class);
         intent.putExtra(LESSONS_ID_EXTRA,lessonID);
 
@@ -39,7 +39,7 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID lessonID = (UUID) getIntent().getSerializableExtra(LESSONS_ID_EXTRA);
+        int lessonID = getIntent().getIntExtra(LESSONS_ID_EXTRA,0);
         mLesson = LessonPack.getLessonPack(this).getLesson(lessonID);
 
         setContentView(R.layout.activity_theory_lesson);

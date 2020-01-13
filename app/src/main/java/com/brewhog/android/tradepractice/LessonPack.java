@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,10 +51,10 @@ public class LessonPack {
         return mLessonsList;
     }
 
-    public Lesson getLesson(UUID lessonID){
+    public Lesson getLesson(int lessonID){
         Lesson mLesson = null;
         for (Lesson lesson: getLessons()){
-            if (lesson.getLessonID().equals(lessonID)){
+            if (lesson.getLessonID() == lessonID){
                 mLesson = lesson;
             }
         }
@@ -172,11 +173,20 @@ public class LessonPack {
         ContentValues values = new ContentValues();
         values.put(LessonTable.Cols.TOPIC,lesson.getTopic());
         values.put(LessonTable.Cols.IS_DONE,lesson.isDone()? 1:0);
-        values.put(LessonTable.Cols.ID,lesson.getLessonID().toString());
+        values.put(LessonTable.Cols.ID,lesson.getLessonID());
 
         mDataBase.update(LessonTable.TABLE_NAME,
                 values,
                 LessonTable.Cols.ID + " =?",
-                new String[]{lesson.getLessonID().toString()});
+                new String[]{String.valueOf(lesson.getLessonID())});
+    }
+
+    public Integer getLessonIdFromSignal(String signal){
+        HashMap<String,Integer> signalsMap = new HashMap<>();
+        signalsMap.put("chanal",0);
+        signalsMap.put("elliotWave",1);
+        //Добавить остальные, подкорректировать индексы
+
+        return signalsMap.get(signal);
     }
 }
