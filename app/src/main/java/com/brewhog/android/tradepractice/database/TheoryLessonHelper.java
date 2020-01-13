@@ -39,9 +39,9 @@ public class TheoryLessonHelper extends SQLiteOpenHelper {
 
     }
 
-    private void addLesson(SQLiteDatabase dataBase, String topic){
+    private void addLesson(SQLiteDatabase dataBase, String topic,int id){
         ContentValues values = new ContentValues();
-        values.put(LessonTable.Cols.ID, UUID.randomUUID().toString());
+        values.put(LessonTable.Cols.ID, id);
         values.put(LessonTable.Cols.IS_DONE,0);
         values.put(LessonTable.Cols.TOPIC,topic);
 
@@ -50,8 +50,9 @@ public class TheoryLessonHelper extends SQLiteOpenHelper {
 
     private void addAllLesson(SQLiteDatabase dataBase){
         String[]lessons = mContext.getResources().getStringArray(R.array.lessons);
-        for (String topic : lessons){
-            addLesson(dataBase,topic);
+        for (int i = 0; i < lessons.length; i++){
+            String topic = lessons[i];
+            addLesson(dataBase,topic,i);
         }
     }
 }
