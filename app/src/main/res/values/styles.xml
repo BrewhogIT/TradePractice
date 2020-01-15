@@ -18,7 +18,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:buttonStyle">@style/myButtonStyle</item>
+        <item name="android:buttonStyle">@style/chooseWayButton</item>
 
     </style>
 
@@ -32,5 +32,9 @@
 
      <style name="myButtonStyle" parent="Widget.AppCompat.Button">
          <item name="android:background">@drawable/button_background</item>
+     </style>
+
+     <style name="chooseWayButton" parent="Widget.AppCompat.Button">
+         <item name="android:background">@drawable/choose_way_button_background</item>
      </style>
 </resources>

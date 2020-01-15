@@ -2,6 +2,7 @@ package com.brewhog.android.tradepractice;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.content.Context;
@@ -63,12 +64,9 @@ public class ChooseWayActivity extends AppCompatActivity {
             case TEST_DONE:
                 image = getResources().getDrawable(R.drawable.pass_test);
 
-                cancelButton.setVisibility(View.INVISIBLE);
+                cancelButton.setVisibility(View.GONE);
                 okButton.setText(R.string.test_passed);
 
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)okButton.getLayoutParams();
-                params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-                okButton.setLayoutParams(params);
                 break;
         }
         chooseWayImage.setImageDrawable(image);
