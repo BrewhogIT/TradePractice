@@ -26,9 +26,9 @@ public class TheoryLessonHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE " + LessonTable.TABLE_NAME + "(" +
                 " _id integer primary key autoincrement, " +
-                LessonTable.Cols.ID + ", " +
-                LessonTable.Cols.TOPIC + ", " +
-                LessonTable.Cols.IS_DONE + ")"
+                LessonTable.Cols.ID + " integer, " +
+                LessonTable.Cols.TOPIC + " text, " +
+                LessonTable.Cols.IS_DONE + " integer);"
                 );
 
         addAllLesson(sqLiteDatabase);
@@ -41,7 +41,7 @@ public class TheoryLessonHelper extends SQLiteOpenHelper {
 
     private void addLesson(SQLiteDatabase dataBase, String topic,int id){
         ContentValues values = new ContentValues();
-        values.put(LessonTable.Cols.ID, id);
+        values.put(LessonTable.Cols.ID,id);
         values.put(LessonTable.Cols.IS_DONE,0);
         values.put(LessonTable.Cols.TOPIC,topic);
 

@@ -8,12 +8,28 @@
     <string name="theory_logo_transitional_name">Лого уроков теории</string>
 
     /* строки теоретического раздела */
-    <string name="users_level_text">Прогресс обучения</string>
+    <string name="users_level_text">Ваш прогресс</string>
 
     /* строки тем уроков */
     <string-array name="lessons">
         <item>Что такое акция?</item>
         <item>Какие виды ценных бумаг бывают?</item>
+        <item>Где обращаются ценные бумаги?</item>
+        <item>Отображение цены</item>
+        <item>Фундаментальный анализ</item>
+        <item>Технический анализ</item>
+        <item>Свечной анализ</item>
+        <item>Графические фигуры</item>
+        <item>Линии поддержки и сопротивления</item>
+        <item>Каналы</item>
+        <item>Индикаторы</item>
+        <item>Волны Эллиота</item>
+        <item>Фигуры тренда</item>
+        <item>Фигуры коррекции</item>
+        <item>Уровни Фибоначчи</item>
+        <item>Прогнозирование цен</item>
+        <item>Типы заявок</item>
+        <item>Статистика</item>
     </string-array>
 
     /* строки для окна запуска или пересдачи теста */
