@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Lesson {
     private int lessonID;
@@ -14,6 +13,7 @@ public class Lesson {
     private List<Test> lessonTest;
     private int correctAnswersCount;
     private boolean done;
+    private int percentOfCorrectAnswer;
 
     public Lesson(int id,String topic){
         lessonID = id;
@@ -77,13 +77,22 @@ public class Lesson {
         this.done = done;
     }
 
+    public int getPercentOfCorrectAnswer() {
+        return percentOfCorrectAnswer;
+    }
+
+    private void setPercentOfCorrectAnswer(int percentOfCorrectAnswer) {
+        this.percentOfCorrectAnswer = percentOfCorrectAnswer;
+    }
+
     public boolean checkTest(){
         int correctAnswers = getCorrectAnswersCount();
         int questionsCount = getLessonTest().size();
         float passIndex = (float)(1.0 * correctAnswers  / questionsCount);
         boolean isTestPassed = passIndex >= 0.8;
-        setCorrectAnswersCount(0);
 
+        setPercentOfCorrectAnswer(Math.round(passIndex * 100));
+        setCorrectAnswersCount(0);
         return  isTestPassed;
     }
 }

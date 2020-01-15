@@ -37,6 +37,7 @@
     <string name="return_to_lesson">К уроку</string>
     <string name="try_again">Пересдать</string>
     <string name="test_passed">Тест сдан!</string>
+    <string name="fail_text" formatted="false">Необходимо 80%% правильных ответов, Ваш результат: %d %%</string>
     
     /* строки теста */
     <string name="correct">Правильно! Это верный ответ!</string>

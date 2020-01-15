@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.UUID;
 
@@ -22,16 +23,20 @@ public class ChooseWayActivity extends AppCompatActivity {
     private Button okButton;
     private Button cancelButton;
     private ImageView chooseWayImage;
+    private TextView failTextView;
 
     public static final String EXTRA_WINDOW_KIND = "com.brewhog.android.tradepractice.window_kind";
+    public static final String EXTRA_PERCENT_OF_CORRECT = "com.brewhog.android.tradepractice.percent_of_correct_answers";
     public static final int START_NEW_TEST = 0;
     public static final int RESTART_TEST = 1;
     public static final int TEST_DONE = 2;
     private int windowKind;
+    private int correctAncwersPercent;
 
-    public static Intent newIntent(Context context,int windowKind){
+    public static Intent newIntent(Context context,int windowKind,int percent){
         Intent intent = new Intent(context,ChooseWayActivity.class);
         intent.putExtra(EXTRA_WINDOW_KIND,windowKind);
+        intent.putExtra(EXTRA_PERCENT_OF_CORRECT,percent);
 
         return intent;
     }
@@ -44,9 +49,12 @@ public class ChooseWayActivity extends AppCompatActivity {
         okButton = findViewById(R.id.ok_button);
         cancelButton = findViewById(R.id.cancel_button);
         chooseWayImage = findViewById(R.id.choose_window_image);
+        failTextView = findViewById(R.id.fail_text_view);
 
         Drawable image = null;
         windowKind = getIntent().getIntExtra(EXTRA_WINDOW_KIND,0);
+        correctAncwersPercent = getIntent().getIntExtra(EXTRA_PERCENT_OF_CORRECT,0);
+        String failText = getResources().getString(R.string.fail_text,correctAncwersPercent);
 
         switch (windowKind) {
             case START_NEW_TEST:
@@ -57,6 +65,9 @@ public class ChooseWayActivity extends AppCompatActivity {
                 break;
             case RESTART_TEST:
                 image = getResources().getDrawable(R.drawable.fail_test);
+
+                failTextView.setVisibility(View.VISIBLE);
+                failTextView.setText(failText);
 
                 okButton.setText(R.string.try_again);
                 cancelButton.setText(R.string.return_to_lesson);
