@@ -170,6 +170,7 @@ public class LessonPack {
     }
 
     public void updateDataBase(Lesson lesson){
+        Log.i(TAG,"lesson id: " + lesson.getLessonID() + " lesson is done: " + lesson.isDone());
         ContentValues values = new ContentValues();
         values.put(LessonTable.Cols.TOPIC,lesson.getTopic());
         values.put(LessonTable.Cols.IS_DONE,lesson.isDone()? 1:0);
@@ -177,8 +178,8 @@ public class LessonPack {
 
         mDataBase.update(LessonTable.TABLE_NAME,
                 values,
-                LessonTable.Cols.ID + " =?",
-                new String[]{String.valueOf(lesson.getLessonID())});
+                LessonTable.Cols.ID + " = ?",
+                new String[]{Integer.toString(lesson.getLessonID())});
     }
 
     public Integer getLessonIdFromSignal(String signal){
