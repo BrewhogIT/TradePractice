@@ -139,6 +139,7 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                //В тесте запрещается перелистывать страницы
                 lastPosition = position;
                 boolean isEnable = (pageType != TEST_PAGE_TYPE);
                 pager.setPagingEnabled(isEnable);
@@ -147,6 +148,7 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
             @SuppressLint("LongLogTag")
             @Override
             public void onPageScrollStateChanged(int state) {
+                //Если у пейджера последняя страница, при пролистывании вызывается окно выбора действия
                 switch (state){
                     case ViewPager.SCROLL_STATE_SETTLING:
                         hasBeenScrolled = true;
@@ -154,7 +156,9 @@ public class TheoryLessonPagerActivity extends AppCompatActivity {
                     case ViewPager.SCROLL_STATE_IDLE:
                         if ((lastPosition == pager.getChildCount() - 1)&& !hasBeenScrolled){
                             Intent intent = ChooseWayActivity.newIntent(
-                                    TheoryLessonPagerActivity.this,getWindowKind(pageType));
+                                    TheoryLessonPagerActivity.this,
+                                    getWindowKind(pageType),
+                                    mLesson.getPercentOfCorrectAnswer());
                             startActivityForResult(intent,REQUEST_CHOOSE_WAY);
                         }else {
                             hasBeenScrolled = false;
