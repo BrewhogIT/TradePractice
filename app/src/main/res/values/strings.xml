@@ -1,9 +1,9 @@
 <resources>
     /* строки главного экрана */
     <string name="app_name">TradePractice</string>
-    <string name="theory">Теория</string>
-    <string name="practice">Практика</string>
-    <string name="how_to_use">Как заниматься</string>
+    <string name="theory">Theory</string>
+    <string name="practice">Practice</string>
+    <string name="how_to_use">How to</string>
 
     <string name="theory_logo_transitional_name">Лого уроков теории</string>
 

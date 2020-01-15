@@ -14,6 +14,13 @@
         <item name="android:textSize">24sp</item>
     </style>
 
+    <style name = "lessonKindTopic">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorLightGray</item>
+    </style>
+
     <style parent="Theme.AppCompat.NoActionBar" name="AppThemeTranslucent">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
