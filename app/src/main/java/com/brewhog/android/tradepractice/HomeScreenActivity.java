@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +66,15 @@ public class HomeScreenActivity extends AppCompatActivity {
     private class LessonTypeViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private ImageView mLessonTypeLogoView;
+        private TextView lessonKindTopic;
         private int mLessonKind;
         private int resourseID;
+        private String topic;
 
         public LessonTypeViewHolder(@NonNull View itemView) {
             super(itemView);
             mLessonTypeLogoView = itemView.findViewById(R.id.lesson_kind_logo);
+            lessonKindTopic = itemView.findViewById(R.id.lesson_kind_topic);
             itemView.setOnClickListener(this);
         }
 
@@ -79,15 +84,21 @@ public class HomeScreenActivity extends AppCompatActivity {
             switch (mLessonKind){
                 case R.string.practice:
                     resourseID = R.drawable.practice;
+                    topic = getString(R.string.practice);
                     break;
                 case  R.string.theory:
                     resourseID = R.drawable.theory;
+                    topic = getString(R.string.theory);
                     break;
                 case R.string.how_to_use:
                     resourseID = R.drawable.howtouse;
+                    topic = getString(R.string.how_to_use);
                     break;
             }
 
+            Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/UrdType.ttf");
+            lessonKindTopic.setTypeface(typeface);
+            lessonKindTopic.setText(topic);
             mLessonTypeLogoView.setImageResource(resourseID);
         }
 
