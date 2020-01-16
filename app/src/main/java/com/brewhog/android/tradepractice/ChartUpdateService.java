@@ -10,6 +10,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkRequest;
@@ -26,16 +28,17 @@ import androidx.core.app.NotificationCompat;
 
 public class ChartUpdateService extends IntentService {
     private static final String TAG = "ChartUpdateService";
+    public static boolean isNetworkConnected = false;
+    private static final long INTERVAL_MS = TimeUnit.MINUTES.toMillis(1);
+
     private static final int NOTIFICATION_INTENT_CODE = 1;
     private static final String CHANEL_1_ID = "first_notification_chanel";
-    private static final long INTERVAL_MS = TimeUnit.MINUTES.toMillis(1);
-    public static boolean isNetworkConnected = false;
-    public static String ACTION_SHOW_NOTIFICATION =
-            "com.brewhog.android.tradepractice.SHOW_NOTIFICATION";
     public static final String REQUEST_CODE = "REQUEST_CODE";
     public static final String NOTIFICATION = "NOTIFICATION";
     public static final String PERM_PRIVATE =
             "com.brewhog.android.tradepractice.PRIVATE";
+    public static String ACTION_SHOW_NOTIFICATION =
+            "com.brewhog.android.tradepractice.SHOW_NOTIFICATION";
 
     public static Intent newIntent(Context context){
         return new Intent(context,ChartUpdateService.class);
@@ -91,6 +94,7 @@ public class ChartUpdateService extends IntentService {
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     this, NOTIFICATION_INTENT_CODE, lessonListIntent, 0);
             Resources resources = getResources();
+            Bitmap largeImage = BitmapFactory.decodeResource(resources,R.drawable.large_notification);
 
             Notification notification = new NotificationCompat.Builder(this, CHANEL_1_ID)
                     .setTicker(resources.getString(R.string.notification_title))
@@ -99,6 +103,7 @@ public class ChartUpdateService extends IntentService {
                     .setContentText(resources.getString(R.string.notification_text))
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
+                    .setLargeIcon(largeImage)
                     .build();
 
             sendNotification(0,notification);
@@ -107,6 +112,7 @@ public class ChartUpdateService extends IntentService {
     }
 
     private void registerNetworkCallback(){
+        //Проверка интернет соединения
         ConnectivityManager cm = (ConnectivityManager)
                 getSystemService(CONNECTIVITY_SERVICE);
 
