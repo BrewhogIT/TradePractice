@@ -6,12 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:buttonStyle">@style/myButtonStyle</item>
+        <item name="android:buttonStyle">@style/defaultButtonStyle</item>
     </style>
 
     <style name="testQuestionStyle">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">24sp</item>
+        <item name="android:padding">18dp</item>
+        <item name="android:textColor">@color/colorLightGray</item>
     </style>
 
     <style name = "lessonKindTopic">
@@ -37,11 +39,16 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-     <style name="myButtonStyle" parent="Widget.AppCompat.Button">
+     <style name="defaultButtonStyle" parent="Widget.AppCompat.Button">
          <item name="android:background">@drawable/button_background</item>
+         <item name="android:textColor">@color/colorLightGray</item>
+         <item name="android:padding">8dp</item>
+         <item name="android:textAllCaps">false</item>
+         <item name="android:textSize">16sp</item>
      </style>
 
      <style name="chooseWayButton" parent="Widget.AppCompat.Button">
-         <item name="android:background">@drawable/choose_way_button_background</item>
+         <item name="android:background">@drawable/button_background</item>
+         <item name="android:textColor">@color/colorLightGray</item>
      </style>
 </resources>

@@ -15,12 +15,11 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Map;
-import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 public class TestPageFragment extends Fragment {
     private static final String TAG = "TestPageFragment";
@@ -67,7 +66,7 @@ public class TestPageFragment extends Fragment {
         questionText = view.findViewById(R.id.question_text);
         answersField = view.findViewById(R.id.answers_field);
 
-        questionIllustration.setImageDrawable(getResources().getDrawable(R.drawable.test_backgroung));
+        questionIllustration.setImageDrawable(getResources().getDrawable(R.drawable.test_background));
         questionText.setText(mTest.getQuestion());
 
         createQuestionButtons(answersField);
@@ -82,26 +81,34 @@ public class TestPageFragment extends Fragment {
 
         //конвертируем dp в пиксели
         int value = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                (float) 10, getResources().getDisplayMetrics());
+                (float) 4, getResources().getDisplayMetrics());
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(matchParent,wrapContent);
         params.gravity = gravity;
         params.setMargins(0,0,0,value);
         Map<String,Boolean> answers = mTest.getAnswers();
 
+        //Создаем кнопки с вариантами ответа
         for (final Map.Entry<String,Boolean> pair : answers.entrySet()){
             Button button = new Button(getActivity());
             button.setText(pair.getKey());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //По нажатию проверяем ответ на корректность, меняем страницу на следующий вопрос
                     String isCorrect = getResources().getString(R.string.incorrect);
+                    int color = R.color.colorOrange;
                     if (pair.getValue()){
                         mLesson.setCorrectAnswersCount(mLesson.getCorrectAnswersCount() + 1);
                         isCorrect = getResources().getString(R.string.correct);
+                        color = R.color.colorNeonGreen;
                     }
 
-                    Snackbar.make(view,isCorrect,Snackbar.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(view,isCorrect,Snackbar.LENGTH_SHORT);
+                    View snackView = snackbar.getView();
+                    snackView.setBackgroundColor(ContextCompat.getColor(getActivity(), color));
+                    snackbar.show();
+
                     mPagingSetting.setPagingEnabled(true);
                     mPagingSetting.nextPage();
                 }
