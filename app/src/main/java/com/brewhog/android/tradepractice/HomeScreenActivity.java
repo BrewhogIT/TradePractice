@@ -96,7 +96,8 @@ public class HomeScreenActivity extends AppCompatActivity {
                     break;
             }
 
-            Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/UrdType.ttf");
+            //Меняем изображение и текст в зависимости от типа урока
+            Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/SourceSerifPro.ttf");
             lessonKindTopic.setTypeface(typeface);
             lessonKindTopic.setText(topic);
             mLessonTypeLogoView.setImageResource(resourseID);
