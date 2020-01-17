@@ -28,17 +28,12 @@
         </activity>
         <activity android:name=".SingleFragmentActivity"/>
         <activity
-            android:name=".LessonsListActivity"
-            android:screenOrientation="portrait"/>
+            android:name=".LessonsListActivity"/>
         <activity android:name=".TheoryLessonPagerActivity" />
         <activity
             android:name=".ChartActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppThemeChart"/>
-        <service
-            android:name=".ChartUpdateServiceScheduler"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <service android:name=".ChartUpdateService"/>
 

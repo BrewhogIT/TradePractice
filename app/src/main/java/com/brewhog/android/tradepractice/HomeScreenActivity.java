@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private ImageView logoView;
     private List<Integer> lessonsKindList;
     private RecyclerView lessonSectionRecyclerView;
+    private int orientation;
 
     public static Intent newIntent(Context context){
         return new Intent(context, HomeScreenActivity.class);
@@ -33,6 +36,12 @@ public class HomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+            getSupportActionBar().hide();
+        }else {
+            getSupportActionBar().show();
+        }
 
         logoView = findViewById(R.id.logo_view);
         Drawable logo = getResources().getDrawable(R.drawable.logo);
@@ -49,8 +58,11 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-        CenterZoomLayoutManager layoutManager = new CenterZoomLayoutManager(
-                this, LinearLayoutManager.HORIZONTAL,false);
+        int managerOrientation = orientation == Configuration.ORIENTATION_PORTRAIT ?
+                LinearLayoutManager.HORIZONTAL : LinearLayoutManager.VERTICAL;
+
+                CenterZoomLayoutManager layoutManager = new CenterZoomLayoutManager(
+                this, managerOrientation,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new LessonTypeAdapter(lessonsKindList));
 
