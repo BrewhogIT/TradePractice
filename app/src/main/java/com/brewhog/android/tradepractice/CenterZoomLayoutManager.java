@@ -44,4 +44,31 @@ public class CenterZoomLayoutManager extends LinearLayoutManager {
             return 0;
         }
     }
+
+    @Override
+    public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
+        int orientation = getOrientation();
+        if (orientation == RecyclerView.VERTICAL){
+            int scrolled = super.scrollVerticallyBy(dy, recycler, state);
+
+            float midpoint = getHeight() / 2.f;
+            float d0 = 0.f;
+            float d1 = mShrinkDistance * midpoint;
+            float s0 = 1.f;
+            float s1 = 1.f - mShrinkAmount;
+            for (int i = 0; i < getChildCount(); i++){
+                View child = getChildAt(i);
+                float childMidpoint =
+                        (getDecoratedBottom(child) + getDecoratedTop(child)) / 2.f;
+                float d = Math.min(d1, Math.abs(midpoint - childMidpoint));
+                float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
+                child.setScaleX(scale);
+                child.setScaleY(scale);
+            }
+
+            return scrolled;
+        }else {
+            return 0;
+        }
+    }
 }
