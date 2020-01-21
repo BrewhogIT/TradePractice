@@ -1,5 +1,6 @@
 package com.brewhog.android.tradepractice;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -31,19 +32,22 @@ public class TestPageFragment extends Fragment {
     private TextView questionText;
     private LinearLayout answersField;
     private PagingSetting mPagingSetting;
+    private int lessonID;
+    private int testNumber;
+    private CallBack mCallBack;
 
-    public static TestPageFragment newInstance(int lessonID, int testNumber, PagingSetting setting) {
+    public static TestPageFragment newInstance(int lessonID, int testNumber) {
         Bundle args = new Bundle();
         args.putInt(ARG_LESSON_ID,lessonID);
         args.putInt(ARG_TEST_NUMBER,testNumber);
 
-        TestPageFragment fragment = new TestPageFragment(setting);
+        TestPageFragment fragment = new TestPageFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public TestPageFragment(PagingSetting pagingSetting) {
-        mPagingSetting = pagingSetting;
+    public TestPageFragment(){
+        super();
     }
 
     public interface PagingSetting{
@@ -51,12 +55,26 @@ public class TestPageFragment extends Fragment {
         void nextPage();
     }
 
+    //необходим, для обновления ссылки на пейджер незаисимо от активности(например при смене конфигурации)
+    public interface CallBack{
+        View getPager();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mCallBack = (CallBack) getActivity();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        int lessonID =getArguments().getInt(ARG_LESSON_ID);
-        int testNumber = getArguments().getInt(ARG_TEST_NUMBER);
+        mPagingSetting = (PagingSetting) mCallBack.getPager();
+
+        lessonID = getArguments().getInt(ARG_LESSON_ID);
+        testNumber = getArguments().getInt(ARG_TEST_NUMBER);
+
         mLesson = LessonPack.getLessonPack(getActivity()).getLesson(lessonID);
         Log.i(TAG,"correct answer count is: " + mLesson.getCorrectAnswersCount());
         mTest = mLesson.getLessonTest().get(testNumber);
