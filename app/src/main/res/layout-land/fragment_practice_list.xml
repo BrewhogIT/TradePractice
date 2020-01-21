@@ -7,17 +7,18 @@
     <androidx.cardview.widget.CardView
         android:layout_width="400dp"
         android:layout_height="match_parent"
-        android:layout_margin="4dp"
-        app:cardCornerRadius="16dp">
+        app:cardCornerRadius="0dp">
         <ImageView
-            android:id="@+id/page_illustration"
+            android:id="@+id/practice_lesson_large_illustration"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"
+            android:transitionName="@string/theory_logo_transitional_name"/>
     </androidx.cardview.widget.CardView>
-    <WebView
-        android:id="@+id/page_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/practice_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLightGray"/>
 </LinearLayout>
