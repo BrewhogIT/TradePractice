@@ -37,11 +37,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         orientation = this.getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-            getSupportActionBar().hide();
-        }else {
-            getSupportActionBar().show();
-        }
+        ActionBarHider.hideIfLandscape(this,this);
 
         logoView = findViewById(R.id.logo_view);
         Drawable logo = getResources().getDrawable(R.drawable.logo);

@@ -2,6 +2,7 @@ package com.brewhog.android.tradepractice;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 public class CustomViewPager extends ViewPager implements TestPageFragment.PagingSetting {
+    public static final String TAG = "CustomViewPager";
     private boolean isPagingEnabled;
     private ViewPager.OnPageChangeListener mPageChangeListener;
 
@@ -40,6 +42,7 @@ public class CustomViewPager extends ViewPager implements TestPageFragment.Pagin
 
     @Override
     public void nextPage() {
+        Log.i(TAG,"nextPage is run, mPageChangeListener = " + mPageChangeListener.toString());
         mPageChangeListener.onPageScrollStateChanged(ViewPager.SCROLL_STATE_IDLE);
         this.setCurrentItem(this.getCurrentItem() + 1,true);
     }
