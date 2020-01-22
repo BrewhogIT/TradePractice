@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-public class CustomViewPager extends ViewPager implements TestPageFragment.PagingSetting {
+public class CustomViewPager extends ViewPager {
     public static final String TAG = "CustomViewPager";
     private boolean isPagingEnabled;
     private ViewPager.OnPageChangeListener mPageChangeListener;
@@ -35,12 +35,10 @@ public class CustomViewPager extends ViewPager implements TestPageFragment.Pagin
         return  this.isPagingEnabled && super.onTouchEvent(ev);
     }
 
-    @Override
     public void setPagingEnabled(boolean pagingEnabled) {
         isPagingEnabled = pagingEnabled;
     }
 
-    @Override
     public void nextPage() {
         Log.i(TAG,"nextPage is run, mPageChangeListener = " + mPageChangeListener.toString());
         mPageChangeListener.onPageScrollStateChanged(ViewPager.SCROLL_STATE_IDLE);

@@ -31,7 +31,7 @@ public class TestPageFragment extends Fragment {
     private ImageView questionIllustration;
     private TextView questionText;
     private LinearLayout answersField;
-    private PagingSetting mPagingSetting;
+    private CustomViewPager mCustomViewPager;
     private int lessonID;
     private int testNumber;
     private CallBack mCallBack;
@@ -50,11 +50,6 @@ public class TestPageFragment extends Fragment {
         super();
     }
 
-    public interface PagingSetting{
-        void setPagingEnabled(boolean pagingEnabled);
-        void nextPage();
-    }
-
     //необходим, для обновления ссылки на пейджер незаисимо от активности(например при смене конфигурации)
     public interface CallBack{
         View getPager();
@@ -70,7 +65,7 @@ public class TestPageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mPagingSetting = (PagingSetting) mCallBack.getPager();
+        mCustomViewPager = (CustomViewPager) mCallBack.getPager();
 
         lessonID = getArguments().getInt(ARG_LESSON_ID);
         testNumber = getArguments().getInt(ARG_TEST_NUMBER);
@@ -88,7 +83,7 @@ public class TestPageFragment extends Fragment {
         questionText.setText(mTest.getQuestion());
 
         createQuestionButtons(answersField);
-        mPagingSetting.setPagingEnabled(false);
+        mCustomViewPager.setPagingEnabled(false);
         return view;
     }
 
@@ -127,8 +122,8 @@ public class TestPageFragment extends Fragment {
                     snackView.setBackgroundColor(ContextCompat.getColor(getActivity(), color));
                     snackbar.show();
 
-                    mPagingSetting.setPagingEnabled(true);
-                    mPagingSetting.nextPage();
+                    mCustomViewPager.setPagingEnabled(true);
+                    mCustomViewPager.nextPage();
                 }
             });
 
