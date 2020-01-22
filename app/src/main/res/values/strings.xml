@@ -5,6 +5,7 @@
     <string name="practice">Практика</string>
     <string name="how_to_use">Руководство</string>
 
+    /* строки анимации */
     <string name="theory_logo_transitional_name">Лого уроков теории</string>
 
     /* строки теоретического раздела */
