@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,7 @@ public class TheoryListFragment extends Fragment {
     private TheoryAdapter mAdapter;
     private ImageView levelIconView;
     private List<Drawable> levelIcons;
+    private CardView levelFrame;
 
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
 
@@ -58,11 +61,27 @@ public class TheoryListFragment extends Fragment {
         theoryListRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
 
+        levelFrame = view.findViewById(R.id.users_level_view);
         levelIconView = view.findViewById(R.id.level_icon);
         userLevelProgress = view.findViewById(R.id.user_level_progressBar);
         levelIcons = loadLevelIcons();
 
         updateUI();
+
+        //Анимация выпадающего списка уроков
+        LayoutAnimationController animationController = AnimationUtils
+                .loadLayoutAnimation(getActivity(),R.anim.layout_animation_fall_down);
+        theoryListRecyclerView.setLayoutAnimation(animationController);
+
+        Animation slideRightAnimation = AnimationUtils
+                .loadAnimation(getActivity(),R.anim.item_animation_from_left);
+        userLevelProgress.setAnimation(slideRightAnimation);
+
+        Animation slideFromAngle = AnimationUtils
+                .loadAnimation(getActivity(),R.anim.item_animation_from_angle);
+        levelFrame.setAnimation(slideFromAngle);
+
+
         return view;
     }
 
@@ -160,4 +179,5 @@ public class TheoryListFragment extends Fragment {
             return mLessons.size();
         }
     }
+
 }

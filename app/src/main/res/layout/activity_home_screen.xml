@@ -14,5 +14,7 @@
         android:layout_height ="240dp"
         android:layout_width ="match_parent"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="35dp"/>
+        android:layout_marginBottom="35dp"
+        android:layoutAnimation="@anim/layout_animation_from_bottom"
+        />
 </FrameLayout>
