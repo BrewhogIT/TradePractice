@@ -67,8 +67,10 @@ public class TheoryListFragment extends Fragment {
         levelIcons = loadLevelIcons();
 
         updateUI();
+        return view;
+    }
 
-        //Анимация выпадающего списка уроков
+    private void welcomeAnimation() {
         LayoutAnimationController animationController = AnimationUtils
                 .loadLayoutAnimation(getActivity(),R.anim.layout_animation_fall_down);
         theoryListRecyclerView.setLayoutAnimation(animationController);
@@ -80,9 +82,6 @@ public class TheoryListFragment extends Fragment {
         Animation slideFromAngle = AnimationUtils
                 .loadAnimation(getActivity(),R.anim.item_animation_from_angle);
         levelFrame.setAnimation(slideFromAngle);
-
-
-        return view;
     }
 
     @Override
@@ -105,6 +104,7 @@ public class TheoryListFragment extends Fragment {
         userLevelProgress.setProgress(userLevel);
         levelIconView.setImageDrawable(levelIcons.get(userLevel));
 
+        welcomeAnimation();
     }
 
     private List<Drawable> loadLevelIcons(){
