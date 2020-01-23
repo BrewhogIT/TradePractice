@@ -18,7 +18,8 @@
             android:layout_marginEnd="-60dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:cardCornerRadius="60dp">
+            app:cardCornerRadius="60dp"
+            >
             <ImageView
                 android:id="@+id/level_icon"
                 android:layout_width="match_parent"
@@ -42,12 +43,14 @@
             android:layout_height="12dp"
             android:layout_margin="4dp"
             android:layout_gravity="bottom"
-            android:progressDrawable="@drawable/custom_progressbar"/>
+            android:progressDrawable="@drawable/custom_progressbar"
+            />
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/theory_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorLightGray"/>
+        android:background="@color/colorLightGray"
+        />
 </LinearLayout>
