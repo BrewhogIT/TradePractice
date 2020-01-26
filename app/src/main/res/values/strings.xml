@@ -7,6 +7,7 @@
 
     /* строки анимации */
     <string name="theory_logo_transitional_name">Лого уроков теории</string>
+    <string name="lesson_preview_transition_name">урок%1$d</string>
 
     /* строки теоретического раздела */
     <string name="users_level_text">Ваш прогресс</string>

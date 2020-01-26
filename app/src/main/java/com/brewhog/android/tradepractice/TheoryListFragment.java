@@ -1,5 +1,6 @@
 package com.brewhog.android.tradepractice;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
@@ -67,6 +68,8 @@ public class TheoryListFragment extends Fragment {
         levelIcons = loadLevelIcons();
 
         updateUI();
+        welcomeAnimation();
+
         return view;
     }
 
@@ -104,7 +107,6 @@ public class TheoryListFragment extends Fragment {
         userLevelProgress.setProgress(userLevel);
         levelIconView.setImageDrawable(levelIcons.get(userLevel));
 
-        welcomeAnimation();
     }
 
     private List<Drawable> loadLevelIcons(){
@@ -146,8 +148,10 @@ public class TheoryListFragment extends Fragment {
         @Override
         public void onClick(View view) {
             int lessonID = mLesson.getLessonID();
-            Intent intent = TheoryLessonPagerActivity.newIntent(getActivity(),lessonID);
-            startActivity(intent);
+            TheoryLessonPagerActivity.startActivityWithTransition(
+                    getActivity(),
+                    lessonID,
+                    lessonPreview);
         }
     }
 
@@ -172,6 +176,7 @@ public class TheoryListFragment extends Fragment {
         public void onBindViewHolder(@NonNull TheoryHolder holder, int position) {
             Lesson lesson = mLessons.get(position);
             holder.bind(lesson);
+
         }
 
         @Override
