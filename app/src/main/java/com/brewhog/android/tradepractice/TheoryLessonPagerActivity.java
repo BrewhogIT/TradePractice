@@ -2,11 +2,14 @@ package com.brewhog.android.tradepractice;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 
 import java.util.UUID;
 
@@ -23,7 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class TheoryLessonPagerActivity extends AppCompatActivity
-implements TestPageFragment.CallBack{
+implements TestPageFragment.CallBack, TheoryPageFragment.CallBack{
     public static final String TAG = "TheoryLessonPagerActivity";
     public static final String LESSONS_ID_EXTRA = "com.brewhog.android.tradepractice.lesson_number";
     public static final String PAGE_TYPE_EXTRA = "com.brewhog.android.tradepractice.page_type";
@@ -48,6 +51,14 @@ implements TestPageFragment.CallBack{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Для анимации перехода к элементам пейджера, приостанавливаем анимацию
+        // разблокировка происходит в TheoryPageFragment.CallBack
+        supportPostponeEnterTransition();
+        postponeEnterTransition();
+
+
+        setContentView(R.layout.activity_theory_lesson);
+
         if (savedInstanceState != null){
             pageType = savedInstanceState.getInt(PAGE_TYPE_EXTRA);
         }else {
@@ -57,7 +68,6 @@ implements TestPageFragment.CallBack{
         lessonID = getIntent().getIntExtra(LESSONS_ID_EXTRA,0);
         mLesson = LessonPack.getLessonPack(this).getLesson(lessonID);
 
-        setContentView(R.layout.activity_theory_lesson);
         theoryLessonPager = findViewById(R.id.theory_lesson_pager);
         updateUI(theoryLessonPager,pageType);
     }
@@ -191,7 +201,6 @@ implements TestPageFragment.CallBack{
                 }
             }
         });
-
     }
 
     private int getLimit(int pageType) {
@@ -204,9 +213,25 @@ implements TestPageFragment.CallBack{
         return limit;
     }
 
-
     @Override
     public View getPager() {
         return theoryLessonPager;
+    }
+
+    @Override
+    public void setStartPostTransition() {
+        startPostponedEnterTransition();
+    }
+
+    public static void startActivityWithTransition(Activity activity, int lessonID, View view){
+        Intent intent = newIntent(activity,lessonID);
+
+        view.setTransitionName(
+                activity.getString(R.string.lesson_preview_transition_name, lessonID));
+
+        ActivityOptions options =
+                ActivityOptions.makeSceneTransitionAnimation(activity,view,
+                        view.getTransitionName());
+        activity.startActivity(intent,options.toBundle());
     }
 }
