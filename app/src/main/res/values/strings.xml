@@ -6,8 +6,9 @@
     <string name="how_to_use">Руководство</string>
 
     /* строки анимации */
-    <string name="theory_logo_transitional_name">Лого уроков теории</string>
+    <string name="lesson_kind_logo_transitional_name">Лого раздела</string>
     <string name="lesson_preview_transition_name">урок%1$d</string>
+    <string name="chart_transition_name">Изображение графика</string>
 
     /* строки теоретического раздела */
     <string name="users_level_text">Ваш прогресс</string>

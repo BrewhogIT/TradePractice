@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +46,7 @@ public class PracticeListFragment extends Fragment {
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
     private BroadcastReceiver notifycationReceiver;
     private PracticePack mPracticePack;
+    private int orientation;
 
     public static PracticeListFragment newInstance(int imageResID) {
         Bundle args = new Bundle();
@@ -55,6 +60,7 @@ public class PracticeListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        orientation = this.getResources().getConfiguration().orientation;
         notifycationReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -135,12 +141,18 @@ public class PracticeListFragment extends Fragment {
             ArrayList<String> signals = (ArrayList<String>) mPracticeItem.getSignals();
 
             Intent intent = ChartActivity.newIntent(getActivity(),chartUrl,chartUrlDone,signals);
-            getActivity().startActivity(intent);
+            if (orientation == Configuration.ORIENTATION_PORTRAIT){
+                getActivity().startActivity(intent);
+
+            }else{
+                ChartActivity.startActivityWithTransition(getActivity(),chartView,intent);
+            }
         }
     }
 
-    private class PracticeAdapter extends RecyclerView.Adapter<PracticeHolder>{
+    public class PracticeAdapter extends RecyclerView.Adapter<PracticeHolder>{
         private List<Practice> mPracticeList;
+        private  RecyclerView mRecyclerView;
 
         public PracticeAdapter(List<Practice> practiceList) {
             mPracticeList = practiceList;
@@ -164,6 +176,19 @@ public class PracticeListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mPracticeList.size();
+        }
+
+        @Override
+        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+            super.onAttachedToRecyclerView(recyclerView);
+
+            mRecyclerView = recyclerView;
+        }
+
+        public void welcomeAnimation(){
+            Animation animation = AnimationUtils.
+                    loadAnimation(getActivity(),R.anim.item_animation_from_bottom);
+            mRecyclerView.setAnimation(animation);
         }
     }
 
@@ -241,4 +266,6 @@ public class PracticeListFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }

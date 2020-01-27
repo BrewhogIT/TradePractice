@@ -51,6 +51,7 @@ public class ChooseWayActivity extends AppCompatActivity {
         failTextView = findViewById(R.id.fail_text_view);
         activityWindow = findViewById(R.id.choose_way_window);
 
+        //включаем анимацию кругового открытия активности
         if (savedInstanceState == null){
             activityWindow.setVisibility(View.INVISIBLE);
 
@@ -134,7 +135,7 @@ public class ChooseWayActivity extends AppCompatActivity {
                 0,
                 finalRadius);
 
-        circularAnimation.setDuration(1000);
+        circularAnimation.setDuration(750);
         activityWindow.setVisibility(View.VISIBLE);
         circularAnimation.start();
     }
@@ -176,7 +177,7 @@ public class ChooseWayActivity extends AppCompatActivity {
             }
         });
 
-        circularAnimation.setDuration(1000);
+        circularAnimation.setDuration(750);
         circularAnimation.start();
     }
 }

@@ -54,7 +54,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-        int managerOrientation = orientation == Configuration.ORIENTATION_PORTRAIT ?
+        int managerOrientation = (orientation == Configuration.ORIENTATION_PORTRAIT) ?
                 LinearLayoutManager.HORIZONTAL : LinearLayoutManager.VERTICAL;
 
                 CenterZoomLayoutManager layoutManager = new CenterZoomLayoutManager(
