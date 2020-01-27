@@ -60,7 +60,9 @@ public class PracticePack {
                         setChartInfo(folderList,mPracticeList);
 
                         if (mAdapter != null){
+                            //после загрузки всех папок сообщаем об обновлении и вызываем анимацию
                             mAdapter.notifyDataSetChanged();
+                            ((PracticeListFragment.PracticeAdapter)mAdapter).welcomeAnimation();
                         }
                         Log.i(TAG, "OnSuccess in getAllFolders, list mPracticeList size is " + mPracticeList.size());
                     }

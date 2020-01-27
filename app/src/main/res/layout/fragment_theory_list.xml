@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:transitionName="@string/theory_logo_transitional_name"/>
+            android:transitionName="@string/lesson_kind_logo_transitional_name"/>
 
         <ProgressBar
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
