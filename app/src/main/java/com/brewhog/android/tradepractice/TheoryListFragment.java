@@ -3,6 +3,7 @@ package com.brewhog.android.tradepractice;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class TheoryListFragment extends Fragment {
     private ImageView levelIconView;
     private List<Drawable> levelIcons;
     private CardView levelFrame;
+    private int orientation;
 
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
 
@@ -53,6 +55,8 @@ public class TheoryListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_theory_list,container,false);
+        orientation = this.getResources().getConfiguration().orientation;
+
 
         int imageResId = getArguments().getInt(IMAGE_RES_ID_ARGS);
         lessonKindIllustration = view.findViewById(R.id.theory_lesson_large_illustration);
@@ -110,14 +114,18 @@ public class TheoryListFragment extends Fragment {
     }
 
     private List<Drawable> loadLevelIcons(){
+        String iconFolder = (orientation == Configuration.ORIENTATION_PORTRAIT) ?
+                "level_icons" : "level_icons_land";
+
+
         AssetManager manager = getActivity().getAssets();
         List<Drawable> iconsList = new ArrayList<>();
         try {
-            String[] icons = manager.list("level_icons");
+            String[] icons = manager.list(iconFolder);
 
             for (int i = 0; i < icons.length; i++){
                 InputStream inputStream = manager
-                        .open("level_icons/" + icons[i]);
+                        .open(iconFolder + "/" + icons[i]);
                 iconsList.add(Drawable.createFromStream(inputStream,null));
                 inputStream.close();
             }
