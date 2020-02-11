@@ -1,10 +1,9 @@
 package com.brewhog.android.tradepractice;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,15 +101,17 @@ public class GuideFragment extends Fragment {
 
             //конвертируем dp в пиксели
             int marginValue = getPixFromDp(4);
+            int bottomMargin = getPixFromDp(8);
 
             RecyclerView.LayoutParams params = new RecyclerView.LayoutParams
                     (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(marginValue,0,marginValue,marginValue);
+            params.setMargins(marginValue,0,marginValue,bottomMargin);
 
             textView.setLayoutParams(params);
-            textView.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
+            textView.setBackgroundColor(getResources().getColor(R.color.colorVeryLightGray));
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-            textView.setTextColor(getResources().getColor(R.color.coloVeryLightGray));
+            textView.setTextColor(getResources().getColor(R.color.colorGray));
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
 
             holder = new TextHolder(textView);
             return holder;
@@ -129,7 +130,7 @@ public class GuideFragment extends Fragment {
             params.setMargins(0,0,0,marginValue);
 
             imageView.setLayoutParams(params);
-            imageView.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
+            imageView.setBackgroundColor(getResources().getColor(R.color.colorVeryLightGray));
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
             holder = new ImageHolder(imageView);

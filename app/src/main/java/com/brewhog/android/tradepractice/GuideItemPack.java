@@ -35,12 +35,16 @@ public class GuideItemPack {
         one.setInfo(0);
         guideItemList.add(one);
 
+        GuideItem oneTwo = new GuideItem(TEXT_TYPE);
+        oneTwo.setInfo(1);
+        guideItemList.add(oneTwo);
+
         GuideItem two = new GuideItem(IMAGE_TYPE);
         two.setInfo(R.drawable.guide_theory);
         guideItemList.add(two);
 
         GuideItem three = new GuideItem(TEXT_TYPE);
-        three.setInfo(1);
+        three.setInfo(2);
         guideItemList.add(three);
 
         GuideItem four = new GuideItem(IMAGE_TYPE);
@@ -48,7 +52,7 @@ public class GuideItemPack {
         guideItemList.add(four);
 
         GuideItem five = new GuideItem(TEXT_TYPE);
-        five.setInfo(2);
+        five.setInfo(3);
         guideItemList.add(five);
 
         GuideItem six = new GuideItem(IMAGE_TYPE);
@@ -56,7 +60,7 @@ public class GuideItemPack {
         guideItemList.add(six);
 
         GuideItem seven = new GuideItem(TEXT_TYPE);
-        seven.setInfo(3);
+        seven.setInfo(4);
         guideItemList.add(seven);
 
         GuideItem eight = new GuideItem(IMAGE_TYPE);
@@ -64,7 +68,7 @@ public class GuideItemPack {
         guideItemList.add(eight);
 
         GuideItem nine = new GuideItem(TEXT_TYPE);
-        nine.setInfo(4);
+        nine.setInfo(5);
         guideItemList.add(nine);
 
         return guideItemList;

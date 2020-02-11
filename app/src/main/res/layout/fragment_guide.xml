@@ -4,6 +4,6 @@
     android:id="@+id/guide_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLightGray">
+    android:background="@color/colorVeryLightGray">
 
 </androidx.recyclerview.widget.RecyclerView>
