@@ -14,7 +14,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportPostponeEnterTransition();
 
         setContentView(R.layout.activity_fragment);
         FragmentManager fm = getSupportFragmentManager();

@@ -40,6 +40,7 @@ public class GuideFragment extends Fragment {
 
     //Нужен для возобновления анимации перехода между общим элементом
     public interface Callback{
+        void setStopPostTransition();
         void setStartPostTransition();
     }
 
@@ -53,7 +54,7 @@ public class GuideFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //останавливаем анимацию перехода по общему элементу
-        postponeEnterTransition();
+        mCallback.setStopPostTransition();
     }
 
     @Nullable

@@ -44,6 +44,13 @@ public class LessonsListActivity extends SingleFragmentActivity implements Guide
         return fragment;
     }
 
+    //Нужен для остановки анимации перехода между общим элементом
+    @Override
+    public void setStopPostTransition() {
+        supportPostponeEnterTransition();
+        postponeEnterTransition();
+    }
+
     //Нужен для возобновления анимации перехода между общим элементом
     @Override
     public void setStartPostTransition() {
