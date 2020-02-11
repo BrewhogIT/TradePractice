@@ -7,6 +7,6 @@
     <color name="colorDarkGray">#3D4141</color>
     <color name="colorLightGray">#AEB1B1</color>
     <color name="colorNeonGreen">#66CE62</color>
-    <color name="coloVeryLightGray">#F8F7F6</color>
+    <color name="colorVeryLightGray">#ECECEB</color>
     <color name="colorOrange">#F75946</color>
 </resources>
