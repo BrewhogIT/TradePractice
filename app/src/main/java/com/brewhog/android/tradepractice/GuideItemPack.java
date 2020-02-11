@@ -25,7 +25,7 @@ public class GuideItemPack {
         //Добавляем части статьи, которые могут быть изображением, либо текстом
         //поле Info будет содержать либо ссылку на ресурс изображения,
         //либо индекс в массиве строк
-        
+
         List<GuideItem> guideItemList = new ArrayList<>();
 
         GuideItem zero = new GuideItem(IMAGE_TYPE);
