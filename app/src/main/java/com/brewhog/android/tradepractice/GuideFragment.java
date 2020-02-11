@@ -78,40 +78,60 @@ public class GuideFragment extends Fragment {
         @NonNull
         @Override
         public GuideHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            GuideHolder holder = null;
-
-            //конвертируем dp в пиксели
-            int marginValue = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    (float) 4, getResources().getDisplayMetrics());
-
-            int viewSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    (float) 250, getResources().getDisplayMetrics());
+            GuideHolder holder;
 
             //Создаем представление в зависимости от типа
             if (viewType == GuideItemPack.IMAGE_TYPE){
-                ImageView imageView = new ImageView(getActivity());
-                RecyclerView.LayoutParams params = new RecyclerView.LayoutParams
-                        (ViewGroup.LayoutParams.MATCH_PARENT, viewSize);
-                params.setMargins(0,0,0,marginValue);
-                imageView.setLayoutParams(params);
-                imageView.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
-                imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-
-                holder = new ImageHolder(imageView);
+                holder = getImageHolder();
             }else {
-                TextView textView = new TextView(getActivity());
-
-                RecyclerView.LayoutParams params = new RecyclerView.LayoutParams
-                        (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.setMargins(marginValue,0,marginValue,marginValue);
-                textView.setLayoutParams(params);
-                textView.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-                textView.setTextColor(getResources().getColor(R.color.coloVeryLightGray));
-
-                holder = new TextHolder(textView);
+                holder = getTextHolder();
             }
 
+            return holder;
+        }
+
+        private int getPixFromDp(float i) {
+            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    i, getResources().getDisplayMetrics());
+        }
+
+        private GuideHolder getTextHolder() {
+            GuideHolder holder;
+            TextView textView = new TextView(getActivity());
+
+            //конвертируем dp в пиксели
+            int marginValue = getPixFromDp(4);
+
+            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams
+                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(marginValue,0,marginValue,marginValue);
+
+            textView.setLayoutParams(params);
+            textView.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+            textView.setTextColor(getResources().getColor(R.color.coloVeryLightGray));
+
+            holder = new TextHolder(textView);
+            return holder;
+        }
+
+        private GuideHolder getImageHolder() {
+            GuideHolder holder;
+            ImageView imageView = new ImageView(getActivity());
+
+            //конвертируем dp в пиксели
+            int marginValue = getPixFromDp(4);
+            int viewSize = getPixFromDp(250);
+
+            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams
+                    (ViewGroup.LayoutParams.MATCH_PARENT, viewSize);
+            params.setMargins(0,0,0,marginValue);
+
+            imageView.setLayoutParams(params);
+            imageView.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+            holder = new ImageHolder(imageView);
             return holder;
         }
 
@@ -168,17 +188,23 @@ public class GuideFragment extends Fragment {
         @Override
         public void Bind(GuideItem item){
             int image;
+            ImageView.ScaleType scaleType;
+
             //Первое изображение в списке - логотип типа урока на котором присутствует
             //анимация перехода по общему элементу
             if (getAdapterPosition() == 0){
                 image = lessonKindLogo;
-                mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                scaleType = ImageView.ScaleType.FIT_XY;
                 prepareForAnimationTransition(mImageView);
             }else{
                 image = item.getInfo();
+                scaleType  = ImageView.ScaleType.CENTER_INSIDE;
+                //удаляем transitional name  т.к. холдер будет использоваться повторно, вместе с imageView
+                mImageView.setTransitionName(null);
             }
 
             mImageView.setImageResource(image);
+            mImageView.setScaleType(scaleType);
         }
 
         private void prepareForAnimationTransition(final View view) {
