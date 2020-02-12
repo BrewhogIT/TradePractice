@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,12 +90,12 @@ public class LessonPack {
                     List<Drawable> illustrations = new ArrayList<>();
 
                     //Обход по папкам и добавление в список страниц, которые представляют из себя
-                    //путь к html файлу и картинок.
+                    //путь к html файлу (без корневой папки "file:///android_asset/") и картинок.
                     //Количество страниц отличается от количество изображений на 1, т.к. для
                     // preview используется 2 изображения - для нового и пройденого урока
                     for (int j = 0; j < illustrationFileNames.length; j++){
                         if ( j < pageFileNames.length){
-                            pages.add("file:///android_asset/" + pagesFolder + "/" + pageFileNames[j]);
+                            pages.add(pagesFolder + "/" + pageFileNames[j]);
                         }
 
                         InputStream inputStream = mAssetManager
@@ -131,7 +132,7 @@ public class LessonPack {
             BufferedReader reader = null;
             try{
                 reader = new BufferedReader(
-                        new InputStreamReader(mAssetManager.open(testFilePath)));
+                        new InputStreamReader(mAssetManager.open(testFilePath), StandardCharsets.UTF_8));
                 String line;
                 for (int k = 0; (line = reader.readLine()) != null; k++){
                     if(k == 0){
