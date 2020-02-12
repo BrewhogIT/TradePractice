@@ -3,21 +3,29 @@ package com.brewhog.android.tradepractice;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class TheoryPageFragment extends Fragment {
+    private static final String TAG = "TheoryPageFragment";
     private static final String ARG_LESSON_ID = "lesson_id";
     private static final String ARG_PAGE_NUMBER = "page_number";
     private WebView lessonContentView;
@@ -65,14 +73,37 @@ public class TheoryPageFragment extends Fragment {
         prepareForAnimationTransition();
 
         lessonContentView = view.findViewById(R.id.page_content);
-        lessonContentView.getSettings().setJavaScriptEnabled(true);
+        WebSettings settings = lessonContentView.getSettings();
+        settings.setDefaultTextEncodingName("utf-8");
+        settings.setJavaScriptEnabled(true);
         lessonContentView.setWebViewClient(new WebViewClient());
-        lessonContentView.loadUrl(contentPath);
+        //lessonContentView.loadUrl(contentPath);
+        String data = fetchHTML(contentPath);
+        lessonContentView.loadDataWithBaseURL(
+                null,data,"text/html; charset=utf-8","utf-8",null);
+        Log.i(TAG,"data is : " + data);
 
         Animation showAnimation = AnimationUtils.loadAnimation(getActivity(),R.anim.item_animation_scale);
         lessonContentView.setAnimation(showAnimation);
 
         return view;
+    }
+
+    public String fetchHTML(String fileName) {
+        StringBuilder sb = new StringBuilder();
+        String tmpStr = "";
+        try {
+            InputStream in = getActivity().getAssets().open(fileName);
+            BufferedReader bfr = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            while ((tmpStr = bfr.readLine()) != null) {
+                sb.append(tmpStr);
+            }
+            in.close();
+        } catch (IOException e) {
+            Log.e(TAG,"error in lesson file reading");
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 
     private void prepareForAnimationTransition() {
