@@ -66,8 +66,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setOnFlingListener(snapHelper);
 
-        int recyclerCenterPosition = layoutManager.getItemCount() / 2 - 1;
-        layoutManager.scrollToPosition(Integer.MAX_VALUE / 2);
+        int recyclerCenterPosition = layoutManager.getItemCount() / 2;
+        layoutManager.scrollToPosition(recyclerCenterPosition - 3);
         recyclerView.smoothScrollToPosition(recyclerCenterPosition);
     }
 

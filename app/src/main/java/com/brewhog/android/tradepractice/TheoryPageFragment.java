@@ -1,6 +1,7 @@
 package com.brewhog.android.tradepractice;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,13 +73,13 @@ public class TheoryPageFragment extends Fragment {
         pageIllustrationView.setImageDrawable(illustrationDrawable);
         prepareForAnimationTransition();
 
+        String data = fetchHTML(contentPath);
         lessonContentView = view.findViewById(R.id.page_content);
         WebSettings settings = lessonContentView.getSettings();
         settings.setDefaultTextEncodingName("utf-8");
         settings.setJavaScriptEnabled(true);
         lessonContentView.setWebViewClient(new WebViewClient());
-        //lessonContentView.loadUrl(contentPath);
-        String data = fetchHTML(contentPath);
+        lessonContentView.setBackgroundColor(Color.TRANSPARENT);
         lessonContentView.loadDataWithBaseURL(
                 null,data,"text/html; charset=utf-8","utf-8",null);
         Log.i(TAG,"data is : " + data);
