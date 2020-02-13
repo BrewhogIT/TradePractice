@@ -8,7 +8,7 @@ import android.view.View;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 
-public class LessonsListActivity extends SingleFragmentActivity implements GuideFragment.Callback{
+public class LessonsListActivity extends SingleFragmentActivity implements GuideFragmentWeb.Callback{
     public static final String ILLUSTRATION_LESSON_KIND_EXTRA =
             "com.brewhog.android.tradepractice.IllustrationLessonKindExtra";
 
@@ -39,7 +39,7 @@ public class LessonsListActivity extends SingleFragmentActivity implements Guide
                 fragment = PracticeListFragment.newInstance(imageResId);
                 break;
             case R.drawable.howtouse:
-                fragment = GuideFragment.newInstance(imageResId);
+                fragment = GuideFragmentWeb.newInstance(imageResId);
         }
         return fragment;
     }
