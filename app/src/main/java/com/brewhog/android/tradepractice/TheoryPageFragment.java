@@ -77,14 +77,17 @@ public class TheoryPageFragment extends Fragment {
         lessonContentView = view.findViewById(R.id.page_content);
         WebSettings settings = lessonContentView.getSettings();
         settings.setDefaultTextEncodingName("utf-8");
-        settings.setJavaScriptEnabled(true);
         lessonContentView.setWebViewClient(new WebViewClient());
         lessonContentView.setBackgroundColor(Color.TRANSPARENT);
         lessonContentView.loadDataWithBaseURL(
-                null,data,"text/html; charset=utf-8","utf-8",null);
-        Log.i(TAG,"data is : " + data);
+                null,
+                data,
+                "text/html; charset=utf-8",
+                "utf-8",
+                null);
 
-        Animation showAnimation = AnimationUtils.loadAnimation(getActivity(),R.anim.item_animation_scale);
+        Animation showAnimation = AnimationUtils
+                .loadAnimation(getActivity(),R.anim.item_animation_scale);
         lessonContentView.setAnimation(showAnimation);
 
         return view;
