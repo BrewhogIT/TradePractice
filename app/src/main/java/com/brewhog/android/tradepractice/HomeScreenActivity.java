@@ -13,6 +13,8 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeScreenActivity extends AppCompatActivity {
+    private static final String TAG = "HomeScreenActivity";
     private ImageView logoView;
     private List<Integer> lessonsKindList;
     private RecyclerView lessonSectionRecyclerView;
@@ -57,7 +60,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         int managerOrientation = (orientation == Configuration.ORIENTATION_PORTRAIT) ?
                 LinearLayoutManager.HORIZONTAL : LinearLayoutManager.VERTICAL;
 
-                CenterZoomLayoutManager layoutManager = new CenterZoomLayoutManager(
+        CenterZoomLayoutManager layoutManager = new CenterZoomLayoutManager(
                 this, managerOrientation,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new LessonTypeAdapter(lessonsKindList));
@@ -66,9 +69,10 @@ public class HomeScreenActivity extends AppCompatActivity {
         snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setOnFlingListener(snapHelper);
 
+        //прокручиваем recyclerView на середину, центральный елемент должен быть "Руководство"
         int recyclerCenterPosition = layoutManager.getItemCount() / 2;
-        layoutManager.scrollToPosition(recyclerCenterPosition - 3);
-        recyclerView.smoothScrollToPosition(recyclerCenterPosition);
+        layoutManager.scrollToPosition(recyclerCenterPosition);
+        recyclerView.smoothScrollToPosition(recyclerCenterPosition + 2);
     }
 
     private class LessonTypeViewHolder extends RecyclerView.ViewHolder
@@ -109,6 +113,16 @@ public class HomeScreenActivity extends AppCompatActivity {
             lessonKindTopic.setTypeface(typeface);
             lessonKindTopic.setText(topic);
             mLessonTypeLogoView.setImageResource(resourseID);
+
+            //меняем размер ооносительно экрана
+            if (orientation == Configuration.ORIENTATION_PORTRAIT){
+                int activityWidth = getPixFromDp(getResources().getConfiguration().screenWidthDp);
+                mLessonTypeLogoView.getLayoutParams().width = (int)Math.round(activityWidth * 0.75);
+            }else {
+                int activityHeight = getPixFromDp(getResources().getConfiguration().screenHeightDp);
+                mLessonTypeLogoView.getLayoutParams().height = (int)Math.round(activityHeight * 0.55);
+            }
+
         }
 
         @Override
@@ -148,4 +162,11 @@ public class HomeScreenActivity extends AppCompatActivity {
 
 
     }
+
+    private int getPixFromDp(float i) {
+        //конвертируем пиксели в дип
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                i, getResources().getDisplayMetrics());
+    }
+
 }
