@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -87,6 +90,10 @@ public class GuideFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.guide_recycler_view);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(new GuideAdapter());
+
+//        LayoutAnimationController animationController = AnimationUtils
+//                .loadLayoutAnimation(getActivity(),R.anim.layout_animation_scale);
+//        mRecyclerView.setLayoutAnimation(animationController);
         return view;
     }
 
@@ -220,6 +227,10 @@ public class GuideFragment extends Fragment {
                     "text/html; charset=utf-8",
                     "utf-8",
                     null);
+
+            Animation slideFromBottomAnim = AnimationUtils
+                    .loadAnimation(getActivity(),R.anim.item_animation_from_bottom);
+            mWebView.setAnimation(slideFromBottomAnim);
         }
 
         public String fetchHTML(String fileName) {
