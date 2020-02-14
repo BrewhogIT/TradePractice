@@ -5,24 +5,19 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,8 +25,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class GuideFragmentWeb extends Fragment {
-    private final static String TAG = "GuideFragmentWeb";
+public class GuideFragment extends Fragment {
+    private final static String TAG = "GuideFragment";
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
     private final static int IMAGE_TYPE = 0;
     private final static int WEB_TYPE = 1;
@@ -40,11 +35,12 @@ public class GuideFragmentWeb extends Fragment {
     private Callback mCallback;
     private int orientation;
 
-    public static GuideFragmentWeb newInstance(int imageResId) {
+
+    public static GuideFragment newInstance(int imageResId) {
         Bundle args = new Bundle();
         args.putInt(IMAGE_RES_ID_ARGS, imageResId);
 
-        GuideFragmentWeb fragment = new GuideFragmentWeb();
+        GuideFragment fragment = new GuideFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,8 +74,7 @@ public class GuideFragmentWeb extends Fragment {
 
         int managerOrientation = (orientation == Configuration.ORIENTATION_PORTRAIT) ?
                 RecyclerView.VERTICAL : RecyclerView.HORIZONTAL;
-        mRecyclerView = view.findViewById(R.id.guide_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager
+        RecyclerView.LayoutManager manager = new LinearLayoutManager
                 (getActivity(),managerOrientation,false){
             //При альбомной ориентации отключаем возможность листать RecyclerView
             // т.к. оба представления занимают всю площадь экрана
@@ -87,14 +82,18 @@ public class GuideFragmentWeb extends Fragment {
             public boolean canScrollHorizontally() {
                 return false;
             }
-        });
+        };
 
+        mRecyclerView = view.findViewById(R.id.guide_recycler_view);
+        mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(new GuideAdapter());
         return view;
     }
 
     private class GuideAdapter extends RecyclerView.Adapter<GuideHolder>{
-        int imageViewWidth;
+        int fixWidth = getPixFromDp(400);
+        int fixHeight = getPixFromDp(250);
+
         @NonNull
         @Override
         public GuideHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -133,7 +132,7 @@ public class GuideFragmentWeb extends Fragment {
                 //В альбомной ориентации ImageView и WebView должны помещаться на одном экране
                 //поэтому рассчитываем ширину WebView исходя из свободного места на экране
                 int activityWidth = getResources().getConfiguration().screenWidthDp;
-                viewWidth = getPixFromDp(activityWidth) - imageViewWidth;
+                viewWidth = getPixFromDp(activityWidth) - fixWidth;
                 viewHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
             }
 
@@ -157,16 +156,15 @@ public class GuideFragmentWeb extends Fragment {
             ImageView imageView = new ImageView(getActivity());
 
             int marginValue = getPixFromDp(4);
+
             int viewWidth;
             int viewHeight;
             if (orientation == Configuration.ORIENTATION_PORTRAIT){
                 viewWidth = ViewGroup.LayoutParams.MATCH_PARENT;
-                viewHeight = getPixFromDp(250);
+                viewHeight = fixHeight;
             }else{
-                viewWidth = getPixFromDp(400);
+                viewWidth = fixWidth;
                 viewHeight = ViewGroup.LayoutParams.MATCH_PARENT;
-
-                imageViewWidth = viewWidth;
             }
 
             RecyclerView.LayoutParams params = new RecyclerView.LayoutParams
@@ -175,7 +173,7 @@ public class GuideFragmentWeb extends Fragment {
 
             imageView.setLayoutParams(params);
             imageView.setBackgroundColor(getResources().getColor(R.color.colorVeryLightGray));
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
             holder = new ImageHolder(imageView);
             return holder;
