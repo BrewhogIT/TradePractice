@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -38,14 +39,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PracticeListFragment extends Fragment {
     private static final String TAG = "PracticeListFragment";
+    public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
     private ImageView lessonKindIllustration;
     private RecyclerView practiceListRecyclerView;
     private FirebaseAuth mAuth;
-    private List<Practice> mPracticeList;
     private PracticeAdapter mAdapter;
-    public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
     private BroadcastReceiver notifycationReceiver;
+    private List<Practice> mPracticeList;
     private PracticePack mPracticePack;
+    private ProgressBar loadingProgress;
     private int orientation;
 
     public static PracticeListFragment newInstance(int imageResID) {
@@ -88,6 +90,7 @@ public class PracticeListFragment extends Fragment {
         practiceListRecyclerView = view.findViewById(R.id.practice_recycler_view);
         practiceListRecyclerView.setLayoutManager(
                 new GridLayoutManager(getActivity(),3, RecyclerView.VERTICAL,false));
+        loadingProgress = view.findViewById(R.id.load_progress_bar);
 
         connectToFirebase();
         return view;
@@ -186,6 +189,9 @@ public class PracticeListFragment extends Fragment {
         }
 
         public void welcomeAnimation(){
+            loadingProgress.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+
             Animation animation = AnimationUtils.
                     loadAnimation(getActivity(),R.anim.item_animation_from_bottom);
             mRecyclerView.setAnimation(animation);
