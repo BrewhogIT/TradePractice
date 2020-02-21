@@ -20,7 +20,10 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,11 +36,14 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PracticeListFragment extends Fragment {
+public class PracticeListFragment extends Fragment
+implements BillingProcessor.IBillingHandler{
     private static final String TAG = "PracticeListFragment";
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
     private ImageView lessonKindIllustration;
@@ -49,6 +55,7 @@ public class PracticeListFragment extends Fragment {
     private PracticePack mPracticePack;
     private ProgressBar loadingProgress;
     private int orientation;
+    private  BillingProcessor bp;
 
     public static PracticeListFragment newInstance(int imageResID) {
         Bundle args = new Bundle();
@@ -63,6 +70,11 @@ public class PracticeListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         orientation = this.getResources().getConfiguration().orientation;
+
+        //Инициализируем биллинг процессор - необходим для сервиса подписки
+        bp = BillingProcessor.newBillingProcessor(getActivity(), BillingConstants.PUBLIC_KEY, this);
+        bp.initialize();
+
         notifycationReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -108,6 +120,67 @@ public class PracticeListFragment extends Fragment {
     public void onStop() {
         super.onStop();
         getActivity().unregisterReceiver(notifycationReceiver);
+    }
+
+    @Override
+    public void onProductPurchased(String productId, TransactionDetails details) {
+        // произошла покупка
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+        // подгружает историю покупок, например после  переустновки приложения
+    }
+
+    @Override
+    public void onBillingError(int errorCode, Throwable error) {
+        //ошибка при покупке,  в том числе, когда пользователь не совершил покупку
+        showPreFinishDialog("Не удалось приобрести подписку на практический раздел.");
+    }
+
+    @Override
+    public void onBillingInitialized() {
+        //вызывается , когда билинг проинициализировался
+
+        //проверяем поддерживает ли устройство возможность подписки
+        boolean isSubsUpdateSupported = bp.isSubscriptionUpdateSupported();
+        if(isSubsUpdateSupported) {
+            //проверяем была ли сделана покупка подписки, если нет вызываем диалог для покупки
+            if (!isSubscribeActive(BillingConstants.SUBSCRIPTION_ID)){
+                bp.subscribe(getActivity(),BillingConstants.SUBSCRIPTION_ID);
+            }
+
+        }else{
+            showPreFinishDialog("Оплата подписки не поддерживается на данном устройстве.");
+        }
+    }
+
+    private boolean isSubscribeActive(String subscribeId){
+        boolean purchaseResult = bp.loadOwnedPurchasesFromGoogle();
+        if (purchaseResult){
+            TransactionDetails subscriptionTransactionDetail = bp.
+                    getSubscriptionTransactionDetails(subscribeId);
+
+            if (subscriptionTransactionDetail != null){
+                //подписка активна
+                return true;
+            }else {
+                //подписка не активна
+                return false;
+            }
+
+        }else{
+            return purchaseResult;
+        }
+    }
+
+    //вызывает диалог с сообщением, который закрывает активность
+    private void showPreFinishDialog(String message){
+        FragmentManager manager = getFragmentManager();
+        DialogFragment dialog = PreFinishDialog.newInstance(message);
+        dialog.show(manager,TAG);
+
     }
 
     private class PracticeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -273,5 +346,18 @@ public class PracticeListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!bp.handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
+    @Override
+    public void onDestroy() {
+        if (bp != null) {
+            bp.release();
+        }
+        super.onDestroy();
+    }
 }
