@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class LessonsListActivity extends SingleFragmentActivity implements GuideFragment.Callback{
     public static final String ILLUSTRATION_LESSON_KIND_EXTRA =
@@ -44,6 +45,23 @@ public class LessonsListActivity extends SingleFragmentActivity implements Guide
         return fragment;
     }
 
+    @Override
+    public String getFragmentTAG() {
+        int imageResId = getIntent().getIntExtra(ILLUSTRATION_LESSON_KIND_EXTRA, 0);
+        String TAG = null;
+        switch (imageResId) {
+            case R.drawable.theory:
+                TAG = TheoryListFragment.TAG;
+                break;
+            case R.drawable.practice:
+                TAG = PracticeListFragment.TAG;
+                break;
+            case R.drawable.howtouse:
+                TAG = GuideFragment.TAG;
+        }
+        return TAG;
+    }
+
     //Нужен для остановки анимации перехода между общим элементом
     @Override
     public void setStopPostTransition() {
@@ -55,5 +73,17 @@ public class LessonsListActivity extends SingleFragmentActivity implements Guide
     @Override
     public void setStartPostTransition() {
         startPostponedEnterTransition();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(PracticeListFragment.TAG);
+        if (fragment != null)
+        {
+            ((PracticeListFragment)fragment).onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

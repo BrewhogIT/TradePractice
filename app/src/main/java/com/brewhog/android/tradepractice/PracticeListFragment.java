@@ -44,7 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PracticeListFragment extends Fragment
 implements BillingProcessor.IBillingHandler{
-    private static final String TAG = "PracticeListFragment";
+    public static final String TAG = "PracticeListFragment";
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
     private ImageView lessonKindIllustration;
     private RecyclerView practiceListRecyclerView;
@@ -125,23 +125,30 @@ implements BillingProcessor.IBillingHandler{
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
         // произошла покупка
+        Log.i(TAG,"onProductPurchased");
+
 
     }
 
     @Override
     public void onPurchaseHistoryRestored() {
         // подгружает историю покупок, например после  переустновки приложения
+        Log.i(TAG,"onPurchaseHistoryRestored");
+
     }
 
     @Override
     public void onBillingError(int errorCode, Throwable error) {
         //ошибка при покупке,  в том числе, когда пользователь не совершил покупку
+        Log.i(TAG,"onBillingError");
         showPreFinishDialog("Не удалось приобрести подписку на практический раздел.");
     }
 
     @Override
     public void onBillingInitialized() {
         //вызывается , когда билинг проинициализировался
+        Log.i(TAG,"onBillingInitialized");
+
 
         //проверяем поддерживает ли устройство возможность подписки
         boolean isSubsUpdateSupported = bp.isSubscriptionUpdateSupported();

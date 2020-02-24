@@ -34,7 +34,7 @@ public class ChartFragment extends Fragment {
     public static final String ARG_CHART = "chart_image_url";
     public static final String ARG_CHART_DONE = "chart_done_image_url";
     public static final String ARG_SIGNALS = "signals_array";
-    private static final String TAG = "ChartFragment";
+    public static final String TAG = "ChartFragment";
     private String chartUrl;
     private String chartDoneUrl;
     private List<String> signals;

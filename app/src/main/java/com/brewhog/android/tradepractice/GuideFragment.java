@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class GuideFragment extends Fragment {
-    private final static String TAG = "GuideFragment";
+    public final static String TAG = "GuideFragment";
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
     private final static int IMAGE_TYPE = 0;
     private final static int WEB_TYPE = 1;

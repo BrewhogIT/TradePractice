@@ -38,6 +38,7 @@ public class TheoryListFragment extends Fragment {
     private List<Drawable> levelIcons;
     private CardView levelFrame;
     private int orientation;
+    public static final String TAG ="TheoryListFragment";
 
     public static final String IMAGE_RES_ID_ARGS = "Resource id for lesson kind logo";
 

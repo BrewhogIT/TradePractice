@@ -34,6 +34,11 @@ public class ChartActivity extends SingleFragmentActivity {
         return fragment;
     }
 
+    @Override
+    public String getFragmentTAG() {
+        return ChartFragment.TAG;
+    }
+
     public static void startActivityWithTransition(Activity activity,View view, Intent intent){
         String transitionName = activity.getString(R.string.chart_transition_name);
         view.setTransitionName(transitionName);
