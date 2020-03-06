@@ -185,8 +185,18 @@ public class LessonPack {
 
     public Integer getLessonIdFromSignal(String signal){
         HashMap<String,Integer> signalsMap = new HashMap<>();
-        signalsMap.put("chanal",0);
-        signalsMap.put("elliotWave",1);
+        signalsMap.put("канал",9);
+        signalsMap.put("линия поддержки",8);
+        signalsMap.put("линия сопротивления",8);
+        signalsMap.put("голова и плечи",7);
+        signalsMap.put("двойная вершина",7);
+        signalsMap.put("двойное дно",7);
+        signalsMap.put("треугольник",7);
+        signalsMap.put("чаша с ручкой",7);
+        signalsMap.put("скользящее среднее",10);
+        signalsMap.put("дивергенция",10);
+        signalsMap.put("волны Эллиота",11);
+        signalsMap.put("уровни Фибоначчи",14);
         //Добавить остальные, подкорректировать индексы
 
         return signalsMap.get(signal);

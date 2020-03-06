@@ -14,7 +14,7 @@
             android:id="@+id/page_illustration"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+            android:scaleType="fitXY"/>
     </androidx.cardview.widget.CardView>
     <WebView
         android:id="@+id/page_content"
