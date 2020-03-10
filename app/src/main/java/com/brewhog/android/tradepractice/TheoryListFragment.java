@@ -1,11 +1,10 @@
 package com.brewhog.android.tradepractice;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +23,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TheoryListFragment extends Fragment {
+public class TheoryListFragment extends SupportFragment {
     private RecyclerView theoryListRecyclerView;
     private LessonPack mLessonPack;
     private ImageView lessonKindIllustration;
@@ -150,7 +148,12 @@ public class TheoryListFragment extends Fragment {
 
         public void bind(Lesson lesson){
             mLesson = lesson;
-            lessonPreview.setImageDrawable(mLesson.getPreview());
+            String previewPath = mLesson.getPreviewPath();
+            try {
+                lessonPreview.setImageDrawable(getDrawable(previewPath));
+            } catch (IOException e) {
+                Log.e(TAG,"error with load drawable");
+            }
             lessonTopic.setText(mLesson.getTopic());
         }
 

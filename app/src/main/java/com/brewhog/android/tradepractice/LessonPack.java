@@ -4,25 +4,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
-import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.brewhog.android.tradepractice.database.LessonCursorWrapper;
 import com.brewhog.android.tradepractice.database.TheoryLessonHelper;
-import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme;
 import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.LessonTable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class LessonPack {
     public static final String TAG = "LessonPack";
@@ -79,9 +74,9 @@ public class LessonPack {
                     Lesson theoryLesson  = cursorWrapper.getLesson();
 
                     String lessonFolder = MAIN_LESSONS_FOLDER + "/" + allLessons[i];
-                    String illustrationsFolder = lessonFolder + "/" + "illustrations";
-                    String pagesFolder = lessonFolder + "/" + "pages";
-                    String testsFolder = lessonFolder + "/" + "test";
+                    String illustrationsFolder = lessonFolder + "/illustrations";
+                    String pagesFolder = lessonFolder + "/pages";
+                    String testsFolder = lessonFolder + "/test";
 
                     String[] pageFileNames = mAssetManager.list(pagesFolder);
                     String[] illustrationFileNames = mAssetManager.list(illustrationsFolder);
@@ -89,7 +84,7 @@ public class LessonPack {
 
                     List<Test> tests = loadTests(testsFolder, testFileNames);
                     List<String> pages = new ArrayList<>();
-                    List<Drawable> illustrations = new ArrayList<>();
+                    List<String> illustrations = new ArrayList<>();
 
                     //Обход по папкам и добавление в список страниц, которые представляют из себя
                     //путь к html файлу (без корневой папки "file:///android_asset/") и картинок.
@@ -100,15 +95,17 @@ public class LessonPack {
                             pages.add(pagesFolder + "/" + pageFileNames[j]);
                         }
 
-                        InputStream inputStream = mAssetManager
+                        // Заменить на путь к изоюражению
+                        /*InputStream inputStream = mAssetManager
                                 .open(illustrationsFolder + "/" + illustrationFileNames[j]);
                         illustrations.add(Drawable.createFromStream(inputStream,null));
-                        inputStream.close();
+                        inputStream.close();*/
+                        illustrations.add(illustrationsFolder + "/" + illustrationFileNames[j]);
                     }
 
                     theoryLesson.setLessonTest(tests);
                     theoryLesson.setPages(pages);
-                    theoryLesson.setIllustrations(illustrations);
+                    theoryLesson.setIllustrationPaths(illustrations);
 
                     mLessonsList.add(theoryLesson);
                     cursorWrapper.moveToNext();

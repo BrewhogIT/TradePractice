@@ -9,7 +9,7 @@ public class Lesson {
     private int lessonID;
     private String topic;
     private List<String> pages;
-    private List<Drawable> illustrations;
+    private List<String> illustrations;
     private List<Test> lessonTest;
     private int correctAnswersCount;
     private boolean done;
@@ -29,7 +29,7 @@ public class Lesson {
         return topic;
     }
 
-    public Drawable getPreview() {
+    public String getPreviewPath() {
         if (!isDone()){
             return illustrations.get(0);
         }else{
@@ -45,11 +45,11 @@ public class Lesson {
         this.pages = new ArrayList<>(pages);
     }
 
-    public List<Drawable> getIllustrations() {
+    public List<String> getIllustrationPaths() {
         return illustrations;
     }
 
-    public void setIllustrations(List<Drawable> illustrations) {
+    public void setIllustrationPaths(List<String> illustrations) {
         this.illustrations = new ArrayList<>(illustrations);
     }
 

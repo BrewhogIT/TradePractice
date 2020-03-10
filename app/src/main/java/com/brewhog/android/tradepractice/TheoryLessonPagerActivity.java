@@ -133,7 +133,7 @@ implements TestPageFragment.CallBack, TheoryPageFragment.CallBack{
     private void updateUI(final CustomViewPager pager, final int pageType){
         Log.i(TAG, "Page Type is " + pageType);
         //Класс является общим для урока и для теста, поэтому исходя из типа урока создаются
-        //разные фрагменты, а также задается длинна длинна пейджера
+        //разные фрагменты, а также задается длинна пейджера
 
         FragmentManager manager = getSupportFragmentManager();
         PagerAdapter adapter = new FragmentStatePagerAdapter(manager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

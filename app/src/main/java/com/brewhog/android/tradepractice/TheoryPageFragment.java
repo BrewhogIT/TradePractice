@@ -1,6 +1,7 @@
 package com.brewhog.android.tradepractice;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class TheoryPageFragment extends Fragment {
+public class TheoryPageFragment extends SupportFragment {
     private static final String TAG = "TheoryPageFragment";
     private static final String ARG_LESSON_ID = "lesson_id";
     private static final String ARG_PAGE_NUMBER = "page_number";
@@ -67,7 +68,15 @@ public class TheoryPageFragment extends Fragment {
 
         mLesson = LessonPack.getLessonPack(getActivity()).getLesson(lessonID);
         String contentPath = mLesson.getPages().get(pageNumber);
-        Drawable illustrationDrawable = mLesson.getIllustrations().get(pageNumber);
+
+
+        String illustrationPath = mLesson.getIllustrationPaths().get(pageNumber);
+        Drawable illustrationDrawable = null;
+        try {
+            illustrationDrawable = getDrawable(illustrationPath);
+        } catch (IOException e) {
+            Log.e(TAG,"error with load drawable");
+        }
 
         pageIllustrationView = view.findViewById(R.id.page_illustration);
         pageIllustrationView.setImageDrawable(illustrationDrawable);
