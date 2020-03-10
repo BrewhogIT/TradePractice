@@ -33,12 +33,14 @@ public class LessonPack {
     private Context mContext;
     private AssetManager mAssetManager;
     private SQLiteDatabase mDataBase;
+    private HashMap<String,Integer> signalsMap;
 
     private LessonPack(Context context) {
         mContext = context;
         mDataBase = new TheoryLessonHelper(context).getWritableDatabase();
         mAssetManager = mContext.getAssets();
         loadLessonList();
+        loadSignalMap();
     }
 
     public static LessonPack getLessonPack(Context context){
@@ -183,22 +185,24 @@ public class LessonPack {
                 new String[]{Integer.toString(lesson.getLessonID())});
     }
 
-    public Integer getLessonIdFromSignal(String signal){
-        HashMap<String,Integer> signalsMap = new HashMap<>();
-        signalsMap.put("канал",9);
-        signalsMap.put("линия поддержки",8);
-        signalsMap.put("линия сопротивления",8);
-        signalsMap.put("голова и плечи",7);
-        signalsMap.put("двойная вершина",7);
-        signalsMap.put("двойное дно",7);
-        signalsMap.put("треугольник",7);
-        signalsMap.put("чаша с ручкой",7);
-        signalsMap.put("скользящее среднее",10);
-        signalsMap.put("дивергенция",10);
-        signalsMap.put("волны Эллиота",11);
-        signalsMap.put("уровни Фибоначчи",14);
-        //Добавить остальные, подкорректировать индексы
+    private void loadSignalMap(){
+        signalsMap = new HashMap<>();
+        String[]signalsArray = mContext.getResources().getStringArray(R.array.signals);
+        signalsMap.put(signalsArray[0],9);
+        signalsMap.put(signalsArray[1],8);
+        signalsMap.put(signalsArray[2],8);
+        signalsMap.put(signalsArray[3],7);
+        signalsMap.put(signalsArray[4],7);
+        signalsMap.put(signalsArray[5],7);
+        signalsMap.put(signalsArray[6],7);
+        signalsMap.put(signalsArray[7],7);
+        signalsMap.put(signalsArray[8],10);
+        signalsMap.put(signalsArray[9],10);
+        signalsMap.put(signalsArray[10],11);
+        signalsMap.put(signalsArray[11],14);
+    }
 
+    public Integer getLessonIdFromSignal(String signal){
         return signalsMap.get(signal);
     }
 }

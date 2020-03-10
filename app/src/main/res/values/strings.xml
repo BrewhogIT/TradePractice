@@ -35,6 +35,22 @@
         <item>Типы заявок</item>
     </string-array>
 
+    /* строки наименования сигналов*/
+    <string-array name="signals">
+        <item>канал</item>
+        <item>линия поддержки</item>
+        <item>линия сопротивления</item>
+        <item>голова и плечи</item>
+        <item>двойная вершина</item>
+        <item>двойное дно</item>
+        <item>треугольник</item>
+        <item>чаша с ручкой</item>
+        <item>скользящее среднее</item>
+        <item>дивергенция</item>
+        <item>волны Эллиота</item>
+        <item>уровни Фибоначчи</item>
+    </string-array>
+
     /* строки для окна запуска или пересдачи теста */
     <string name="start_test">Начать тест</string>
     <string name="return_to_lesson">К уроку</string>
