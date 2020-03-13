@@ -26,10 +26,14 @@ import java.util.List;
 
 public class HomeScreenActivity extends AppCompatActivity {
     private static final String TAG = "HomeScreenActivity";
+    private static final String ADAPTER_KEY = "AdapterKey";
+
     private ImageView logoView;
     private List<Integer> lessonsKindList;
     private RecyclerView lessonSectionRecyclerView;
+    private CenterZoomLayoutManager layoutManager;
     private int orientation;
+    private Integer adapterPosition;
 
     public static Intent newIntent(Context context){
         return new Intent(context, HomeScreenActivity.class);
@@ -38,6 +42,10 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null){
+            adapterPosition = savedInstanceState.getInt(ADAPTER_KEY);
+        }
+
         setContentView(R.layout.activity_home_screen);
         orientation = this.getResources().getConfiguration().orientation;
         ActionBarHider.hideIfLandscape(this,this);
@@ -56,11 +64,18 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        adapterPosition = layoutManager.findFirstVisibleItemPosition() + 1;
+        outState.putInt(ADAPTER_KEY, adapterPosition);
+    }
+
     private void setupRecyclerView(RecyclerView recyclerView) {
         int managerOrientation = (orientation == Configuration.ORIENTATION_PORTRAIT) ?
                 LinearLayoutManager.HORIZONTAL : LinearLayoutManager.VERTICAL;
 
-        CenterZoomLayoutManager layoutManager = new CenterZoomLayoutManager(
+        layoutManager = new CenterZoomLayoutManager(
                 this, managerOrientation,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new LessonTypeAdapter(lessonsKindList));
@@ -70,9 +85,15 @@ public class HomeScreenActivity extends AppCompatActivity {
         recyclerView.setOnFlingListener(snapHelper);
 
         //прокручиваем recyclerView на середину, центральный елемент должен быть "Руководство"
-        int recyclerCenterPosition = layoutManager.getItemCount() / 2;
-        layoutManager.scrollToPosition(recyclerCenterPosition);
-        recyclerView.smoothScrollToPosition(recyclerCenterPosition + 2);
+        if (adapterPosition == null){
+            int recyclerCenterPosition = layoutManager.getItemCount() / 2;
+            layoutManager.scrollToPosition(recyclerCenterPosition);
+            recyclerView.smoothScrollToPosition(recyclerCenterPosition + 2);
+        }else{
+            layoutManager.scrollToPosition(adapterPosition);
+            recyclerView.smoothScrollToPosition(adapterPosition);
+        }
+
     }
 
     private class LessonTypeViewHolder extends RecyclerView.ViewHolder
@@ -151,6 +172,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull LessonTypeViewHolder holder, int position) {
+
             int realPosition = position % lessonKinds.size();
             holder.bind(lessonKinds.get(realPosition));
         }
@@ -159,8 +181,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         public int getItemCount() {
             return Integer.MAX_VALUE;
         }
-
-
     }
 
     private int getPixFromDp(float i) {
