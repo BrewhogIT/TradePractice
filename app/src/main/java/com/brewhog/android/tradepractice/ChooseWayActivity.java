@@ -103,19 +103,13 @@ public class ChooseWayActivity extends AppCompatActivity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.putExtra(EXTRA_WINDOW_KIND,windowKind);
-                setResult(Activity.RESULT_OK,intent);
-                closeWithAnimation();
+                closeWithResult(Activity.RESULT_OK);
             }
         });
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.putExtra(EXTRA_WINDOW_KIND,windowKind);
-                setResult(Activity.RESULT_CANCELED,intent);
-                closeWithAnimation();
+                closeWithResult(Activity.RESULT_CANCELED);
             }
         });
     }
@@ -179,5 +173,17 @@ public class ChooseWayActivity extends AppCompatActivity {
 
         circularAnimation.setDuration(750);
         circularAnimation.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        closeWithResult(Activity.RESULT_CANCELED);
+    }
+
+    private void closeWithResult(int resultCanceled) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_WINDOW_KIND, windowKind);
+        setResult(resultCanceled, intent);
+        closeWithAnimation();
     }
 }
