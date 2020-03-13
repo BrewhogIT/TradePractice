@@ -150,7 +150,9 @@ public class TheoryListFragment extends SupportFragment {
             mLesson = lesson;
             String previewPath = mLesson.getPreviewPath();
             try {
-                lessonPreview.setImageDrawable(getDrawable(previewPath));
+                //lessonPreview.setImageDrawable(getDrawable(previewPath));
+                Drawable image = getOptSizeImage(previewPath,lessonPreview);
+                lessonPreview.setImageDrawable(image);
             } catch (IOException e) {
                 Log.e(TAG,"error with load drawable");
             }

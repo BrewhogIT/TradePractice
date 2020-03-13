@@ -68,17 +68,17 @@ public class TheoryPageFragment extends SupportFragment {
 
         mLesson = LessonPack.getLessonPack(getActivity()).getLesson(lessonID);
         String contentPath = mLesson.getPages().get(pageNumber);
-
+        pageIllustrationView = view.findViewById(R.id.page_illustration);
 
         String illustrationPath = mLesson.getIllustrationPaths().get(pageNumber);
         Drawable illustrationDrawable = null;
         try {
-            illustrationDrawable = getDrawable(illustrationPath);
+            //illustrationDrawable = getDrawable(illustrationPath);
+            illustrationDrawable = getOptSizeImage(illustrationPath, pageIllustrationView);
         } catch (IOException e) {
             Log.e(TAG,"error with load drawable");
         }
 
-        pageIllustrationView = view.findViewById(R.id.page_illustration);
         pageIllustrationView.setImageDrawable(illustrationDrawable);
         prepareForAnimationTransition();
 
