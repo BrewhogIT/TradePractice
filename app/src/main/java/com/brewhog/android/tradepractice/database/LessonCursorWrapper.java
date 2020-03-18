@@ -5,8 +5,6 @@ import android.database.Cursor;
 import com.brewhog.android.tradepractice.Lesson;
 import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.LessonTable;
 
-import java.util.UUID;
-
 public class LessonCursorWrapper extends android.database.CursorWrapper {
     public LessonCursorWrapper(Cursor cursor) {
         super(cursor);

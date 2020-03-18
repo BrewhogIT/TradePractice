@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.brewhog.android.tradepractice.R;
 import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.LessonTable;
 
-import java.util.UUID;
-
 import androidx.annotation.Nullable;
 
 public class TheoryLessonHelper extends SQLiteOpenHelper {

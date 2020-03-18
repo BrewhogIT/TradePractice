@@ -1,6 +1,5 @@
 package com.brewhog.android.tradepractice;
 
-import android.app.job.JobService;
 import android.net.Uri;
 import android.util.Log;
 

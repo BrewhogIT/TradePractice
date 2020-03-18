@@ -2,13 +2,8 @@ package com.brewhog.android.tradepractice;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.widget.TextView;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;

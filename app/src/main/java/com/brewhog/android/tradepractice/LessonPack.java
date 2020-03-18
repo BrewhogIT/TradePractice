@@ -95,11 +95,6 @@ public class LessonPack {
                             pages.add(pagesFolder + "/" + pageFileNames[j]);
                         }
 
-                        // Заменить на путь к изоюражению
-                        /*InputStream inputStream = mAssetManager
-                                .open(illustrationsFolder + "/" + illustrationFileNames[j]);
-                        illustrations.add(Drawable.createFromStream(inputStream,null));
-                        inputStream.close();*/
                         illustrations.add(illustrationsFolder + "/" + illustrationFileNames[j]);
                     }
 

@@ -1,12 +1,8 @@
 package com.brewhog.android.tradepractice;
 
-import com.google.firebase.storage.StorageReference;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.Nullable;
 
 public class Practice {
     private int id;

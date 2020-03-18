@@ -15,10 +15,6 @@ public class CenterZoomLayoutManager extends LinearLayoutManager {
     private final float mShrinkDistance = 0.9f;
     private static final String TAG = "CenterZoomLayoutManager";
 
-    public CenterZoomLayoutManager(Context context) {
-        super(context);
-    }
-
     public CenterZoomLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
