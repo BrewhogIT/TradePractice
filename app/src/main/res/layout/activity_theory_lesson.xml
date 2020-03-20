@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.brewhog.android.tradepractice.CustomViewPager
+    <com.brewhog.android.tradepractice.presenter.CustomViewPager
         android:id="@+id/theory_lesson_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

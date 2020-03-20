@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -15,6 +15,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+
+import com.brewhog.android.tradepractice.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.brewhog.android.tradepractice.model.SupportLine;
+
 import java.util.ArrayList;
 import java.util.List;
 

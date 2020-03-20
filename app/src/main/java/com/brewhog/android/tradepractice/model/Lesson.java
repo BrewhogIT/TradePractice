@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,11 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import com.brewhog.android.tradepractice.database.UserPreferences;
 
 public class StartReceiver extends BroadcastReceiver {
     private static final String TAG = "StartReceiver";

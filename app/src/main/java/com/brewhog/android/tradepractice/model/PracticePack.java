@@ -1,8 +1,9 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.model;
 
 import android.net.Uri;
 import android.util.Log;
 
+import com.brewhog.android.tradepractice.presenter.PracticeListFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;

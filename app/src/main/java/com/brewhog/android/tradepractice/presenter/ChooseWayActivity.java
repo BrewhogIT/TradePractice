@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -15,6 +15,8 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.brewhog.android.tradepractice.R;
 
 public class ChooseWayActivity extends AppCompatActivity {
     private Button okButton;

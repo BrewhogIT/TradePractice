@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.model;
 
 import java.util.HashMap;
 import java.util.Map;

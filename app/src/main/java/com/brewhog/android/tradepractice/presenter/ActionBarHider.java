@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.content.Context;
 import android.content.res.Configuration;

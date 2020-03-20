@@ -18,33 +18,33 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ChooseWayActivity"
+            android:name=".presenter.ChooseWayActivity"
             android:theme="@style/AppThemeTranslucent"></activity>
-        <activity android:name=".HomeScreenActivity">
+        <activity android:name=".presenter.HomeScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SingleFragmentActivity"/>
+        <activity android:name=".presenter.SingleFragmentActivity"/>
         <activity
-            android:name=".LessonsListActivity"/>
-        <activity android:name=".TheoryLessonPagerActivity" />
+            android:name=".presenter.LessonsListActivity"/>
+        <activity android:name=".presenter.TheoryLessonPagerActivity" />
         <activity
-            android:name=".ChartActivity"
+            android:name=".presenter.ChartActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppThemeChart"/>
 
-        <service android:name=".ChartUpdateService"/>
+        <service android:name=".presenter.ChartUpdateService"/>
 
-        <receiver android:name=".StartReceiver">
+        <receiver android:name=".presenter.StartReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".NotificationReceiver"
+        <receiver android:name=".presenter.NotificationReceiver"
             android:exported="false">
             <intent-filter android:priority="-999">
                 <action android:name="com.brewhog.android.tradepractice.SHOW_NOTIFICATION"/>

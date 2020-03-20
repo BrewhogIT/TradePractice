@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -16,14 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
+import com.brewhog.android.tradepractice.BillingConstants;
+import com.brewhog.android.tradepractice.R;
+import com.brewhog.android.tradepractice.model.Practice;
+import com.brewhog.android.tradepractice.model.PracticePack;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

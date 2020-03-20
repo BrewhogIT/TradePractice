@@ -1,6 +1,8 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.os.Bundle;
+
+import com.brewhog.android.tradepractice.R;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

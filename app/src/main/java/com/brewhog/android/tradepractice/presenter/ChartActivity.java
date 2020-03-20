@@ -1,9 +1,11 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+
+import com.brewhog.android.tradepractice.R;
 
 import java.util.ArrayList;
 

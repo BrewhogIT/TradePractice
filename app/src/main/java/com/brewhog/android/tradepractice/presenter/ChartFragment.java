@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.brewhog.android.tradepractice.ChartPainterImageView;
+import com.brewhog.android.tradepractice.R;
+import com.brewhog.android.tradepractice.model.LessonPack;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;

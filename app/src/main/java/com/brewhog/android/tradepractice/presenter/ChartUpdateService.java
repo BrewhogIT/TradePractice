@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -17,6 +17,11 @@ import android.net.Network;
 import android.net.NetworkRequest;
 import android.os.SystemClock;
 import android.util.Log;
+
+import com.brewhog.android.tradepractice.R;
+import com.brewhog.android.tradepractice.database.UserPreferences;
+import com.brewhog.android.tradepractice.model.Practice;
+import com.brewhog.android.tradepractice.model.PracticePack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +123,9 @@ public class ChartUpdateService extends IntentService {
 
         NetworkRequest networkRequest = new NetworkRequest.Builder()
                 .build();
-        ConnectivityManager.NetworkCallback callback = new ConnectivityManager.NetworkCallback(){
+
+        ConnectivityManager.NetworkCallback callback =
+                new ConnectivityManager.NetworkCallback(){
             @Override
             public void onAvailable(@NonNull Network network) {
                 isNetworkConnected = true;
@@ -133,15 +140,16 @@ public class ChartUpdateService extends IntentService {
         try {
             cm.unregisterNetworkCallback(callback);
         } catch (Exception e) {
-            Log.w(TAG,"NetworkCallback was not registered or already unregistered, network connected is "
-                    + isNetworkConnected);
+            Log.w(TAG,"NetworkCallback was not registered or already unregistered," +
+                    " network connected is " + isNetworkConnected);
         }
 
         try {
             cm.registerNetworkCallback(networkRequest,callback);
         } catch (Exception e) {
             isNetworkConnected = false;
-            Log.e(TAG,"registerNetworkCallback error. NetworkCallback was not registered , network connected is "
+            Log.e(TAG,"registerNetworkCallback error." +
+                    " NetworkCallback was not registered , network connected is "
                     + isNetworkConnected);
         }
 

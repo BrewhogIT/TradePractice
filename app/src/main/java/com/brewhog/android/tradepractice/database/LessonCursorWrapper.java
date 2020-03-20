@@ -2,7 +2,7 @@ package com.brewhog.android.tradepractice.database;
 
 import android.database.Cursor;
 
-import com.brewhog.android.tradepractice.Lesson;
+import com.brewhog.android.tradepractice.model.Lesson;
 import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.LessonTable;
 
 public class LessonCursorWrapper extends android.database.CursorWrapper {

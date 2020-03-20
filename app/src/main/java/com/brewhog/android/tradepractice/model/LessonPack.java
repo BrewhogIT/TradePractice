@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.brewhog.android.tradepractice.R;
 import com.brewhog.android.tradepractice.database.LessonCursorWrapper;
 import com.brewhog.android.tradepractice.database.TheoryLessonHelper;
 import com.brewhog.android.tradepractice.database.TheoryLessonsDbScheme.LessonTable;

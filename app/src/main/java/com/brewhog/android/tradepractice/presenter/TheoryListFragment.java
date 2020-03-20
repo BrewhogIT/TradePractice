@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
@@ -14,6 +14,11 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.brewhog.android.tradepractice.R;
+import com.brewhog.android.tradepractice.database.UserPreferences;
+import com.brewhog.android.tradepractice.model.Lesson;
+import com.brewhog.android.tradepractice.model.LessonPack;
 
 import java.io.IOException;
 import java.io.InputStream;

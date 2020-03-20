@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -8,6 +8,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import com.brewhog.android.tradepractice.R;
+import com.brewhog.android.tradepractice.database.UserPreferences;
+import com.brewhog.android.tradepractice.model.Lesson;
+import com.brewhog.android.tradepractice.model.LessonPack;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class TheoryLessonPagerActivity extends AppCompatActivity
-implements TestPageFragment.CallBack, TheoryPageFragment.CallBack{
+implements TestPageFragment.CallBack, TheoryPageFragment.CallBack {
     public static final String TAG = "TheoryLessonPagerActivity";
     public static final String LESSONS_ID_EXTRA = "com.brewhog.android.tradepractice.lesson_number";
     public static final String PAGE_TYPE_EXTRA = "com.brewhog.android.tradepractice.page_type";

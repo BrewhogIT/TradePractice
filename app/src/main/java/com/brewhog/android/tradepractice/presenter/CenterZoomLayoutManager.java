@@ -1,9 +1,11 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.brewhog.android.tradepractice.R;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

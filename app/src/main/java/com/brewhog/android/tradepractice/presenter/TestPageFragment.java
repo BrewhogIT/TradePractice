@@ -1,4 +1,4 @@
-package com.brewhog.android.tradepractice;
+package com.brewhog.android.tradepractice.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.brewhog.android.tradepractice.R;
+import com.brewhog.android.tradepractice.model.Lesson;
+import com.brewhog.android.tradepractice.model.LessonPack;
+import com.brewhog.android.tradepractice.model.Test;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.Map;
 import androidx.annotation.NonNull;
